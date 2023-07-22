@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="MrT_wxDialogs.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TableGenerators.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CSVData.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CSVtoASCII_Panel.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CSVtoSQL_Panel.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CSVto_PanelBase.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MrT_wxDialogs.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CSVtoMarkdown.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="TableGenerators.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CSVData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CSVtoASCII_Panel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CSVtoSQL_Panel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CSVto_PanelBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Main.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalDefualts.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CSVtoMarkdown.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{42cf904b-8311-4389-aec7-7b4cc9122f4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{e3844526-efc5-4871-bffa-096a8f80611a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{b432e69f-7d45-463d-ad24-9667479ee665}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

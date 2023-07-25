@@ -7,10 +7,10 @@ class CSVtoMarkdown_Panel : public CSVto_PanelBase
 {
 private:
 	wxComboBox* m_TextAlignment, * m_TableStyle;
-	wxCheckBox* m_BoldFirstRow, m_BoldFirstCol;
-	wxBoxSizer* m_LeftSettingsSizer, * m_MiddleSettingSizer, * m_RightSettingsSizer, * m_OutputSettingsSizer3;
+	wxCheckBox* m_BoldFirstRow, * m_BoldFirstCol;
+	wxBoxSizer* m_LeftSettingsSizer, * m_RightSettingsSizer, * m_OutputSettingsSizer3;
 
-	wxArrayString* m_TextAlignmentChoices;
+	wxArrayString m_TextAlignmentChoices, m_TableStyleChoices;
 public:
 	CSVtoMarkdown_Panel(wxWindow* _parent, const std::string& _name, const mrtApp::AppColours* _colours);
 

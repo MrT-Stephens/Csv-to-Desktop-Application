@@ -6,7 +6,10 @@ mrt::CSVData::CSVData(const std::string& filePath, bool onlyAsciiCharacters)
 }
 
 mrt::CSVData::CSVData(std::vector<std::vector<std::string>>&& data, std::vector<std::string>&& headerNames) : 
-	m_Data(std::forward<std::vector<std::vector<std::string>>>(data)), m_HeaderNames(std::forward<std::vector<std::string>>(headerNames)) { }
+	m_Data(std::forward<std::vector<std::vector<std::string>>>(data)), m_HeaderNames(std::forward<std::vector<std::string>>(headerNames)) 
+{
+	CheckMaxColumnWidths();
+}
 
 mrt::CSVData::~CSVData() { }
 
@@ -28,6 +31,12 @@ mrt::CSVData_Error mrt::CSVData::LoadCsv(const std::string& fileDir, bool onlyAs
 
 	while (std::getline(ss, word, ','))
 	{
+		if (onlyAsciiCharacters)   // Remove non-ascii characters
+		{
+			word.erase(std::remove_if(word.begin(), word.end(), [](char c) {
+				return (static_cast<int>(c) < 0) ? true : false; }), word.end());
+		}
+
 		m_HeaderNames.emplace_back(word);
 		m_MaxColumnWidths.emplace_back(word.size());
 	}
@@ -94,6 +103,16 @@ mrt::CSVData_Error mrt::CSVData::SaveCsv(const std::string& fileDir) const noexc
 
 void mrt::CSVData::CheckMaxColumnWidths() noexcept
 {
+	// Resize the columns widths vector
+	m_MaxColumnWidths.resize(m_HeaderNames.size());
+
+	// Set max column widths to header names string lengths
+	for (size_t i = 0; i < m_HeaderNames.size(); ++i)
+	{
+		m_MaxColumnWidths[i] = m_HeaderNames[i].size();
+	}
+
+	// Check for max column string length, by comparing with header names string lengths
 	for (size_t i0 = 0; i0 < m_Data.size(); ++i0)
 	{
 		for (size_t i1 = 0; i1 < m_Data[0].size(); ++i1)
@@ -126,11 +145,11 @@ const std::vector<std::string>& mrt::CSVData::GetRowData(size_t index) const noe
 	return m_Data[index];
 }
 
-void mrt::CSVData::SortByColumn(size_t index) noexcept
+void mrt::CSVData::SortByColumn(size_t index, bool ascendingOrder) noexcept
 {
-	std::sort(m_Data.begin(), m_Data.end(), [&index](const std::vector<std::string>& a, const std::vector<std::string>& b)->bool 
+	std::sort(m_Data.begin(), m_Data.end(), [&index, ascendingOrder](const std::vector<std::string>& a, const std::vector<std::string>& b)->bool 
 		{
-			return (a[index] < b[index]) ? true : false;
+			return ((ascendingOrder) ? (a[index] < b[index]) : (a[index] > b[index]));
 		}
 	);
 }
@@ -191,6 +210,7 @@ void mrt::CSVData::RemoveWhiteSpace() noexcept
 			rowVal.erase(std::remove_if(rowVal.begin(), rowVal.end(), [&loc](auto c)->bool { return (std::isspace(c, loc)) ? true : false;  }), rowVal.end());
 		}
 	}
+
 	CheckMaxColumnWidths();
 }
 

@@ -5,7 +5,7 @@
 class CSVtoSQL_Panel : public CSVto_PanelBase
 {
 private:
-	// CsvToSql misculaneous items
+	// CsvToSql miscellaneous items
 	wxTimer m_PopulateDataTimer;
 	wxArrayString m_QuotesChoices;
 

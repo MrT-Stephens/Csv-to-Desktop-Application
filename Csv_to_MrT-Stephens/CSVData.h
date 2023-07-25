@@ -41,7 +41,7 @@ namespace mrt
 		std::vector<std::string>& GetRowData(size_t index) noexcept;
 		const std::vector<std::string>& GetRowData(size_t index) const noexcept;
 
-		void SortByColumn(size_t index) noexcept;
+		void SortByColumn(size_t index, bool asendingOrder) noexcept;
 
 		void LowerUpperData(bool lower = true) noexcept;
 

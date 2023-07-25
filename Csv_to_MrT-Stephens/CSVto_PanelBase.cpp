@@ -15,8 +15,8 @@ void CSVto_PanelBase::SetupDataInputSection()
 {
 	m_DataInBtnSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	m_LogoButton = new wxBitmapButton(this, wxID_ANY, wxBitmap(CSV_to_Logo).ConvertToImage().Rescale(50, 50, wxIMAGE_QUALITY_HIGH), wxDefaultPosition, wxDefaultSize, wxNO_BORDER);
-	m_LogoButton->SetMinSize({ 50, 50 });
+	m_LogoButton = new wxBitmapButton(this, wxID_ANY, wxBitmap(CSV_to_Logo).ConvertToImage().Rescale(50, 50, wxIMAGE_QUALITY_HIGH), wxDefaultPosition, wxDefaultSize);
+	m_LogoButton->SetMinSize({ 60, 60 });
 	m_LogoButton->SetBackgroundColour(m_Colours->BACKGROUND);
 
 	m_LogoButton->Bind(wxEVT_BUTTON, [this](wxCommandEvent& _evt)
@@ -100,30 +100,15 @@ void CSVto_PanelBase::SetupDataInputSection()
 	// Bind the example file button to the event
 	m_ExampleData->Bind(wxEVT_BUTTON, [this](wxCommandEvent& event)
 		{
-			wxFileName exeFile(wxStandardPaths::Get().GetExecutablePath());
-			m_FileDir = std::format("{}\\ExampleData.csv", exeFile.GetPath().ToStdString());
-
 			delete (this->m_CSVData);
-			m_CSVData = new mrt::CSVData(m_FileDir, true);
+			m_CSVData = new mrt::CSVData({
+				{ "John", "James", "39", "M", "P001" },
+				{ "James", "Fisher", "25", "M", "P002" },
+				{ "Matt", "Lewis", "18", "M", "P003" }, 
+				{ "Sarah", "Vills", "22", "F", "P004" }}, 
+				{"firstname", "lastname", "age", "gender", "personId" });
 
-			if (m_CSVData->GetError() == mrt::CSVData_Error::NONE)
-			{
-				PopulateData();
-			}
-			else if (m_CSVData->GetError() == mrt::CSVData_Error::CANNOT_OPEN_FILE)
-			{
-				mrt::MrT_UniDialog errorDialog(this, "Error", "Failed to open file.\nPlease try to re-open the file.",
-					m_Colours, wxICON(wxICON_ERROR), mrt::MrT_UniDialogType_OK, { 400, 200 });
-
-				errorDialog.ShowModal();
-			}
-			else
-			{
-				mrt::MrT_UniDialog errorDialog(this, "Error", "Failed to input data from file.\nPlease try to re-open the file.",
-					m_Colours, wxICON(wxICON_ERROR), mrt::MrT_UniDialogType_OK, { 400, 200 });
-
-				errorDialog.ShowModal();
-			}
+			PopulateData();
 		}
 	);
 
@@ -146,11 +131,29 @@ void CSVto_PanelBase::SetupDataInputSection()
 	// Bind the list view to the column click event
 	m_DataInputListView->Bind(wxEVT_LIST_COL_CLICK, [this](wxListEvent& event)
 		{
+			wchar_t upArrow = '\u2191';
+			wchar_t downArrow = '\u2193';
+
 			int column = event.GetColumn() - 1;
 
 			if (!m_ListViewThreadRunning && !m_TextBoxThreadRunning && column > -1)
 			{
-				m_CSVData->SortByColumn(column);
+				if (m_CurrentSortColumn == 0)
+				{
+					m_CurrentSortColumn = column;
+					m_CurrentSortOrder = 1;
+				}
+				else if (m_CurrentSortColumn == column)
+				{
+					m_CurrentSortOrder = ((m_CurrentSortOrder == 2) ? 1 : 2);
+				}
+				else
+				{
+					m_CurrentSortColumn = column;
+					m_CurrentSortOrder = 1;
+				}
+
+				m_CSVData->SortByColumn(column, ((m_CurrentSortOrder < 2) ? true : false));
 				PopulateData();
 			}
 		}

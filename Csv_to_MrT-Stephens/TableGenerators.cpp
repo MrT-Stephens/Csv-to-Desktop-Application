@@ -18,121 +18,121 @@ std::string mrt::AddWhiteSpaceToString(std::string _str, unsigned int _amount, i
 	return _str;
 }
 
-mrt::AsciiTableGenerator::AsciiTableGenerator(
-	const std::vector<std::string>& _columnNames,
-	const std::vector<std::vector<std::string>>& _tableData,
-	const std::vector<unsigned int>& _columnMaxWidths)
-	: m_ColumnNames(_columnNames), m_TableData(_tableData), m_ColumnMaxWidths(_columnMaxWidths)
+mrt::AsciiTableGenerator::AsciiTableGenerator(const mrt::CSVData* const _csvData, int _tableStyle, const std::string& _commentCharacters, bool _forceRowSeparation, int _whiteSpaceStyle)
+	: m_CSVData(_csvData), m_TableStyle(_tableStyle), m_CommentCharacters(_commentCharacters), m_ForceRowSeparation(_forceRowSeparation), m_WhiteSpaceStyle(_whiteSpaceStyle)
 {
-
+	GenerateAsciiTable();
 }
 
-void mrt::AsciiTableGenerator::GenerateAsciiTable(int _tableStyle, const std::string _commentCharacters, bool _forceRowSeparation, int _whiteSpaceStyle)
+void mrt::AsciiTableGenerator::GenerateAsciiTable()
 {
-	// Generates the header lines for the table.
-	switch (_tableStyle)
 	{
-	case Ascii_Table_MySQL:
-		m_AsciiTableText << _commentCharacters << GenerateSpacerLine(m_ColumnMaxWidths, '-', '+') << "\n" << _commentCharacters
-			<< GenerateDataLine(m_ColumnNames, m_ColumnMaxWidths, '|', _whiteSpaceStyle) << "\n" << _commentCharacters << GenerateSpacerLine(m_ColumnMaxWidths, '-', '+') << "\n";
-		break;
-	case Ascii_Table_Dots:
-		m_AsciiTableText << _commentCharacters << GenerateSpacerLine(m_ColumnMaxWidths, '·', '·') << "\n" << _commentCharacters
-			<< GenerateDataLine(m_ColumnNames, m_ColumnMaxWidths, ':', _whiteSpaceStyle) << "\n" << _commentCharacters << GenerateSpacerLine(m_ColumnMaxWidths, '·', '·') << "\n";
-		break;
-	case Ascii_Table_Dots_Curved:
-		m_AsciiTableText << _commentCharacters << GenerateSpacerLine(m_ColumnMaxWidths, '·', '.') << "\n" << _commentCharacters
-			<< GenerateDataLine(m_ColumnNames, m_ColumnMaxWidths, ':', _whiteSpaceStyle) << "\n" << _commentCharacters << GenerateSpacerLine(m_ColumnMaxWidths, '·', '·') << "\n";
-		break;
-	case Ascii_Table_Compact:
-		m_AsciiTableText << _commentCharacters << GenerateDataLine(m_ColumnNames, m_ColumnMaxWidths, ' ', _whiteSpaceStyle)
-			<< "\n" << _commentCharacters << GenerateSpacerLine(m_ColumnMaxWidths, '-', '-') << "\n";
-		break;
-	case Ascii_Table_Seperated_Header:
-		m_AsciiTableText << _commentCharacters << GenerateSpacerLine(m_ColumnMaxWidths, '=', '+') << "\n" << _commentCharacters
-			<< GenerateDataLine(m_ColumnNames, m_ColumnMaxWidths, '|', _whiteSpaceStyle) << "\n" << _commentCharacters << GenerateSpacerLine(m_ColumnMaxWidths, '=', '+') << "\n";
-		break;
-	case Ascii_Table_Simple:
-		m_AsciiTableText << _commentCharacters << GenerateSpacerLine(m_ColumnMaxWidths, '=', ' ') << "\n" << _commentCharacters
-			<< GenerateDataLine(m_ColumnNames, m_ColumnMaxWidths, ' ', _whiteSpaceStyle) << "\n" << _commentCharacters << GenerateSpacerLine(m_ColumnMaxWidths, '=', ' ') << "\n";
-		break;
-	case Ascii_Table_Wavy:
-		m_AsciiTableText << _commentCharacters << GenerateSpacerLine(m_ColumnMaxWidths, '~', '+') << "\n" << _commentCharacters
-			<< GenerateDataLine(m_ColumnNames, m_ColumnMaxWidths, '¦', _whiteSpaceStyle) << "\n" << _commentCharacters << GenerateSpacerLine(m_ColumnMaxWidths, '~', '+') << "\n";
-		break;
-	case ExtendedAscii_Table_MySQL:
-		m_AsciiTableText << _commentCharacters << GenerateSpacerLine(m_ColumnMaxWidths, '-', '+') << "\n" << _commentCharacters
-			<< GenerateDataLine(m_ColumnNames, m_ColumnMaxWidths, '¦', _whiteSpaceStyle) << "\n" << _commentCharacters << GenerateSpacerLine(m_ColumnMaxWidths, '-', '+') << "\n";
-		break;
+		const std::vector<std::string>& columnNames = m_CSVData->GetHeaderNames();
+
+		// Generates the header lines for the table.
+		switch (m_TableStyle)
+		{
+		case Ascii_Table_MySQL:
+			m_AsciiTableText << m_CommentCharacters << GenerateSpacerLine('-', '+') << "\n" << m_CommentCharacters
+				<< GenerateDataLine(columnNames, '|') << "\n" << m_CommentCharacters << GenerateSpacerLine('-', '+') << "\n";
+			break;
+		case Ascii_Table_Dots:
+			m_AsciiTableText << m_CommentCharacters << GenerateSpacerLine('·', '·') << "\n" << m_CommentCharacters
+				<< GenerateDataLine(columnNames, ':') << "\n" << m_CommentCharacters << GenerateSpacerLine('·', '·') << "\n";
+			break;
+		case Ascii_Table_Dots_Curved:
+			m_AsciiTableText << m_CommentCharacters << GenerateSpacerLine('·', '.') << "\n" << m_CommentCharacters
+				<< GenerateDataLine(columnNames, ':') << "\n" << m_CommentCharacters << GenerateSpacerLine('·', '·') << "\n";
+			break;
+		case Ascii_Table_Compact:
+			m_AsciiTableText << m_CommentCharacters << GenerateDataLine(columnNames, ' ') << "\n" << m_CommentCharacters << GenerateSpacerLine('-', '-') << "\n";
+			break;
+		case Ascii_Table_Seperated_Header:
+			m_AsciiTableText << m_CommentCharacters << GenerateSpacerLine('=', '+') << "\n" << m_CommentCharacters
+				<< GenerateDataLine(columnNames, '|') << "\n" << m_CommentCharacters << GenerateSpacerLine('=', '+') << "\n";
+			break;
+		case Ascii_Table_Simple:
+			m_AsciiTableText << m_CommentCharacters << GenerateSpacerLine('=', ' ') << "\n" << m_CommentCharacters
+				<< GenerateDataLine(columnNames, ' ') << "\n" << m_CommentCharacters << GenerateSpacerLine('=', ' ') << "\n";
+			break;
+		case Ascii_Table_Wavy:
+			m_AsciiTableText << m_CommentCharacters << GenerateSpacerLine('~', '+') << "\n" << m_CommentCharacters
+				<< GenerateDataLine(columnNames, '¦') << "\n" << m_CommentCharacters << GenerateSpacerLine('~', '+') << "\n";
+			break;
+		case ExtendedAscii_Table_MySQL:
+			m_AsciiTableText << m_CommentCharacters << GenerateSpacerLine('-', '+') << "\n" << m_CommentCharacters
+				<< GenerateDataLine(columnNames, '¦') << "\n" << m_CommentCharacters << GenerateSpacerLine('-', '+') << "\n";
+			break;
+		}
 	}
 
 	// Generates the data lines for the table.
-	for (size_t i = 0; i < m_TableData.size(); ++i)
+	for (size_t i = 0; i < m_CSVData->GetRowCount(); ++i)
 	{
-		switch (_tableStyle)
+		switch (m_TableStyle)
 		{
 		case Ascii_Table_MySQL:
-			m_AsciiTableText << _commentCharacters << GenerateDataLine(m_TableData[i], m_ColumnMaxWidths, '|', _whiteSpaceStyle) << "\n";
+			m_AsciiTableText << m_CommentCharacters << GenerateDataLine(m_CSVData->GetRowData(i), '|') << "\n";
 
-			if (_forceRowSeparation || (i == m_TableData.size() - 1))
+			if (m_ForceRowSeparation || (i == m_CSVData->GetRowCount() - 1))
 			{
-				m_AsciiTableText << _commentCharacters << GenerateSpacerLine(m_ColumnMaxWidths, '-', '+') << "\n";
+				m_AsciiTableText << m_CommentCharacters << GenerateSpacerLine('-', '+') << "\n";
 			}
 			break;
 		case Ascii_Table_Dots:
-			m_AsciiTableText << _commentCharacters << GenerateDataLine(m_TableData[i], m_ColumnMaxWidths, ':', _whiteSpaceStyle) << "\n";
+			m_AsciiTableText << m_CommentCharacters << GenerateDataLine(m_CSVData->GetRowData(i), ':') << "\n";
 
-			if (_forceRowSeparation || (i == m_TableData.size() - 1))
+			if (m_ForceRowSeparation || (i == m_CSVData->GetRowCount() - 1))
 			{
-				m_AsciiTableText << _commentCharacters << GenerateSpacerLine(m_ColumnMaxWidths, '·', '·') << "\n";
+				m_AsciiTableText << m_CommentCharacters << GenerateSpacerLine('·', '·') << "\n";
 			}
 			break;
 		case Ascii_Table_Dots_Curved:
-			m_AsciiTableText << _commentCharacters << GenerateDataLine(m_TableData[i], m_ColumnMaxWidths, ':', _whiteSpaceStyle) << "\n";
+			m_AsciiTableText << m_CommentCharacters << GenerateDataLine(m_CSVData->GetRowData(i), ':') << "\n";
 
-			if (_forceRowSeparation || (i == m_TableData.size() - 1))
+			if (m_ForceRowSeparation || (i == m_CSVData->GetRowCount() - 1))
 			{
-				m_AsciiTableText << _commentCharacters << GenerateSpacerLine(m_ColumnMaxWidths, '·', '·') << "\n";
+				m_AsciiTableText << m_CommentCharacters << GenerateSpacerLine('·', '·') << "\n";
 			}
 			break;
 		case Ascii_Table_Compact:
-			m_AsciiTableText << _commentCharacters << GenerateDataLine(m_TableData[i], m_ColumnMaxWidths, ' ', _whiteSpaceStyle) << "\n";
+			m_AsciiTableText << m_CommentCharacters << GenerateDataLine(m_CSVData->GetRowData(i), ' ') << "\n";
 
-			if (_forceRowSeparation && i != m_TableData.size() - 1)
+			if (m_ForceRowSeparation && i != m_CSVData->GetRowCount() - 1)
 			{
-				m_AsciiTableText << _commentCharacters << GenerateSpacerLine(m_ColumnMaxWidths, '-', '-') << "\n";
+				m_AsciiTableText << m_CommentCharacters << GenerateSpacerLine('-', '-') << "\n";
 			}
 			break;
 		case Ascii_Table_Seperated_Header:
-			m_AsciiTableText << _commentCharacters << GenerateDataLine(m_TableData[i], m_ColumnMaxWidths, '|', _whiteSpaceStyle) << "\n";
+			m_AsciiTableText << m_CommentCharacters << GenerateDataLine(m_CSVData->GetRowData(i), '|') << "\n";
 
-			if (_forceRowSeparation || (i == m_TableData.size() - 1))
+			if (m_ForceRowSeparation || (i == m_CSVData->GetRowCount() - 1))
 			{
-				m_AsciiTableText << _commentCharacters << GenerateSpacerLine(m_ColumnMaxWidths, '-', '+') << "\n";
+				m_AsciiTableText << m_CommentCharacters << GenerateSpacerLine('-', '+') << "\n";
 			}
 			break;
 		case Ascii_Table_Simple:
-			m_AsciiTableText << _commentCharacters << GenerateDataLine(m_TableData[i], m_ColumnMaxWidths, ' ', _whiteSpaceStyle) << "\n";
+			m_AsciiTableText << m_CommentCharacters << GenerateDataLine(m_CSVData->GetRowData(i), ' ') << "\n";
 
-			if (_forceRowSeparation || (i == m_TableData.size() - 1))
+			if (m_ForceRowSeparation || (i == m_CSVData->GetRowCount() - 1))
 			{
-				m_AsciiTableText << _commentCharacters << GenerateSpacerLine(m_ColumnMaxWidths, '=', ' ') << "\n";
+				m_AsciiTableText << m_CommentCharacters << GenerateSpacerLine('=', ' ') << "\n";
 			}
 			break;
 		case Ascii_Table_Wavy:
-			m_AsciiTableText << _commentCharacters << GenerateDataLine(m_TableData[i], m_ColumnMaxWidths, '¦', _whiteSpaceStyle) << "\n";
+			m_AsciiTableText << m_CommentCharacters << GenerateDataLine(m_CSVData->GetRowData(i), '¦') << "\n";
 
-			if (_forceRowSeparation || (i == m_TableData.size() - 1))
+			if (m_ForceRowSeparation || (i == m_CSVData->GetRowCount() - 1))
 			{
-				m_AsciiTableText << _commentCharacters << GenerateSpacerLine(m_ColumnMaxWidths, '~', '+') << "\n";
+				m_AsciiTableText << m_CommentCharacters << GenerateSpacerLine('~', '+') << "\n";
 			}
 			break;
 		case ExtendedAscii_Table_MySQL:
-			m_AsciiTableText << _commentCharacters << GenerateDataLine(m_TableData[i], m_ColumnMaxWidths, '¦', _whiteSpaceStyle) << "\n";
+			m_AsciiTableText << m_CommentCharacters << GenerateDataLine(m_CSVData->GetRowData(i), '¦') << "\n";
 
-			if (_forceRowSeparation || (i == m_TableData.size() - 1))
+			if (m_ForceRowSeparation || (i == m_CSVData->GetRowCount() - 1))
 			{
-				m_AsciiTableText << _commentCharacters << GenerateSpacerLine(m_ColumnMaxWidths, '-', '+') << "\n";
+				m_AsciiTableText << m_CommentCharacters << GenerateSpacerLine('-', '+') << "\n";
 			}
 			break;
 		}
@@ -149,98 +149,87 @@ const std::ostringstream& mrt::AsciiTableGenerator::GetAsciiTableStream() const
 	return m_AsciiTableText;		// Returns a constant string stream object, can call .str() on the function call to get the table string.
 }
 
-std::string mrt::AsciiTableGenerator::GenerateDataLine(const std::vector<std::string>& _rowVector, const std::vector<unsigned int>& _columnMaxWidths, unsigned char _separationCharacter, int _style) const
+std::string mrt::AsciiTableGenerator::GenerateDataLine(const std::vector<std::string>& _rowVector, unsigned char _separationCharacter) const
 {
 	std::ostringstream oss;
 
 	for (size_t i = 0; i < _rowVector.size(); ++i)
 	{
-		oss << _separationCharacter << " " << AddWhiteSpaceToString(_rowVector[i], (_columnMaxWidths[i] - _rowVector[i].size()), _style) << " ";
+		oss << _separationCharacter << " " << AddWhiteSpaceToString(_rowVector[i], (m_CSVData->GetMaxColumnWidth(i) - _rowVector[i].size()), m_WhiteSpaceStyle) << " ";
 	}
 	oss << _separationCharacter;
 
 	return std::forward<std::string>(oss.str());
 }
 
-std::string mrt::AsciiTableGenerator::GenerateSpacerLine(const std::vector<unsigned int>& _columnMaxWidths, unsigned char _dataSpaceCharacter, unsigned char _edgesCharacter) const
+std::string mrt::AsciiTableGenerator::GenerateSpacerLine(unsigned char _dataSpaceCharacter, unsigned char _edgesCharacter) const
 {
 	std::ostringstream oss;
 
-	for (size_t i = 0; i < _columnMaxWidths.size(); ++i)
+	for (size_t i = 0; i < m_CSVData->GetColumnCount(); ++i)
 	{
-		oss << _edgesCharacter << AddWhiteSpaceToString("", _columnMaxWidths[i] + 2, WhiteSpaceStyle::LEFT, _dataSpaceCharacter);
+		oss << _edgesCharacter << AddWhiteSpaceToString("", m_CSVData->GetMaxColumnWidth(i) + 2, WhiteSpaceStyle::LEFT, _dataSpaceCharacter);
 	}
 	oss << _edgesCharacter;
 
 	return std::forward<std::string>(oss.str());
 }
 
-mrt::MarkdownTableGenerator::MarkdownTableGenerator(
-	const std::vector<std::string>& _columnNames, 
-	const std::vector<std::vector<std::string>>& _tableData,
-	const std::vector<unsigned int>& _columnMaxWidths)
-	: m_ColumnNames(_columnNames), m_ColumnMaxWidths(_columnMaxWidths), m_TableData(_tableData)
+mrt::MarkdownTableGenerator::MarkdownTableGenerator(const mrt::CSVData* const _csvData, int _tableStyle, int _whiteSpaceStyle, bool _boldFirstRow, bool _boldFirstCol)
+	: m_CSVData(_csvData), m_TableStyle(_tableStyle), m_WhiteSpaceStyle(_whiteSpaceStyle), m_BoldFirstRow(_boldFirstRow), m_BoldFirstCol(_boldFirstCol)
 {
-	
+	GenerateMarkdownTable();
 }
 
-void mrt::MarkdownTableGenerator::GenerateMarkdownTable(int _tableStyle, int _whiteSpaceStyle, bool _boldFirstRow, bool _boldFirstCol)
+void mrt::MarkdownTableGenerator::GenerateMarkdownTable()
 {
-	// Generates the header lines for the table.
-	switch (_tableStyle)
+	std::vector<unsigned int> columnWidths = m_CSVData->GetMaxColumnWidths();
+
 	{
-	case Markdown_Table_Normal:
-		for (size_t i = 0; i < m_ColumnNames.size(); ++i)
-		{
-			m_MarkdownTableText << "|" << " " << AddWhiteSpaceToString(((_boldFirstCol && i == 0) ? std::format("**{}**", m_ColumnNames[i]) : ((_boldFirstRow) ? std::format("**{}**", m_ColumnNames[i]) : m_ColumnNames[i])),
-				(m_ColumnMaxWidths[i] - m_ColumnNames[i].size()), _whiteSpaceStyle) << " ";
-		}
-		m_MarkdownTableText << "|\n";
+		std::vector<std::string> headerRow = m_CSVData->GetHeaderNames();
 
-		for (size_t i = 0; i < m_ColumnNames.size(); ++i)
+		if (m_BoldFirstRow)
 		{
-			m_MarkdownTableText << '|' << AddWhiteSpaceToString("", m_ColumnMaxWidths[i] + 2, WhiteSpaceStyle::LEFT, ' ');
-		}
-		m_MarkdownTableText << "|\n";
+			for (size_t i = 0; i < headerRow.size(); ++i)
+			{
+				headerRow[i] = std::format("**{}**", headerRow[i]);
 
-		break;
-	case Markdown_Table_Simple:
-		for (size_t i = 0; i < m_ColumnNames.size(); ++i)
+				columnWidths[i] += 4;
+			}
+		}
+		else if (m_BoldFirstCol)
 		{
-			m_MarkdownTableText << " " << AddWhiteSpaceToString(((_boldFirstCol && i == 0) ? std::format("**{}**", m_ColumnNames[i]) : ((_boldFirstRow) ? std::format("**{}**", m_ColumnNames[i]) : m_ColumnNames[i])),
-				(m_ColumnMaxWidths[i] - m_ColumnNames[i].size()), _whiteSpaceStyle) << " " << ((i == m_ColumnNames.size() - 1) ? '\n' : '|');
+			headerRow[0] = std::format("**{}**", headerRow[0]);
+
+			columnWidths[0] += 4;
 		}
 
-		for (size_t i = 0; i < m_ColumnNames.size(); ++i)
-		{
-			m_MarkdownTableText << AddWhiteSpaceToString("", m_ColumnMaxWidths[i] + 2, WhiteSpaceStyle::LEFT, ' ') << ((i == m_ColumnNames.size() - 1) ? '\n' : '|');
-		}
-
-		break;
+		m_MarkdownTableText << GenerateDataLine(headerRow, columnWidths) << "\n";
 	}
 
-	// Generates the data lines for the table.
-	for (const std::vector<std::string>& row : m_TableData)
+	for (size_t i = 0; i < m_CSVData->GetColumnCount(); ++i)
 	{
-		switch (_tableStyle)
+		switch (m_TableStyle)
 		{
 		case Markdown_Table_Normal:
-			for (size_t i = 0; i < row.size(); ++i)
-			{
-				m_MarkdownTableText << "|" << " " << AddWhiteSpaceToString(((_boldFirstCol && i == 0) ? std::format("**{}**", row[i]) : row[i]), (m_ColumnMaxWidths[i] - row[i].size()), _whiteSpaceStyle) << " ";
-			}
-			m_MarkdownTableText << "|\n";
-	
+			m_MarkdownTableText << '|' << AddWhiteSpaceToString("", columnWidths[i] + 2, WhiteSpaceStyle::LEFT, '-') << ((i == m_CSVData->GetColumnCount() - 1) ? "|\n" : "");
 			break;
 		case Markdown_Table_Simple:
-			for (size_t i = 0; i < row.size(); ++i)
-			{
-				m_MarkdownTableText << " " << AddWhiteSpaceToString(((_boldFirstCol && i == 0) ? std::format("**{}**", row[i]) : row[i]), (m_ColumnMaxWidths[i] - row[i].size()), _whiteSpaceStyle)
-					<< " " << ((i == row.size() - 1) ? '\n' : '|');
-			}
-
+			m_MarkdownTableText << AddWhiteSpaceToString("", columnWidths[i] + 2, WhiteSpaceStyle::LEFT, '-') << ((i == m_CSVData->GetColumnCount() - 1) ? '\n' : '|');
 			break;
 		}
+	}
+
+	for (size_t i = 0; i < m_CSVData->GetRowCount(); ++i)
+	{
+		std::vector<std::string> row = m_CSVData->GetRowData(i);
+
+		if (m_BoldFirstCol)
+		{
+			row[0] = std::format("**{}**", row[0]);
+		}
+
+		m_MarkdownTableText << GenerateDataLine(row, columnWidths) << "\n";
 	}
 }
 
@@ -252,4 +241,33 @@ std::ostringstream& mrt::MarkdownTableGenerator::GetMarkdownTableStream()
 const std::ostringstream& mrt::MarkdownTableGenerator::GetMarkdownTableStream() const
 {
 	return m_MarkdownTableText;			// Returns a constant string stream object, can call .str() on the function call to get the table string.
+}
+
+std::string mrt::MarkdownTableGenerator::GenerateDataLine(const std::vector<std::string>& _rowVector, const std::vector<unsigned int>& _columnWidths) const
+{
+	std::ostringstream oss;
+
+	switch (m_TableStyle)
+	{
+	case Markdown_Table_Normal:
+		for (size_t i = 0; i < _rowVector.size(); ++i)
+		{
+			oss << "| " << AddWhiteSpaceToString(_rowVector[i], (_columnWidths[i] - _rowVector[i].size()), m_WhiteSpaceStyle) << ' ';
+		}
+		oss << '|';
+		break;
+	case Markdown_Table_Simple:
+		for (size_t i = 0; i < _rowVector.size(); ++i)
+		{
+			oss << ' ' << AddWhiteSpaceToString(_rowVector[i], (_columnWidths[i] - _rowVector[i].size()), m_WhiteSpaceStyle) << ' ';
+
+			if (i != m_CSVData->GetColumnCount() - 1)
+			{
+				oss << '|';
+			}
+		}
+		break;
+	}
+
+	return std::forward<std::string>(oss.str());
 }

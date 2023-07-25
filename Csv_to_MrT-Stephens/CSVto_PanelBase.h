@@ -27,6 +27,7 @@ protected:
 	const mrtApp::AppColours* m_Colours;
 
 	// Data Input Section
+	int m_CurrentSortColumn = 0, m_CurrentSortOrder = 0;
 	wxBoxSizer* m_DataInBtnSizer, * m_DataInTextSizer, * m_DataListViewSizer;
 	wxBitmapButton* m_LogoButton;
 	wxButton* m_LoadData, * m_ExampleData;

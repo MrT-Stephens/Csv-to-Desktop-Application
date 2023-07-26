@@ -1,4 +1,4 @@
-#include "CSVto_PanelBase.h"
+﻿#include "CSVto_PanelBase.h"
 
 CSVto_PanelBase::CSVto_PanelBase(wxWindow* _parent, const std::string& _name, const mrtApp::AppColours* _colours) 
 	: wxPanel(_parent), m_PanelName(_name), m_Colours(_colours)
@@ -64,6 +64,7 @@ void CSVto_PanelBase::SetupDataInputSection()
 			{
 				m_FileDir = openFileDialog.GetPath();
 
+				m_CurrentSortColumn = -1;
 				delete (m_CSVData);
 				m_CSVData = new mrt::CSVData(m_FileDir, true);
 
@@ -100,6 +101,7 @@ void CSVto_PanelBase::SetupDataInputSection()
 	// Bind the example file button to the event
 	m_ExampleData->Bind(wxEVT_BUTTON, [this](wxCommandEvent& event)
 		{
+			m_CurrentSortColumn = -1;
 			delete (this->m_CSVData);
 			m_CSVData = new mrt::CSVData({
 				{ "John", "James", "39", "M", "P001" },
@@ -131,29 +133,21 @@ void CSVto_PanelBase::SetupDataInputSection()
 	// Bind the list view to the column click event
 	m_DataInputListView->Bind(wxEVT_LIST_COL_CLICK, [this](wxListEvent& event)
 		{
-			wchar_t upArrow = '\u2191';
-			wchar_t downArrow = '\u2193';
-
 			int column = event.GetColumn() - 1;
 
 			if (!m_ListViewThreadRunning && !m_TextBoxThreadRunning && column > -1)
 			{
-				if (m_CurrentSortColumn == 0)
+				if (m_CurrentSortColumn == column)
 				{
-					m_CurrentSortColumn = column;
-					m_CurrentSortOrder = 1;
-				}
-				else if (m_CurrentSortColumn == column)
-				{
-					m_CurrentSortOrder = ((m_CurrentSortOrder == 2) ? 1 : 2);
+					m_CurrentSortOrder = ((m_CurrentSortOrder == ORDER_DESCENDING) ? ORDER_ASCENDING : ORDER_DESCENDING);
 				}
 				else
 				{
 					m_CurrentSortColumn = column;
-					m_CurrentSortOrder = 1;
+					m_CurrentSortOrder = ORDER_ASCENDING;
 				}
 
-				m_CSVData->SortByColumn(column, ((m_CurrentSortOrder < 2) ? true : false));
+				m_CSVData->SortByColumn(column, ((m_CurrentSortOrder == ORDER_ASCENDING) ? true : false));
 				PopulateData();
 			}
 		}
@@ -394,9 +388,17 @@ void CSVto_PanelBase::PopulateDataListView()
 
 	m_DataInputListView->InsertColumn(0, "Row Number", wxLIST_ALIGN_SNAP_TO_GRID, average_width);
 
-	for (size_t i = 0; (i < m_CSVData->GetColumnCount()); ++i)
 	{
-		m_DataInputListView->InsertColumn(i + 1, m_CSVData->GetHeaderNames()[i], wxLIST_ALIGN_SNAP_TO_GRID, average_width);
+		std::string headerName;
+
+		for (size_t i = 0; (i < m_CSVData->GetColumnCount()); ++i)
+		{
+			headerName = (m_CurrentSortColumn == i) ?
+				headerName = std::format("{} {}", (m_CurrentSortOrder == ORDER_ASCENDING ? "A" : "D"), m_CSVData->GetHeaderNames()[i]) :
+				headerName = m_CSVData->GetHeaderNames()[i];
+
+			m_DataInputListView->InsertColumn(i + 1, headerName, wxLIST_ALIGN_SNAP_TO_GRID, average_width);
+		}
 	}
 
 	for (size_t i0 = 0; (i0 < m_CSVData->GetRowCount()); ++i0)

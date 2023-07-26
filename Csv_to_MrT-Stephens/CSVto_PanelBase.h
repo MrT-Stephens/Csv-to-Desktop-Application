@@ -15,6 +15,13 @@
 #include "MrT_wxDialogs.h"
 #include "GlobalDefualts.h"
 
+enum ListVeiwSortOrder
+{
+	ORDER_NONE = 0,
+	ORDER_ASCENDING = 1,
+	ORDER_DESCENDING = 2
+};
+
 class CSVto_PanelBase : public wxPanel
 {
 protected:
@@ -27,7 +34,8 @@ protected:
 	const mrtApp::AppColours* m_Colours;
 
 	// Data Input Section
-	int m_CurrentSortColumn = 0, m_CurrentSortOrder = 0;
+	int m_CurrentSortColumn = -1;
+	ListVeiwSortOrder m_CurrentSortOrder = ORDER_NONE;
 	wxBoxSizer* m_DataInBtnSizer, * m_DataInTextSizer, * m_DataListViewSizer;
 	wxBitmapButton* m_LogoButton;
 	wxButton* m_LoadData, * m_ExampleData;

@@ -1,7 +1,9 @@
 #pragma once
 
 #include <wx/wx.h>
+
 #include <string>
+#include <sstream>
 
 #include "CSV_to_Logo.xpm"		// Icons array is called 'CSV_to_Logo'
 

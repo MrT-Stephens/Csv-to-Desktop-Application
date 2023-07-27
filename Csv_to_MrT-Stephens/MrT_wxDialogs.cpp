@@ -182,3 +182,81 @@ mrt::MrT_UniDialog::MrT_UniDialog(wxWindow* parent, const std::string& title, co
 
 	SetSizer(m_MainSizer);
 }
+
+
+mrt::MrT_DataEditDialog::MrT_DataEditDialog(wxWindow* parent, const std::string& title, const mrtApp::AppColours* colours,
+	const std::vector<std::string>& dataEditTitles, std::vector<std::string>& editableData, const wxSize& size)
+	: wxDialog(parent, wxID_ANY, "", wxDefaultPosition, size, (wxDEFAULT_DIALOG_STYLE & ~(wxSYSTEM_MENU)) | wxSTAY_ON_TOP)
+{
+	SetIcon(wxICON(wxICON_INFORMATION));
+	SetOwnBackgroundColour(colours->BACKGROUND);
+
+	m_Panel = new wxScrolled<wxPanel>(this, wxID_ANY);
+	m_Panel->SetOwnBackgroundColour(colours->BACKGROUND);
+	m_Panel->SetScrollRate(0, FromDIP(10));
+
+	m_MainSizer = new wxBoxSizer(wxVERTICAL);
+
+	m_Title = new wxStaticText(m_Panel, wxID_ANY, title, wxDefaultPosition, wxDefaultSize);
+	m_Title->SetOwnForegroundColour(colours->SECONDARY);
+	m_Title->SetOwnFont(MAIN_FONT_TEXT(16));
+
+	m_MainSizer->Add(m_Title, 0, wxALL | wxALIGN_CENTER, FromDIP(10));
+
+	m_DataEditTitles.resize(dataEditTitles.size());
+	m_DataEditBoxes.resize(dataEditTitles.size());
+
+	for (size_t i = 0; i < dataEditTitles.size(); ++i)
+	{
+		m_DataEditTitles[i] = new wxStaticText(m_Panel, wxID_ANY, std::format("Edit ({}):", dataEditTitles[i]), wxDefaultPosition, wxDefaultSize);
+		m_DataEditTitles[i]->SetOwnForegroundColour(colours->SECONDARY);
+		m_DataEditTitles[i]->SetOwnFont(MAIN_FONT_TEXT(10));
+
+		m_DataEditBoxes[i] = new wxTextCtrl(m_Panel, wxID_ANY, editableData[i], wxDefaultPosition, wxDefaultSize, wxTE_NO_VSCROLL);
+		m_DataEditBoxes[i]->SetOwnBackgroundColour(colours->PRIMARY);
+		m_DataEditBoxes[i]->SetOwnForegroundColour(colours->FOREGROUND);
+		m_DataEditBoxes[i]->SetOwnFont(MAIN_FONT_TEXT(10));
+
+		m_MainSizer->Add(m_DataEditTitles[i], 0, wxLEFT | wxTOP | wxRIGHT | wxEXPAND, FromDIP(10));
+		m_MainSizer->Add(m_DataEditBoxes[i], 0, wxALL | wxEXPAND, FromDIP(10));
+	}
+
+	m_ButtonSizer = new wxBoxSizer(wxHORIZONTAL);
+
+	m_ApplyButton = new wxButton(m_Panel, wxID_APPLY, "Apply", wxDefaultPosition, wxDefaultSize);
+	m_ApplyButton->SetOwnForegroundColour(colours->SECONDARY);
+	m_ApplyButton->SetOwnBackgroundColour(colours->PRIMARY);
+	m_ApplyButton->SetOwnFont(MAIN_FONT_TEXT(10));
+	m_ApplyButton->SetMinSize({ 120, 30 });
+
+	m_ApplyButton->Bind(wxEVT_BUTTON, [this, &editableData](wxCommandEvent& event)
+		{
+			for (size_t i = 0; i < editableData.size(); ++i)
+			{
+				editableData[i] = m_DataEditBoxes[i]->GetValue().ToStdString();
+			}
+
+			EndModal(wxID_APPLY);
+		}
+	);
+
+	m_ButtonSizer->Add(m_ApplyButton, 1, wxALL | wxEXPAND, FromDIP(10));
+
+	m_CancelButton = new wxButton(m_Panel, wxID_CANCEL, "Cancel", wxDefaultPosition, wxDefaultSize);
+	m_CancelButton->SetOwnForegroundColour(colours->SECONDARY);
+	m_CancelButton->SetOwnBackgroundColour(colours->PRIMARY);
+	m_CancelButton->SetOwnFont(MAIN_FONT_TEXT(10));
+	m_CancelButton->SetMinSize({ 120, 30 });
+
+	m_CancelButton->Bind(wxEVT_BUTTON, [this](wxCommandEvent& event)
+		{
+			EndModal(wxID_CANCEL);
+		}
+	);
+
+	m_ButtonSizer->Add(m_CancelButton, 1, wxALL | wxEXPAND, FromDIP(10));
+
+	m_MainSizer->Add(m_ButtonSizer, 0, wxALL | wxEXPAND, FromDIP(0));
+
+	m_Panel->SetSizer(m_MainSizer);
+}

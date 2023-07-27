@@ -71,6 +71,7 @@ mrt::CSVData_Error mrt::CSVData::LoadCsv(const std::string& fileDir, bool onlyAs
 	}
 
 	file.close();
+	CheckXYLengths();   // Checks the row lengths to make sure they are all the same, otherwise will insert empty strings
 	return CSVData_Error::NONE;
 }
 
@@ -122,6 +123,21 @@ void mrt::CSVData::CheckMaxColumnWidths() noexcept
 				m_MaxColumnWidths[i1] = m_Data[i0][i1].size();
 			}
 		}
+	}
+}
+
+void mrt::CSVData::CheckXYLengths() noexcept
+{
+	size_t maxSize = std::max_element(m_Data.begin(), m_Data.end(), [](const std::vector<std::string>& a, const std::vector<std::string>& b)->bool
+		{
+			return (a.size() < b.size());
+		}
+	)->size();
+
+	for (std::vector<std::string>& row : m_Data)
+	{
+		if (row.size() < maxSize)
+			row.resize(maxSize, "");
 	}
 }
 

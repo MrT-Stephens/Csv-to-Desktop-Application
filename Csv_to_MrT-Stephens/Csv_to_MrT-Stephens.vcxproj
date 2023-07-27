@@ -175,7 +175,7 @@
   <ItemGroup>
     <ClInclude Include="TableGenerators.h" />
     <ClInclude Include="CSVtoMarkdown.h" />
-    <ClInclude Include="GlobalDefualts.h" />
+    <ClInclude Include="UtilityItems.h" />
     <ClInclude Include="CSVData.h" />
     <ClInclude Include="CSVtoASCII_Panel.h" />
     <ClInclude Include="CSVtoSQL_Panel.h" />

@@ -53,6 +53,8 @@ namespace mrt
 
 		void CheckMaxColumnWidths() noexcept;
 
+		void CheckXYLengths() noexcept;
+
 		size_t GetRowCount() const noexcept;
 
 		size_t GetColumnCount() const noexcept;

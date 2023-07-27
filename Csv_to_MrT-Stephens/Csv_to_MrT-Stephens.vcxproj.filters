@@ -48,7 +48,7 @@
     <ClInclude Include="Main.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="GlobalDefualts.h">
+    <ClInclude Include="UtilityItems.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="CSVtoMarkdown.h">

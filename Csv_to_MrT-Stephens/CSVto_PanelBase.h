@@ -9,11 +9,12 @@
 #include <mutex>
 #include <thread>
 #include <format>
+#include <codecvt>
 #include <iomanip>
 
 #include "CSVData.h"
 #include "MrT_wxDialogs.h"
-#include "GlobalDefualts.h"
+#include "UtilityItems.h"
 
 enum ListVeiwSortOrder
 {
@@ -69,3 +70,8 @@ public:
 	void PopulateData();
 	bool isThreadsRunning();
 };
+
+namespace mrt
+{
+	std::wstring StrToWstr(const std::string& str);
+}

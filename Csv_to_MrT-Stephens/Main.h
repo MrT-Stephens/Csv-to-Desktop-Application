@@ -3,7 +3,7 @@
 #include <wx/wx.h>
 #include <wx/notebook.h>
 
-#include "GlobalDefualts.h"
+#include "UtilityItems.h"
 #include "CSVtoSQL_Panel.h"
 #include "CSVtoASCII_Panel.h"
 #include "CSVtoMarkdown.h"

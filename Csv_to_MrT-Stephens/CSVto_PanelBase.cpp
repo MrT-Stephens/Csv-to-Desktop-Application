@@ -17,7 +17,7 @@ void CSVto_PanelBase::SetupDataInputSection()
 
 	m_LogoButton = new wxBitmapButton(this, wxID_ANY, wxBitmap(CSV_to_Logo).ConvertToImage().Rescale(50, 50, wxIMAGE_QUALITY_HIGH), wxDefaultPosition, wxDefaultSize);
 	m_LogoButton->SetMinSize({ 60, 60 });
-	m_LogoButton->SetBackgroundColour(m_Colours->BACKGROUND);
+	m_LogoButton->SetBackgroundColour(m_Colours->PRIMARY);
 
 	m_LogoButton->Bind(wxEVT_BUTTON, [this](wxCommandEvent& _evt)
 		{
@@ -91,7 +91,7 @@ void CSVto_PanelBase::SetupDataInputSection()
 	);
 
 	// Create the example file button and format it
-	m_ExampleData = new wxButton(this, wxID_ANY, "Example File", wxDefaultPosition, wxDefaultSize);
+	m_ExampleData = new wxButton(this, wxID_ANY, "Preview Data", wxDefaultPosition, wxDefaultSize);
 	m_ExampleData->SetMinSize({ 120, 25 });
 	m_ExampleData->SetOwnFont(MAIN_FONT_TEXT(10));
 	m_ExampleData->SetOwnBackgroundColour(m_Colours->PRIMARY);
@@ -108,7 +108,7 @@ void CSVto_PanelBase::SetupDataInputSection()
 				{ "James", "Fisher", "25", "M", "P002" },
 				{ "Matt", "Lewis", "18", "M", "P003" }, 
 				{ "Sarah", "Vills", "22", "F", "P004" }}, 
-				{"firstname", "lastname", "age", "gender", "personId" });
+				{"firstName", "lastName", "age", "gender", "personId" });
 
 			PopulateData();
 		}
@@ -152,6 +152,21 @@ void CSVto_PanelBase::SetupDataInputSection()
 			}
 		}
 	);
+
+	/*m_DataInputListView->Bind(wxEVT_LIST_ITEM_SELECTED, [this](wxListEvent& event)
+		{
+			long row = event.GetIndex();
+
+			mrt::MrT_DataEditDialog rowEditDialog(this, std::format("Row {}", row), m_Colours, m_CSVData->GetHeaderNames(), m_CSVData->GetRowData(row), { 400, 400 });
+
+			if (rowEditDialog.ShowModal() == wxID_APPLY)
+			{
+				PopulateData();
+			}
+
+			m_DataInputListView->SetItemState(row, 0, wxLIST_STATE_SELECTED);
+		}
+	);*/
 
 	// Add the list view to the horizontal sizer
 	m_DataListViewSizer->Add(m_DataInputListView, 1, wxALL | wxEXPAND, FromDIP(10));
@@ -291,7 +306,7 @@ void CSVto_PanelBase::SetupDataOutputSection()
 {
 	m_DataOutputSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	auto output_Text = new wxStaticText(this, wxID_ANY, "Data Output: ", wxDefaultPosition, wxDefaultSize);
+	auto output_Text = new wxStaticText(this, wxID_ANY, "Preview Output: ", wxDefaultPosition, wxDefaultSize);
 	output_Text->SetOwnForegroundColour(m_Colours->SECONDARY);
 	output_Text->SetOwnFont(MAIN_FONT_TEXT(13));
 
@@ -389,13 +404,12 @@ void CSVto_PanelBase::PopulateDataListView()
 	m_DataInputListView->InsertColumn(0, "Row Number", wxLIST_ALIGN_SNAP_TO_GRID, average_width);
 
 	{
-		std::string headerName;
+		std::wstring headerName;									// Using std::wstring to support the unicode arrows
 
 		for (size_t i = 0; (i < m_CSVData->GetColumnCount()); ++i)
-		{
+		{															// Adds an arrow to the header name if the column is the current sort column
 			headerName = (m_CurrentSortColumn == i) ?
-				headerName = std::format("{} {}", (m_CurrentSortOrder == ORDER_ASCENDING ? "A" : "D"), m_CSVData->GetHeaderNames()[i]) :
-				headerName = m_CSVData->GetHeaderNames()[i];
+				std::format(L"{} {}", (m_CurrentSortOrder == ORDER_ASCENDING ? L"\u2B9D" : L"\u2B9F"), mrt::StrToWstr(m_CSVData->GetHeaderNames()[i])) : mrt::StrToWstr(m_CSVData->GetHeaderNames()[i]);
 
 			m_DataInputListView->InsertColumn(i + 1, headerName, wxLIST_ALIGN_SNAP_TO_GRID, average_width);
 		}
@@ -452,4 +466,14 @@ bool CSVto_PanelBase::isThreadsRunning()
 	std::lock_guard<std::mutex> lock(m_OutputDataMutex);
 
 	return (m_ListViewThreadRunning || m_TextBoxThreadRunning) ? true : false;
+}
+
+std::wstring mrt::StrToWstr(const std::string& str)
+{
+	std::wstringstream wss;
+
+	wss.imbue(std::locale(""));
+	wss << str.c_str();
+
+	return wss.str();
 }

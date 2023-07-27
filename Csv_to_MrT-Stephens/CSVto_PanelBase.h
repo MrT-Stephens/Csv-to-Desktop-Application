@@ -43,8 +43,9 @@ protected:
 	wxListView* m_DataInputListView;
 
 	// Output Settings Section
-	wxBoxSizer* m_OutputSettingsSizer1, * m_OutputSettingsSizer2;
-	wxButton* m_LowercaseBtn, * m_UppercaseBtn, * m_CapitalizeBtn, * m_ClearBtn, * m_TransposeBtn, * m_DeleteBlanksBtn;
+	wxBoxSizer* m_OutputSettingsSizer1, * m_OutputSettingsSizer2, * m_OutputHeadingSizer;
+	wxCheckBox* m_IncludeHeaderCheckBox;
+	wxButton* m_LowercaseBtn, * m_UppercaseBtn, * m_CapitalizeBtn, * m_ClearBtn, * m_TransposeBtn, * m_DeleteBlanksBtn, * m_UndoBtn, * m_RedoBtn;
 
 	// Thread Items
 	std::mutex m_OutputDataMutex;

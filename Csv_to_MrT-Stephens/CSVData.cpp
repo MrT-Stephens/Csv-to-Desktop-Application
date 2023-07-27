@@ -185,9 +185,21 @@ unsigned int mrt::CSVData::GetMaxColumnWidth(size_t index) const noexcept
 	return m_MaxColumnWidths[index];
 }
 
-void mrt::CSVData::LowerUpperData(bool lower) noexcept
+void mrt::CSVData::LowerUpperData(bool includeHeader, bool lower) noexcept
 {
 	std::locale loc("");
+
+	if (includeHeader)
+	{
+		for (auto& rowVal : m_HeaderNames)
+		{
+			std::transform(rowVal.begin(), rowVal.end(), rowVal.begin(), [&lower, &loc](auto c)->char
+				{
+					return (lower) ? std::tolower(c, loc) : std::toupper(c, loc);
+				}
+			);
+		}
+	}
 
 	for (auto& row : m_Data)
 	{
@@ -202,9 +214,17 @@ void mrt::CSVData::LowerUpperData(bool lower) noexcept
 	}
 }
 
-void mrt::CSVData::CapitalizeData() noexcept
+void mrt::CSVData::CapitalizeData(bool includeHeader) noexcept
 {
 	std::locale loc("");
+
+	if (includeHeader)
+	{
+		for (auto& rowVal : m_HeaderNames)
+		{
+			rowVal[0] = std::toupper(rowVal[0], loc);
+		}
+	}
 
 	for (auto& row : m_Data)
 	{
@@ -215,9 +235,17 @@ void mrt::CSVData::CapitalizeData() noexcept
 	}
 }
 
-void mrt::CSVData::RemoveWhiteSpace() noexcept
+void mrt::CSVData::RemoveWhiteSpace(bool includeHeader) noexcept
 {
 	std::locale loc("");
+
+	if (includeHeader)
+	{
+		for (auto& rowVal : m_HeaderNames)
+		{
+			rowVal.erase(std::remove_if(rowVal.begin(), rowVal.end(), [&loc](auto c)->bool { return (std::isspace(c, loc)) ? true : false;  }), rowVal.end());
+		}
+	}
 
 	for (auto& row : m_Data)
 	{
@@ -282,3 +310,115 @@ mrt::CSVData_Error mrt::CSVData::GetError() const noexcept
 {
 	return m_Error;
 }
+
+//void mrt::CSVData::Undo() noexcept
+//{
+//	if (m_UndoIndex > 0)
+//	{
+//		m_Data = m_UndoData[m_UndoIndex - 1];
+//		m_HeaderNames = m_UndoHeaderNames[m_UndoIndex - 1];
+//
+//		if (m_RedoIndex < m_RedoData.size())
+//		{
+//			m_RedoData[m_RedoIndex].swap(m_UndoData[m_UndoIndex]);
+//			m_RedoHeaderNames[m_RedoIndex].swap(m_UndoHeaderNames[m_UndoIndex]);
+//			++m_RedoIndex;
+//		}
+//		else
+//		{
+//			m_RedoIndex = m_RedoData.size() - 1;
+//
+//			std::rotate(m_RedoData.begin(), m_RedoData.begin() + 1, m_RedoData.end());
+//			std::rotate(m_RedoData.begin(), m_RedoData.begin() + 3, m_RedoData.end());
+//
+//			std::rotate(m_RedoHeaderNames.begin(), m_RedoHeaderNames.begin() + 1, m_RedoHeaderNames.end());
+//			std::rotate(m_RedoHeaderNames.begin(), m_RedoHeaderNames.begin() + 3, m_RedoHeaderNames.end());
+//
+//			m_RedoData[m_RedoIndex].swap(m_UndoData[m_UndoIndex]);
+//			m_RedoHeaderNames[m_RedoIndex].swap(m_UndoHeaderNames[m_UndoIndex]);
+//
+//			++m_RedoIndex;
+//		}
+//
+//		--m_UndoIndex;
+//	}
+//}
+//
+//void mrt::CSVData::Redo() noexcept
+//{
+//	if (m_RedoIndex > 0)
+//	{
+//		m_Data = m_RedoData[m_RedoIndex - 1];
+//		m_HeaderNames = m_RedoHeaderNames[m_RedoIndex - 1];
+//
+//		if (m_UndoIndex < m_UndoData.size())
+//		{
+//			m_UndoData[m_UndoIndex].swap(m_RedoData[m_RedoIndex]);
+//			m_UndoHeaderNames[m_UndoIndex].swap(m_RedoHeaderNames[m_RedoIndex]);
+//			++m_UndoIndex;
+//		}
+//		else
+//		{
+//			m_UndoIndex = m_UndoData.size() - 1;
+//
+//			std::rotate(m_UndoData.begin(), m_UndoData.begin() + 1, m_UndoData.end());
+//			std::rotate(m_UndoData.begin(), m_UndoData.begin() + 3, m_UndoData.end());
+//
+//			std::rotate(m_UndoHeaderNames.begin(), m_UndoHeaderNames.begin() + 1, m_UndoHeaderNames.end());
+//			std::rotate(m_UndoHeaderNames.begin(), m_UndoHeaderNames.begin() + 3, m_UndoHeaderNames.end());
+//
+//			m_UndoData[m_UndoIndex].swap(m_RedoData[m_RedoIndex]);
+//			m_UndoHeaderNames[m_UndoIndex].swap(m_RedoHeaderNames[m_RedoIndex]);
+//
+//			++m_UndoIndex;
+//		}
+//
+//		--m_RedoIndex;
+//	}
+//}
+//
+//void mrt::CSVData::CreateUndo() noexcept
+//{
+//	if (m_UndoIndex < m_UndoData.size())
+//	{
+//		m_UndoData[m_UndoIndex] = m_Data;
+//		m_UndoHeaderNames[m_UndoIndex] = m_HeaderNames;
+//		++m_UndoIndex;
+//	}
+//	else
+//	{
+//		m_UndoIndex = m_UndoData.size() - 1;
+//
+//		std::rotate(m_UndoData.begin(), m_UndoData.begin() + 1, m_UndoData.end());
+//		std::rotate(m_UndoData.begin(), m_UndoData.begin() + 3, m_UndoData.end());
+//
+//		std::rotate(m_UndoHeaderNames.begin(), m_UndoHeaderNames.begin() + 1, m_UndoHeaderNames.end());
+//		std::rotate(m_UndoHeaderNames.begin(), m_UndoHeaderNames.begin() + 3, m_UndoHeaderNames.end());
+//
+//		m_UndoData[m_UndoIndex] = m_Data;
+//		m_UndoHeaderNames[m_UndoIndex] = m_HeaderNames;
+//
+//		++m_UndoIndex;
+//	}
+//}
+//
+//void mrt::CSVData::ClearUndoRedo() noexcept
+//{
+//	for (size_t i = 0; i < m_UndoData.size(); ++i)
+//	{
+//		m_UndoData[i].clear();
+//		std::vector<std::vector<std::string>>().swap(m_UndoData[i]);
+//
+//		m_RedoData[i].clear();
+//		std::vector<std::vector<std::string>>().swap(m_RedoData[i]);
+//
+//		m_UndoHeaderNames[i].clear();
+//		std::vector<std::string>().swap(m_UndoHeaderNames[i]);
+//
+//		m_RedoHeaderNames[i].clear();
+//		std::vector<std::string>().swap(m_RedoHeaderNames[i]);
+//	}
+//
+//	m_UndoIndex = 0;
+//	m_RedoIndex = 0;
+//}

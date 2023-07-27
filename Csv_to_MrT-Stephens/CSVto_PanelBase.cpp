@@ -176,14 +176,28 @@ void CSVto_PanelBase::SetupDataInputSection()
 
 void CSVto_PanelBase::SetupOutputSettingsSection()
 {
+	m_OutputHeadingSizer = new wxBoxSizer(wxHORIZONTAL);
 	m_OutputSettingsSizer1 = new wxBoxSizer(wxHORIZONTAL);
 	m_OutputSettingsSizer2 = new wxBoxSizer(wxHORIZONTAL);
 
-	auto editor_Text = new wxStaticText(this, wxID_ANY, "Output Settings: ", wxDefaultPosition, wxDefaultSize);
+	auto editor_Text = new wxStaticText(this, wxID_ANY, "Output Editor: ", wxDefaultPosition, wxDefaultSize);
 	editor_Text->SetOwnForegroundColour(m_Colours->SECONDARY);
 	editor_Text->SetOwnFont(MAIN_FONT_TEXT(13));
 
-	m_MainSizer->Add(editor_Text, 0, wxLEFT | wxRIGHT | wxTOP, FromDIP(10));
+	m_OutputHeadingSizer->Add(editor_Text, 0, wxLEFT | wxRIGHT | wxTOP, FromDIP(10));
+
+	m_IncludeHeaderCheckBox = new wxCheckBox(this, wxID_ANY, "Include Header", wxDefaultPosition, wxDefaultSize);
+	m_IncludeHeaderCheckBox->SetMinSize({ 120, 30 });
+	m_IncludeHeaderCheckBox->SetOwnFont(MAIN_FONT_TEXT(11));
+	m_IncludeHeaderCheckBox->SetOwnBackgroundColour(m_Colours->BACKGROUND);
+	m_IncludeHeaderCheckBox->SetOwnForegroundColour(m_Colours->FOREGROUND);
+	m_IncludeHeaderCheckBox->SetToolTip("Include table header in editor changes.");
+
+	m_OutputHeadingSizer->AddStretchSpacer(1);
+
+	m_OutputHeadingSizer->Add(m_IncludeHeaderCheckBox, 0, wxLEFT | wxRIGHT | wxTOP, FromDIP(10));
+
+	m_MainSizer->Add(m_OutputHeadingSizer, 0, wxEXPAND | wxALL, FromDIP(0));
 
 	m_ClearBtn = new wxButton(this, wxID_ANY, "Clear Data", wxDefaultPosition, wxDefaultSize);
 	m_ClearBtn->SetMinSize({ 120, 30 });
@@ -214,7 +228,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 		{
 			if (!m_OutputDataTextBox->IsEmpty())
 			{
-				m_CSVData->LowerUpperData();
+				m_CSVData->LowerUpperData(m_IncludeHeaderCheckBox->GetValue(), true);
 				PopulateData();
 			}
 		}
@@ -233,13 +247,31 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 		{
 			if (!m_OutputDataTextBox->IsEmpty())
 			{
-				m_CSVData->LowerUpperData(false);
+				m_CSVData->LowerUpperData(m_IncludeHeaderCheckBox->GetValue(), false);
 				PopulateData();
 			}
 		}
 	);
 
 	m_OutputSettingsSizer1->Add(m_UppercaseBtn, 1, wxRIGHT | wxLEFT | wxTOP | wxEXPAND | wxCENTER, FromDIP(10));
+
+	m_UndoBtn = new wxButton(this, wxID_ANY, "Undo", wxDefaultPosition, wxDefaultSize);
+	m_UndoBtn->SetMinSize({ 120, 30 });
+	m_UndoBtn->SetOwnFont(MAIN_FONT_TEXT(10));
+	m_UndoBtn->SetOwnBackgroundColour(m_Colours->PRIMARY);
+	m_UndoBtn->SetOwnForegroundColour(m_Colours->FOREGROUND);
+	m_UndoBtn->SetToolTip("Undo the last change");
+
+	m_UndoBtn->Bind(wxEVT_BUTTON, [this](wxCommandEvent& event)
+		{
+			if (!m_OutputDataTextBox->IsEmpty())
+			{
+				PopulateData();
+			}
+		}
+	);
+
+	m_OutputSettingsSizer1->Add(m_UndoBtn, 1, wxRIGHT | wxLEFT | wxTOP | wxEXPAND | wxCENTER, FromDIP(10));
 
 	m_CapitalizeBtn = new wxButton(this, wxID_ANY, "Capitalize", wxDefaultPosition, wxDefaultSize);
 	m_CapitalizeBtn->SetMinSize({ 120, 30 });
@@ -252,7 +284,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 		{
 			if (!m_OutputDataTextBox->IsEmpty())
 			{
-				m_CSVData->CapitalizeData();
+				m_CSVData->CapitalizeData(m_IncludeHeaderCheckBox->GetValue());
 				PopulateData();
 			}
 		}
@@ -290,13 +322,31 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 		{
 			if (!m_OutputDataTextBox->IsEmpty())
 			{
-				m_CSVData->RemoveWhiteSpace();
+				m_CSVData->RemoveWhiteSpace(m_IncludeHeaderCheckBox->GetValue());
 				PopulateData();
 			}
 		}
 	);
 
 	m_OutputSettingsSizer2->Add(m_DeleteBlanksBtn, 1, wxRIGHT | wxLEFT | wxEXPAND | wxCENTER, FromDIP(10));
+
+	m_RedoBtn = new wxButton(this, wxID_ANY, "Redo", wxDefaultPosition, wxDefaultSize);
+	m_RedoBtn->SetMinSize({ 120, 30 });
+	m_RedoBtn->SetOwnFont(MAIN_FONT_TEXT(10));
+	m_RedoBtn->SetOwnBackgroundColour(m_Colours->PRIMARY);
+	m_RedoBtn->SetOwnForegroundColour(m_Colours->FOREGROUND);
+	m_RedoBtn->SetToolTip("Redo the last change");
+
+	m_RedoBtn->Bind(wxEVT_BUTTON, [this](wxCommandEvent& event)
+		{
+			if (!m_OutputDataTextBox->IsEmpty())
+			{
+				PopulateData();
+			}
+		}
+	);
+
+	m_OutputSettingsSizer2->Add(m_RedoBtn, 1, wxRIGHT | wxLEFT | wxEXPAND | wxCENTER, FromDIP(10));
 
 	m_MainSizer->Add(m_OutputSettingsSizer1, 0, wxEXPAND | wxALL, FromDIP(0));
 	m_MainSizer->Add(m_OutputSettingsSizer2, 0, wxEXPAND | wxALL, FromDIP(0));

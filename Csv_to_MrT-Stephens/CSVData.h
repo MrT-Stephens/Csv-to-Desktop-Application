@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <numeric>
 #include <locale>
+#include <array>
 
 namespace mrt
 {
@@ -21,11 +22,21 @@ namespace mrt
 	class CSVData
 	{
 	private:
+		// Main Items
 		std::vector<std::string> m_HeaderNames;
 		std::vector<std::vector<std::string>> m_Data;
 		std::vector<unsigned int> m_MaxColumnWidths;
 
 		CSVData_Error m_Error = CSVData_Error::NONE;
+
+		// Undo, Redo Items
+		size_t m_UndoIndex = 0, m_RedoIndex = 0;
+
+		std::array<std::vector<std::vector<std::string>>, 5> m_UndoData;
+		std::array<std::vector<std::vector<std::string>>, 5> m_RedoData;
+
+		std::array<std::vector<std::string>, 5> m_UndoHeaderNames;
+		std::array<std::vector<std::string>, 5> m_RedoHeaderNames;
 	public:
 		CSVData() = default;
 		CSVData(const std::string& filePath, bool onlyAsciiCharacters = false);
@@ -43,11 +54,11 @@ namespace mrt
 
 		void SortByColumn(size_t index, bool asendingOrder) noexcept;
 
-		void LowerUpperData(bool lower = true) noexcept;
+		void LowerUpperData(bool includeHeader, bool lower = true) noexcept;
 
-		void CapitalizeData() noexcept;
+		void CapitalizeData(bool includeHeader) noexcept;
 
-		void RemoveWhiteSpace() noexcept;
+		void RemoveWhiteSpace(bool includeHeader) noexcept;
 
 		void TransposeData() noexcept;
 
@@ -70,5 +81,12 @@ namespace mrt
 
 		std::vector<std::vector<std::string>>& GetTableData() noexcept;
 		const std::vector<std::vector<std::string>>& GetTableData() const noexcept;
+
+		/*void Undo() noexcept;
+		void Redo() noexcept;
+
+		void CreateUndo() noexcept;
+
+		void ClearUndoRedo() noexcept;*/
 	};
 }

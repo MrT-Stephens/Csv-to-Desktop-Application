@@ -2,9 +2,9 @@
 
 bool MrT_App::OnInit()
 {
-    Main_Frame* mainFrame = new Main_Frame(mrtApp::APP_TITLE, wxDefaultPosition, { 575, 750 }, wxDEFAULT_FRAME_STYLE);
+    Main_Frame* mainFrame = new Main_Frame(mrtApp::APP_TITLE, wxDefaultPosition, { 700, 800 }, wxDEFAULT_FRAME_STYLE);
 
-    mainFrame->SetMinSize({ 575, 750 });
+    mainFrame->SetMinSize({ 700, 800 });
     mainFrame->SetIcon(CSV_to_Logo);
     mainFrame->Show(true);
 

@@ -104,8 +104,8 @@ void CSVto_PanelBase::SetupDataInputSection()
 			m_CurrentSortColumn = -1;
 			delete (this->m_CSVData);
 			m_CSVData = new mrt::CSVData({
-				{ "John", "James", "39", "M", "P001" },
-				{ "James", "Fisher", "25", "M", "P002" },
+				{ "Matthew", "Mann", "21", "M", "P001" },
+				{ "James", "Williams", "27", "M", "P002" },
 				{ "Matt", "Lewis", "18", "M", "P003" }, 
 				{ "Sarah", "Vills", "22", "F", "P004" }}, 
 				{"firstName", "lastName", "age", "gender", "personId" });
@@ -186,92 +186,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 
 	m_OutputHeadingSizer->Add(editor_Text, 0, wxLEFT | wxRIGHT | wxTOP, FromDIP(10));
 
-	m_IncludeHeaderCheckBox = new wxCheckBox(this, wxID_ANY, "Include Header", wxDefaultPosition, wxDefaultSize);
-	m_IncludeHeaderCheckBox->SetMinSize({ 120, 30 });
-	m_IncludeHeaderCheckBox->SetOwnFont(MAIN_FONT_TEXT(11));
-	m_IncludeHeaderCheckBox->SetOwnBackgroundColour(m_Colours->BACKGROUND);
-	m_IncludeHeaderCheckBox->SetOwnForegroundColour(m_Colours->FOREGROUND);
-	m_IncludeHeaderCheckBox->SetToolTip("Include table header in editor changes.");
-
-	m_OutputHeadingSizer->AddStretchSpacer(1);
-
-	m_OutputHeadingSizer->Add(m_IncludeHeaderCheckBox, 0, wxLEFT | wxRIGHT | wxTOP, FromDIP(10));
-
 	m_MainSizer->Add(m_OutputHeadingSizer, 0, wxEXPAND | wxALL, FromDIP(0));
-
-	m_ClearBtn = new wxButton(this, wxID_ANY, "Clear Data", wxDefaultPosition, wxDefaultSize);
-	m_ClearBtn->SetMinSize({ 120, 30 });
-	m_ClearBtn->SetOwnFont(MAIN_FONT_TEXT(10));
-	m_ClearBtn->SetOwnBackgroundColour(m_Colours->PRIMARY);
-	m_ClearBtn->SetOwnForegroundColour(m_Colours->FOREGROUND);
-	m_ClearBtn->SetToolTip("Clear the data from the application");
-
-	m_ClearBtn->Bind(wxEVT_BUTTON, [this](wxCommandEvent& event)
-		{
-			m_OutputDataTextBox->Clear();
-			m_DataInputListView->ClearAll();
-			delete (m_CSVData);
-			m_CSVData = nullptr;
-		}
-	);
-
-	m_OutputSettingsSizer1->Add(m_ClearBtn, 1, wxRIGHT | wxLEFT | wxTOP | wxEXPAND | wxCENTER, FromDIP(10));
-
-	m_LowercaseBtn = new wxButton(this, wxID_ANY, "Lowercase", wxDefaultPosition, wxDefaultSize);
-	m_LowercaseBtn->SetMinSize({ 120, 30 });
-	m_LowercaseBtn->SetOwnFont(MAIN_FONT_TEXT(10));
-	m_LowercaseBtn->SetOwnBackgroundColour(m_Colours->PRIMARY);
-	m_LowercaseBtn->SetOwnForegroundColour(m_Colours->FOREGROUND);
-	m_LowercaseBtn->SetToolTip("Convert all data to lowercase");
-
-	m_LowercaseBtn->Bind(wxEVT_BUTTON, [this](wxCommandEvent& event)
-		{
-			if (!m_OutputDataTextBox->IsEmpty())
-			{
-				m_CSVData->LowerUpperData(m_IncludeHeaderCheckBox->GetValue(), true);
-				PopulateData();
-			}
-		}
-	);
-
-	m_OutputSettingsSizer1->Add(m_LowercaseBtn, 1, wxRIGHT | wxLEFT | wxTOP | wxEXPAND | wxCENTER, FromDIP(10));
-
-	m_UppercaseBtn = new wxButton(this, wxID_ANY, "Uppercase", wxDefaultPosition, wxDefaultSize);
-	m_UppercaseBtn->SetMinSize({ 120, 30 });
-	m_UppercaseBtn->SetOwnFont(MAIN_FONT_TEXT(10));
-	m_UppercaseBtn->SetOwnBackgroundColour(m_Colours->PRIMARY);
-	m_UppercaseBtn->SetOwnForegroundColour(m_Colours->FOREGROUND);
-	m_UppercaseBtn->SetToolTip("Convert all data to uppercase");
-
-	m_UppercaseBtn->Bind(wxEVT_BUTTON, [this](wxCommandEvent& event)
-		{
-			if (!m_OutputDataTextBox->IsEmpty())
-			{
-				m_CSVData->LowerUpperData(m_IncludeHeaderCheckBox->GetValue(), false);
-				PopulateData();
-			}
-		}
-	);
-
-	m_OutputSettingsSizer1->Add(m_UppercaseBtn, 1, wxRIGHT | wxLEFT | wxTOP | wxEXPAND | wxCENTER, FromDIP(10));
-
-	m_UndoBtn = new wxButton(this, wxID_ANY, "Undo", wxDefaultPosition, wxDefaultSize);
-	m_UndoBtn->SetMinSize({ 120, 30 });
-	m_UndoBtn->SetOwnFont(MAIN_FONT_TEXT(10));
-	m_UndoBtn->SetOwnBackgroundColour(m_Colours->PRIMARY);
-	m_UndoBtn->SetOwnForegroundColour(m_Colours->FOREGROUND);
-	m_UndoBtn->SetToolTip("Undo the last change");
-
-	m_UndoBtn->Bind(wxEVT_BUTTON, [this](wxCommandEvent& event)
-		{
-			if (!m_OutputDataTextBox->IsEmpty())
-			{
-				PopulateData();
-			}
-		}
-	);
-
-	m_OutputSettingsSizer1->Add(m_UndoBtn, 1, wxRIGHT | wxLEFT | wxTOP | wxEXPAND | wxCENTER, FromDIP(10));
 
 	m_CapitalizeBtn = new wxButton(this, wxID_ANY, "Capitalize", wxDefaultPosition, wxDefaultSize);
 	m_CapitalizeBtn->SetMinSize({ 120, 30 });
@@ -284,13 +199,82 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 		{
 			if (!m_OutputDataTextBox->IsEmpty())
 			{
+				m_CSVData->CreateUndo();
 				m_CSVData->CapitalizeData(m_IncludeHeaderCheckBox->GetValue());
 				PopulateData();
 			}
 		}
 	);
 
-	m_OutputSettingsSizer2->Add(m_CapitalizeBtn, 1, wxRIGHT | wxLEFT | wxEXPAND | wxCENTER, FromDIP(10));
+	m_OutputSettingsSizer1->Add(m_CapitalizeBtn, 1, wxALL | wxEXPAND | wxCENTER, FromDIP(10));
+
+	m_LowercaseBtn = new wxButton(this, wxID_ANY, "Lowercase", wxDefaultPosition, wxDefaultSize);
+	m_LowercaseBtn->SetMinSize({ 120, 30 });
+	m_LowercaseBtn->SetOwnFont(MAIN_FONT_TEXT(10));
+	m_LowercaseBtn->SetOwnBackgroundColour(m_Colours->PRIMARY);
+	m_LowercaseBtn->SetOwnForegroundColour(m_Colours->FOREGROUND);
+	m_LowercaseBtn->SetToolTip("Convert all data to lowercase");
+
+	m_LowercaseBtn->Bind(wxEVT_BUTTON, [this](wxCommandEvent& event)
+		{
+			if (!m_OutputDataTextBox->IsEmpty())
+			{
+				m_CSVData->CreateUndo();
+				m_CSVData->LowerUpperData(m_IncludeHeaderCheckBox->GetValue(), true);
+				PopulateData();
+			}
+		}
+	);
+
+	m_OutputSettingsSizer1->Add(m_LowercaseBtn, 1, wxALL | wxEXPAND | wxCENTER, FromDIP(10));
+
+	m_UppercaseBtn = new wxButton(this, wxID_ANY, "Uppercase", wxDefaultPosition, wxDefaultSize);
+	m_UppercaseBtn->SetMinSize({ 120, 30 });
+	m_UppercaseBtn->SetOwnFont(MAIN_FONT_TEXT(10));
+	m_UppercaseBtn->SetOwnBackgroundColour(m_Colours->PRIMARY);
+	m_UppercaseBtn->SetOwnForegroundColour(m_Colours->FOREGROUND);
+	m_UppercaseBtn->SetToolTip("Convert all data to uppercase");
+
+	m_UppercaseBtn->Bind(wxEVT_BUTTON, [this](wxCommandEvent& event)
+		{
+			if (!m_OutputDataTextBox->IsEmpty())
+			{
+				m_CSVData->CreateUndo();
+				m_CSVData->LowerUpperData(m_IncludeHeaderCheckBox->GetValue(), false);
+				PopulateData();
+			}
+		}
+	);
+
+	m_OutputSettingsSizer1->Add(m_UppercaseBtn, 1, wxALL | wxEXPAND | wxCENTER, FromDIP(10));
+
+	m_UndoBtn = new wxButton(this, wxID_ANY, "Undo", wxDefaultPosition, wxDefaultSize);
+	m_UndoBtn->SetMinSize({ 120, 30 });
+	m_UndoBtn->SetOwnFont(MAIN_FONT_TEXT(10));
+	m_UndoBtn->SetOwnBackgroundColour(m_Colours->PRIMARY);
+	m_UndoBtn->SetOwnForegroundColour(m_Colours->FOREGROUND);
+	m_UndoBtn->SetToolTip("Undo the last change");
+
+	m_UndoBtn->Bind(wxEVT_BUTTON, [this](wxCommandEvent& event)
+		{
+			if (!m_OutputDataTextBox->IsEmpty())
+			{
+				m_CSVData->Undo();
+				PopulateData();
+			}
+		}
+	);
+
+	m_OutputSettingsSizer1->Add(m_UndoBtn, 1, wxALL | wxEXPAND | wxCENTER, FromDIP(10));
+
+	m_IncludeHeaderCheckBox = new wxCheckBox(this, wxID_ANY, "Include Header", wxDefaultPosition, wxDefaultSize);
+	m_IncludeHeaderCheckBox->SetMinSize({ 120, 30 });
+	m_IncludeHeaderCheckBox->SetOwnFont(MAIN_FONT_TEXT(11));
+	m_IncludeHeaderCheckBox->SetOwnBackgroundColour(m_Colours->BACKGROUND);
+	m_IncludeHeaderCheckBox->SetOwnForegroundColour(m_Colours->FOREGROUND);
+	m_IncludeHeaderCheckBox->SetToolTip("Include table header in editor changes.");
+
+	m_OutputSettingsSizer2->Add(m_IncludeHeaderCheckBox, 1, wxRIGHT | wxLEFT | wxEXPAND | wxCENTER, FromDIP(10));
 
 	m_TransposeBtn = new wxButton(this, wxID_ANY, "Transpose", wxDefaultPosition, wxDefaultSize);
 	m_TransposeBtn->SetMinSize({ 120, 30 });
@@ -303,6 +287,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 		{
 			if (!m_OutputDataTextBox->IsEmpty())
 			{
+				m_CSVData->CreateUndo();
 				m_CSVData->TransposeData();
 				PopulateData();
 			}
@@ -322,6 +307,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 		{
 			if (!m_OutputDataTextBox->IsEmpty())
 			{
+				m_CSVData->CreateUndo();
 				m_CSVData->RemoveWhiteSpace(m_IncludeHeaderCheckBox->GetValue());
 				PopulateData();
 			}
@@ -341,6 +327,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 		{
 			if (!m_OutputDataTextBox->IsEmpty())
 			{
+				m_CSVData->Redo();
 				PopulateData();
 			}
 		}
@@ -372,6 +359,24 @@ void CSVto_PanelBase::SetupDataOutputSection()
 	m_MainSizer->Add(m_DataOutputSizer, 1, wxEXPAND | wxALL, FromDIP(0));
 
 	m_DataOutputBtnSizer = new wxBoxSizer(wxHORIZONTAL);
+
+	m_ClearBtn = new wxButton(this, wxID_ANY, "Clear Data", wxDefaultPosition, wxDefaultSize);
+	m_ClearBtn->SetMinSize({ 120, 30 });
+	m_ClearBtn->SetOwnFont(MAIN_FONT_TEXT(10));
+	m_ClearBtn->SetOwnBackgroundColour(m_Colours->PRIMARY);
+	m_ClearBtn->SetOwnForegroundColour(m_Colours->FOREGROUND);
+	m_ClearBtn->SetToolTip("Clear the data from the application");
+
+	m_ClearBtn->Bind(wxEVT_BUTTON, [this](wxCommandEvent& event)
+		{
+			m_OutputDataTextBox->Clear();
+			m_DataInputListView->ClearAll();
+			delete (m_CSVData);
+			m_CSVData = nullptr;
+		}
+	);
+
+	m_DataOutputBtnSizer->Add(m_ClearBtn, 1, wxALL | wxEXPAND | wxCENTER, FromDIP(10));
 
 	m_CopyDataBtn = new wxButton(this, wxID_ANY, "Copy", wxDefaultPosition, wxDefaultSize);
 	m_CopyDataBtn->SetMinSize({ 120, 30 });

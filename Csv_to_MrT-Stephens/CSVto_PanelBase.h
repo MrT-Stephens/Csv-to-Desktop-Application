@@ -13,6 +13,7 @@
 #include <iomanip>
 
 #include "CSVData.h"
+#include "UndoRedo.h"
 #include "MrT_wxDialogs.h"
 #include "UtilityItems.h"
 
@@ -45,7 +46,7 @@ protected:
 	// Output Settings Section
 	wxBoxSizer* m_OutputSettingsSizer1, * m_OutputSettingsSizer2, * m_OutputHeadingSizer;
 	wxCheckBox* m_IncludeHeaderCheckBox;
-	wxButton* m_LowercaseBtn, * m_UppercaseBtn, * m_CapitalizeBtn, * m_ClearBtn, * m_TransposeBtn, * m_DeleteBlanksBtn, * m_UndoBtn, * m_RedoBtn;
+	wxButton* m_LowercaseBtn, * m_UppercaseBtn, * m_CapitalizeBtn, * m_TransposeBtn, * m_DeleteBlanksBtn, * m_UndoBtn, * m_RedoBtn;
 
 	// Thread Items
 	std::mutex m_OutputDataMutex;
@@ -54,7 +55,7 @@ protected:
 	// Data Output Section
 	wxBoxSizer* m_DataOutputSizer, * m_DataOutputBtnSizer;
 	wxTextCtrl* m_OutputDataTextBox;
-	wxButton* m_DownloadBtn, * m_CopyDataBtn;
+	wxButton* m_DownloadBtn, * m_CopyDataBtn, * m_ClearBtn;
 public:
 	CSVto_PanelBase(wxWindow* _parent, const std::string& _name, const mrtApp::AppColours* _colours);
 

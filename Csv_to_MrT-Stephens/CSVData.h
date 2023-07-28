@@ -29,18 +29,26 @@ namespace mrt
 
 		CSVData_Error m_Error = CSVData_Error::NONE;
 
-		// Undo, Redo Items
+		// Undo/ Redo Items
+		static const size_t m_MaxUndoRedo = 5;
+
+		std::array<std::vector<std::vector<std::string>>, m_MaxUndoRedo> m_UndoData;
+		std::array<std::vector<std::vector<std::string>>, m_MaxUndoRedo> m_RedoData;
+
+		std::array<std::vector<std::string>, m_MaxUndoRedo> m_UndoHeaderNames;
+		std::array<std::vector<std::string>, m_MaxUndoRedo> m_RedoHeaderNames;
+
 		size_t m_UndoIndex = 0, m_RedoIndex = 0;
-
-		std::array<std::vector<std::vector<std::string>>, 5> m_UndoData;
-		std::array<std::vector<std::vector<std::string>>, 5> m_RedoData;
-
-		std::array<std::vector<std::string>, 5> m_UndoHeaderNames;
-		std::array<std::vector<std::string>, 5> m_RedoHeaderNames;
 	public:
-		CSVData() = default;
+		// Default Constructors
 		CSVData(const std::string& filePath, bool onlyAsciiCharacters = false);
 		CSVData(std::vector<std::vector<std::string>>&& data = {}, std::vector<std::string>&& headerNames = {});
+
+		// Copy Constructors
+		CSVData(const CSVData& other) = delete;
+		CSVData(CSVData&& other) noexcept = delete;
+		CSVData& operator=(const CSVData& other) = delete;
+
 		~CSVData();
 
 		CSVData_Error LoadCsv(const std::string& fileDir, bool onlyAsciiCharacters) noexcept;
@@ -82,11 +90,12 @@ namespace mrt
 		std::vector<std::vector<std::string>>& GetTableData() noexcept;
 		const std::vector<std::vector<std::string>>& GetTableData() const noexcept;
 
-		/*void Undo() noexcept;
+		void Undo() noexcept;
+
 		void Redo() noexcept;
 
 		void CreateUndo() noexcept;
 
-		void ClearUndoRedo() noexcept;*/
+		void ClearUndoRedo() noexcept;
 	};
 }

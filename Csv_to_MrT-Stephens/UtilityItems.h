@@ -13,7 +13,7 @@
 namespace mrtApp
 {
 	const std::string APP_NAME = "CSV to...";
-	const std::string APP_VERSION = "v0.1.0";
+	const std::string APP_VERSION = "v0.1.1";
 
 	const std::string APP_TITLE = APP_NAME + " " + APP_VERSION;
 

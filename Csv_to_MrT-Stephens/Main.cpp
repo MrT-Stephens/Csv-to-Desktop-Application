@@ -57,9 +57,5 @@ Main_Frame::~Main_Frame()
 
 wxIMPLEMENT_APP(MrT_App);          
 
-// Change the from assending to decending when sorting via clicking on cloumn. Icon on bar (arrow).
 // Hovering over buttons, change the colour of the text.
-// Figure out the i >> (upside down ?).
-// Change example data to preview data, and preview output.
 // Flickering on the open file button.
-// Same ammount of columns in each row fix.

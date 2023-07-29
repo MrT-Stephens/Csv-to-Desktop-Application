@@ -149,17 +149,17 @@ void CSVtoSQL_Panel::PopulateOutputDataTextBox()
 				firstLoopCheck1 = false;
 				insertIntoCodeSS << "INSERT INTO " << GenerateQuoteString(m_TableNameInput->GetValue().ToStdString()) << " (";
 
-				for (const std::string& name : headerNames)
+				for (size_t i = 0; i < m_CSVData->GetColumnCount(); ++i)
 				{
-					insertIntoCodeSS << GenerateQuoteString(name) << ((name == headerNames.back()) ? ")" : ", ");
+					insertIntoCodeSS << GenerateQuoteString(headerNames[i]) << ((i == m_CSVData->GetColumnCount() - 1) ? ")" : ", ");
 				}
 			}
 
 			std::vector<std::string> rowData{m_CSVData->GetRowData(i0)};	// Get the row data ready for concatenation.
 
-			for (const std::string& rowValue : rowData)						// Generate the second part of the code. E.g. VALUES ('value1', 'value2', 'value3', ...)
+			for (size_t i = 0; i < m_CSVData->GetColumnCount(); ++i)		// Generate the second part of the code. E.g. VALUES ('value1', 'value2', 'value3', ...)
 			{
-				rowDataConcatenation << '\'' << rowValue << '\'' << ((rowValue == rowData.back()) ? ")" : ", ");
+				rowDataConcatenation << '\'' << rowData[i] << '\'' << ((i == m_CSVData->GetColumnCount() - 1) ? ")" : ", ");
 			}
 
 			if (firstLoopCheck2 || !m_InsertMultiRows->GetValue())			// If the user wants to insert multiple rows at once, then we don't need to generate this part of the code every time.

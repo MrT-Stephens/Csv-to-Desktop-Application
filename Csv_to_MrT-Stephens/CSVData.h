@@ -19,6 +19,14 @@ namespace mrt
 		FAILED_TO_WRITE_FILE = 3
 	};
 
+	enum class CSVData_UndoRedoState
+	{
+		CANT_UNDO = 0,
+		CAN_UNDO = 1,
+		CANT_REDO = 2,
+		CAN_REDO = 3
+	};
+
 	class CSVData
 	{
 	private:
@@ -29,7 +37,7 @@ namespace mrt
 
 		CSVData_Error m_Error = CSVData_Error::NONE;
 
-		// Undo/ Redo Items
+		// Undo & Redo Items
 		static const size_t m_MaxUndoRedo = 5;
 
 		std::array<std::vector<std::vector<std::string>>, m_MaxUndoRedo> m_UndoData;
@@ -90,9 +98,9 @@ namespace mrt
 		std::vector<std::vector<std::string>>& GetTableData() noexcept;
 		const std::vector<std::vector<std::string>>& GetTableData() const noexcept;
 
-		void Undo() noexcept;
+		CSVData_UndoRedoState Undo() noexcept;
 
-		void Redo() noexcept;
+		CSVData_UndoRedoState Redo() noexcept;
 
 		void CreateUndo() noexcept;
 

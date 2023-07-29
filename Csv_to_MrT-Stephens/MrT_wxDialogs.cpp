@@ -259,4 +259,6 @@ mrt::MrT_DataEditDialog::MrT_DataEditDialog(wxWindow* parent, const std::string&
 	m_MainSizer->Add(m_ButtonSizer, 0, wxALL | wxEXPAND, FromDIP(0));
 
 	m_Panel->SetSizer(m_MainSizer);
+
+	m_CancelButton->SetFocus();
 }

@@ -9,7 +9,6 @@
 #include <mutex>
 #include <thread>
 #include <format>
-#include <codecvt>
 #include <iomanip>
 
 #include "CSVData.h"
@@ -45,8 +44,8 @@ protected:
 
 	// Output Settings Section
 	wxBoxSizer* m_OutputSettingsSizer1, * m_OutputSettingsSizer2, * m_OutputHeadingSizer;
-	wxCheckBox* m_IncludeHeaderCheckBox;
-	wxButton* m_LowercaseBtn, * m_UppercaseBtn, * m_CapitalizeBtn, * m_TransposeBtn, * m_DeleteBlanksBtn, * m_UndoBtn, * m_RedoBtn;
+	wxButton* m_LowercaseBtn, * m_UppercaseBtn, * m_CapitalizeBtn, * m_TransposeBtn, 
+		* m_DeleteBlanksBtn, * m_UndoBtn, * m_RedoBtn, * m_BasicAdvViewBtn, * m_IncludeHeaderBtn;
 
 	// Thread Items
 	std::mutex m_OutputDataMutex;
@@ -68,6 +67,7 @@ public:
 	virtual void PopulateDataListView();
 	virtual void PopulateOutputDataTextBox();
 	virtual void LockOrUnlockItems(bool lock);
+	virtual void HideOrShowBasicAdvItems(bool show);
 
 	void PopulateData();
 	bool isThreadsRunning();

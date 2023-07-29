@@ -311,84 +311,92 @@ mrt::CSVData_Error mrt::CSVData::GetError() const noexcept
 	return m_Error;
 }
 
-void mrt::CSVData::Undo() noexcept
+mrt::CSVData_UndoRedoState mrt::CSVData::Undo() noexcept
 {
 	if (m_UndoIndex > 0)
 	{
 		if (m_UndoData[m_UndoIndex - 1].empty())
 		{
-			return;
+			return CSVData_UndoRedoState::CANT_UNDO;
 		}
-
-		m_Data = m_UndoData[m_UndoIndex - 1];
-		m_HeaderNames = m_UndoHeaderNames[m_UndoIndex - 1];
-
-		m_UndoIndex = (m_UndoIndex == m_MaxUndoRedo) ? m_MaxUndoRedo - 1 : m_UndoIndex;
 
 		if (m_RedoIndex < m_MaxUndoRedo)
 		{
-			m_RedoData[m_RedoIndex].swap(m_UndoData[m_UndoIndex]);
-			m_RedoHeaderNames[m_RedoIndex].swap(m_UndoHeaderNames[m_UndoIndex]);
+			m_RedoData[m_RedoIndex].swap(m_Data);
+			m_RedoHeaderNames[m_RedoIndex].swap(m_HeaderNames);
 			++m_RedoIndex;
 		}
 		else
 		{
 			m_RedoIndex = m_MaxUndoRedo - 1;
 
-			std::rotate(m_RedoData.begin(), m_RedoData.begin() + 1, m_RedoData.end());
-			std::rotate(m_RedoData.begin(), m_RedoData.begin() + 3, m_RedoData.end());
+			for (size_t i = 1; i < m_MaxUndoRedo; ++i)
+			{
+				m_RedoData[i - 1].swap(m_RedoData[i]);
+				m_RedoHeaderNames[i - 1].swap(m_RedoHeaderNames[i]);
+			}
 
-			std::rotate(m_RedoHeaderNames.begin(), m_RedoHeaderNames.begin() + 1, m_RedoHeaderNames.end());
-			std::rotate(m_RedoHeaderNames.begin(), m_RedoHeaderNames.begin() + 3, m_RedoHeaderNames.end());
-
-			m_RedoData[m_RedoIndex].swap(m_UndoData[m_UndoIndex]);
-			m_RedoHeaderNames[m_RedoIndex].swap(m_UndoHeaderNames[m_UndoIndex]);
+			m_RedoData[m_RedoIndex].swap(m_Data);
+			m_RedoHeaderNames[m_RedoIndex].swap(m_HeaderNames);
 
 			++m_RedoIndex;
 		}
 
 		--m_UndoIndex;
+
+		m_Data = m_UndoData[m_UndoIndex];
+		m_HeaderNames = m_UndoHeaderNames[m_UndoIndex];
 	}
+	else
+	{
+		return CSVData_UndoRedoState::CANT_UNDO;
+	}
+
+	return CSVData_UndoRedoState::CAN_UNDO;
 }
 
-void mrt::CSVData::Redo() noexcept
+mrt::CSVData_UndoRedoState mrt::CSVData::Redo() noexcept
 {
 	if (m_RedoIndex > 0)
 	{
 		if (m_RedoData[m_RedoIndex - 1].empty())
 		{
-			return;
+			return CSVData_UndoRedoState::CANT_REDO;
 		}
-
-		m_Data = m_RedoData[m_RedoIndex - 1];
-		m_HeaderNames = m_RedoHeaderNames[m_RedoIndex - 1];
-
-		m_RedoIndex = (m_RedoIndex == m_MaxUndoRedo) ? m_MaxUndoRedo - 1 : m_RedoIndex;
 
 		if (m_UndoIndex < m_MaxUndoRedo)
 		{
-			m_UndoData[m_UndoIndex].swap(m_RedoData[m_RedoIndex]);
-			m_UndoHeaderNames[m_UndoIndex].swap(m_RedoHeaderNames[m_RedoIndex]);
+			m_UndoData[m_UndoIndex].swap(m_Data);
+			m_UndoHeaderNames[m_UndoIndex].swap(m_HeaderNames);
 			++m_UndoIndex;
 		}
 		else
 		{
 			m_UndoIndex = m_MaxUndoRedo - 1;
 
-			std::rotate(m_UndoData.begin(), m_UndoData.begin() + 1, m_UndoData.end());
-			std::rotate(m_UndoData.begin(), m_UndoData.begin() + 3, m_UndoData.end());
+			for (size_t i = 1; i < m_MaxUndoRedo; ++i)
+			{
+				m_UndoData[i - 1].swap(m_UndoData[i]);
+				m_UndoHeaderNames[i - 1].swap(m_UndoHeaderNames[i]);
+			}
 
-			std::rotate(m_UndoHeaderNames.begin(), m_UndoHeaderNames.begin() + 1, m_UndoHeaderNames.end());
-			std::rotate(m_UndoHeaderNames.begin(), m_UndoHeaderNames.begin() + 3, m_UndoHeaderNames.end());
-
-			m_UndoData[m_UndoIndex].swap(m_RedoData[m_RedoIndex]);
-			m_UndoHeaderNames[m_UndoIndex].swap(m_RedoHeaderNames[m_RedoIndex]);
+			m_UndoData[m_UndoIndex].swap(m_Data);
+			m_UndoHeaderNames[m_UndoIndex].swap(m_HeaderNames);
 
 			++m_UndoIndex;
 		}
 
 		--m_RedoIndex;
+
+		m_Data = m_RedoData[m_RedoIndex];
+		m_HeaderNames = m_RedoHeaderNames[m_RedoIndex];
 	}
+	else
+	{
+		return CSVData_UndoRedoState::CANT_REDO;
+	}
+
+	return CSVData_UndoRedoState::CAN_REDO;
 }
 
 void mrt::CSVData::CreateUndo() noexcept
@@ -403,11 +411,11 @@ void mrt::CSVData::CreateUndo() noexcept
 	{
 		m_UndoIndex = m_MaxUndoRedo - 1;
 
-		std::rotate(m_UndoData.begin(), m_UndoData.begin() + 1, m_UndoData.end());
-		std::rotate(m_UndoData.begin(), m_UndoData.begin() + 3, m_UndoData.end());
-
-		std::rotate(m_UndoHeaderNames.begin(), m_UndoHeaderNames.begin() + 1, m_UndoHeaderNames.end());
-		std::rotate(m_UndoHeaderNames.begin(), m_UndoHeaderNames.begin() + 3, m_UndoHeaderNames.end());
+		for (size_t i = 1; i < m_MaxUndoRedo; ++i)
+		{
+			m_UndoData[i - 1].swap(m_UndoData[i]);
+			m_UndoHeaderNames[i - 1].swap(m_UndoHeaderNames[i]);
+		}
 
 		m_UndoData[m_UndoIndex] = m_Data;
 		m_UndoHeaderNames[m_UndoIndex] = m_HeaderNames;

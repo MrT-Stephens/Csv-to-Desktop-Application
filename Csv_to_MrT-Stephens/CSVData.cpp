@@ -315,8 +315,15 @@ void mrt::CSVData::Undo() noexcept
 {
 	if (m_UndoIndex > 0)
 	{
+		if (m_UndoData[m_UndoIndex - 1].empty())
+		{
+			return;
+		}
+
 		m_Data = m_UndoData[m_UndoIndex - 1];
 		m_HeaderNames = m_UndoHeaderNames[m_UndoIndex - 1];
+
+		m_UndoIndex = (m_UndoIndex == m_MaxUndoRedo) ? m_MaxUndoRedo - 1 : m_UndoIndex;
 
 		if (m_RedoIndex < m_MaxUndoRedo)
 		{
@@ -348,8 +355,15 @@ void mrt::CSVData::Redo() noexcept
 {
 	if (m_RedoIndex > 0)
 	{
+		if (m_RedoData[m_RedoIndex - 1].empty())
+		{
+			return;
+		}
+
 		m_Data = m_RedoData[m_RedoIndex - 1];
 		m_HeaderNames = m_RedoHeaderNames[m_RedoIndex - 1];
+
+		m_RedoIndex = (m_RedoIndex == m_MaxUndoRedo) ? m_MaxUndoRedo - 1 : m_RedoIndex;
 
 		if (m_UndoIndex < m_MaxUndoRedo)
 		{

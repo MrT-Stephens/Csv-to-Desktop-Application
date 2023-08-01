@@ -28,6 +28,12 @@
     <ClCompile Include="CSVtoMarkdown.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="CSVtoXML_Panel.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CSVtoXML_Panel.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TableGenerators.h">
@@ -54,7 +60,7 @@
     <ClInclude Include="CSVtoMarkdown.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UndoRedo.h">
+    <ClInclude Include="XML.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

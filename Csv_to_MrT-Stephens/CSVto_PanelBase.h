@@ -12,7 +12,6 @@
 #include <iomanip>
 
 #include "CSVData.h"
-#include "UndoRedo.h"
 #include "MrT_wxDialogs.h"
 #include "UtilityItems.h"
 
@@ -68,6 +67,7 @@ public:
 	virtual void PopulateOutputDataTextBox();
 	virtual void LockOrUnlockItems(bool lock);
 	virtual void HideOrShowBasicAdvItems(bool show);
+	virtual void OutputFile();
 
 	void PopulateData();
 	bool isThreadsRunning();

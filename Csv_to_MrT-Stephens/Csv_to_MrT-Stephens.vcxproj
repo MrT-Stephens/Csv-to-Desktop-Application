@@ -162,6 +162,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CSVtoXML_Panel.cpp" />
+    <ClCompile Include="CSVtoXML_Panel.h" />
     <ClCompile Include="TableGenerators.cpp" />
     <ClCompile Include="CSVData.cpp" />
     <ClCompile Include="CSVtoASCII_Panel.cpp" />
@@ -175,13 +177,13 @@
   <ItemGroup>
     <ClInclude Include="TableGenerators.h" />
     <ClInclude Include="CSVtoMarkdown.h" />
-    <ClInclude Include="UndoRedo.h" />
     <ClInclude Include="UtilityItems.h" />
     <ClInclude Include="CSVData.h" />
     <ClInclude Include="CSVtoASCII_Panel.h" />
     <ClInclude Include="CSVtoSQL_Panel.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="CSVto_PanelBase.h" />
+    <ClInclude Include="XML.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

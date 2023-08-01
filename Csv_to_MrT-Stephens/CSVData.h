@@ -59,51 +59,51 @@ namespace mrt
 
 		~CSVData();
 
-		CSVData_Error LoadCsv(const std::string& fileDir, bool onlyAsciiCharacters) noexcept;
-		CSVData_Error SaveCsv(const std::string& fileDir) const noexcept;
+		CSVData_Error LoadCsv(const std::string& fileDir, bool onlyAsciiCharacters);
+		CSVData_Error SaveCsv(const std::string& fileDir) const;
 
-		std::vector<std::string>& GetHeaderNames() noexcept;
-		const std::vector<std::string>& GetHeaderNames() const noexcept;
+		std::vector<std::string>& GetHeaderNames();
+		const std::vector<std::string>& GetHeaderNames() const;
 
-		std::vector<std::string>& GetRowData(size_t index) noexcept;
-		const std::vector<std::string>& GetRowData(size_t index) const noexcept;
+		std::vector<std::string>& GetRowData(size_t index);
+		const std::vector<std::string>& GetRowData(size_t index) const;
 
-		void SortByColumn(size_t index, bool asendingOrder) noexcept;
+		void SortByColumn(size_t index, bool asendingOrder);
 
-		void LowerUpperData(bool includeHeader, bool lower = true) noexcept;
+		void LowerUpperData(bool includeHeader, bool lower = true);
 
-		void CapitalizeData(bool includeHeader) noexcept;
+		void CapitalizeData(bool includeHeader);
 
-		void RemoveWhiteSpace(bool includeHeader) noexcept;
+		void RemoveWhiteSpace(bool includeHeader);
 
-		void TransposeData() noexcept;
+		void TransposeData();
 
-		void CheckMaxColumnWidths() noexcept;
+		void CheckMaxColumnWidths();
 
-		void CheckXYLengths() noexcept;
+		void CheckXYLengths();
 
-		size_t GetRowCount() const noexcept;
+		size_t GetRowCount() const;
 
-		size_t GetColumnCount() const noexcept;
+		size_t GetColumnCount() const;
 
-		void SetValue(size_t row, size_t column, const std::string& value) noexcept;
+		void SetValue(size_t row, size_t column, const std::string& value);
 
-		unsigned int GetMaxColumnWidth(size_t index) const noexcept;
+		unsigned int GetMaxColumnWidth(size_t index) const;
 
-		std::vector<unsigned int>& GetMaxColumnWidths() noexcept;
-		const std::vector<unsigned int>& GetMaxColumnWidths() const noexcept;
+		std::vector<unsigned int>& GetMaxColumnWidths();
+		const std::vector<unsigned int>& GetMaxColumnWidths() const;
 
-		CSVData_Error GetError() const noexcept;
+		CSVData_Error GetError() const;
 
-		std::vector<std::vector<std::string>>& GetTableData() noexcept;
-		const std::vector<std::vector<std::string>>& GetTableData() const noexcept;
+		std::vector<std::vector<std::string>>& GetTableData();
+		const std::vector<std::vector<std::string>>& GetTableData() const;
 
-		CSVData_UndoRedoState Undo() noexcept;
+		CSVData_UndoRedoState Undo();
 
-		CSVData_UndoRedoState Redo() noexcept;
+		CSVData_UndoRedoState Redo();
 
-		void CreateUndo() noexcept;
+		void CreateUndo();
 
-		void ClearUndoRedo() noexcept;
+		void ClearUndoRedo();
 	};
 }

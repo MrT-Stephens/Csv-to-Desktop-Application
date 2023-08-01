@@ -7,6 +7,11 @@
 
 #include "UtilityItems.h"
 
+namespace mrtApp
+{
+	
+}
+
 namespace mrt
 {
 	class MrT_InfoDialog : public wxDialog

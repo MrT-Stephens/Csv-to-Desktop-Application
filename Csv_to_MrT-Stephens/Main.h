@@ -7,6 +7,7 @@
 #include "CSVtoSQL_Panel.h"
 #include "CSVtoASCII_Panel.h"
 #include "CSVtoMarkdown.h"
+#include "CSVtoXML_Panel.h"
 
 class MrT_App : public wxApp
 {

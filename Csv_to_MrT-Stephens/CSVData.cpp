@@ -13,7 +13,7 @@ mrt::CSVData::CSVData(std::vector<std::vector<std::string>>&& data, std::vector<
 
 mrt::CSVData::~CSVData() { }
 
-mrt::CSVData_Error mrt::CSVData::LoadCsv(const std::string& fileDir, bool onlyAsciiCharacters) noexcept
+mrt::CSVData_Error mrt::CSVData::LoadCsv(const std::string& fileDir, bool onlyAsciiCharacters)
 {
 	std::ifstream file(fileDir, std::ios::in);
 
@@ -75,7 +75,7 @@ mrt::CSVData_Error mrt::CSVData::LoadCsv(const std::string& fileDir, bool onlyAs
 	return CSVData_Error::NONE;
 }
 
-mrt::CSVData_Error mrt::CSVData::SaveCsv(const std::string& fileDir) const noexcept
+mrt::CSVData_Error mrt::CSVData::SaveCsv(const std::string& fileDir) const
 {
 	std::ofstream file(fileDir, std::ios::out);
 
@@ -102,7 +102,7 @@ mrt::CSVData_Error mrt::CSVData::SaveCsv(const std::string& fileDir) const noexc
 	return CSVData_Error::NONE;
 }
 
-void mrt::CSVData::CheckMaxColumnWidths() noexcept
+void mrt::CSVData::CheckMaxColumnWidths()
 {
 	// Resize the columns widths vector
 	m_MaxColumnWidths.resize(m_HeaderNames.size());
@@ -126,7 +126,7 @@ void mrt::CSVData::CheckMaxColumnWidths() noexcept
 	}
 }
 
-void mrt::CSVData::CheckXYLengths() noexcept
+void mrt::CSVData::CheckXYLengths()
 {
 	size_t maxSize = std::max_element(m_Data.begin(), m_Data.end(), [](const std::vector<std::string>& a, const std::vector<std::string>& b)->bool
 		{
@@ -141,27 +141,27 @@ void mrt::CSVData::CheckXYLengths() noexcept
 	}
 }
 
-std::vector<std::string>& mrt::CSVData::GetHeaderNames() noexcept
+std::vector<std::string>& mrt::CSVData::GetHeaderNames()
 {
 	return m_HeaderNames;
 }
 
-const std::vector<std::string>& mrt::CSVData::GetHeaderNames() const noexcept
+const std::vector<std::string>& mrt::CSVData::GetHeaderNames() const
 {
 	return m_HeaderNames;
 }
 
-std::vector<std::string>& mrt::CSVData::GetRowData(size_t index) noexcept
+std::vector<std::string>& mrt::CSVData::GetRowData(size_t index)
 {
 	return m_Data[index];
 }
 
-const std::vector<std::string>& mrt::CSVData::GetRowData(size_t index) const noexcept
+const std::vector<std::string>& mrt::CSVData::GetRowData(size_t index) const
 {
 	return m_Data[index];
 }
 
-void mrt::CSVData::SortByColumn(size_t index, bool ascendingOrder) noexcept
+void mrt::CSVData::SortByColumn(size_t index, bool ascendingOrder)
 {
 	std::sort(m_Data.begin(), m_Data.end(), [&index, ascendingOrder](const std::vector<std::string>& a, const std::vector<std::string>& b)->bool 
 		{
@@ -170,22 +170,22 @@ void mrt::CSVData::SortByColumn(size_t index, bool ascendingOrder) noexcept
 	);
 }
 
-std::vector<unsigned int>& mrt::CSVData::GetMaxColumnWidths() noexcept
+std::vector<unsigned int>& mrt::CSVData::GetMaxColumnWidths()
 {
 	return m_MaxColumnWidths;
 }
 
-const std::vector<unsigned int>& mrt::CSVData::GetMaxColumnWidths() const noexcept
+const std::vector<unsigned int>& mrt::CSVData::GetMaxColumnWidths() const
 {
 	return m_MaxColumnWidths;
 }
 
-unsigned int mrt::CSVData::GetMaxColumnWidth(size_t index) const noexcept
+unsigned int mrt::CSVData::GetMaxColumnWidth(size_t index) const
 {
 	return m_MaxColumnWidths[index];
 }
 
-void mrt::CSVData::LowerUpperData(bool includeHeader, bool lower) noexcept
+void mrt::CSVData::LowerUpperData(bool includeHeader, bool lower)
 {
 	std::locale loc("");
 
@@ -214,7 +214,7 @@ void mrt::CSVData::LowerUpperData(bool includeHeader, bool lower) noexcept
 	}
 }
 
-void mrt::CSVData::CapitalizeData(bool includeHeader) noexcept
+void mrt::CSVData::CapitalizeData(bool includeHeader)
 {
 	std::locale loc("");
 
@@ -235,7 +235,7 @@ void mrt::CSVData::CapitalizeData(bool includeHeader) noexcept
 	}
 }
 
-void mrt::CSVData::RemoveWhiteSpace(bool includeHeader) noexcept
+void mrt::CSVData::RemoveWhiteSpace(bool includeHeader)
 {
 	std::locale loc("");
 
@@ -258,7 +258,7 @@ void mrt::CSVData::RemoveWhiteSpace(bool includeHeader) noexcept
 	CheckMaxColumnWidths();
 }
 
-void mrt::CSVData::TransposeData() noexcept
+void mrt::CSVData::TransposeData()
 {
 	std::vector<std::vector<std::string>> transposedData(std::move(m_Data));
 	transposedData.insert(transposedData.begin(), m_HeaderNames);
@@ -281,37 +281,37 @@ void mrt::CSVData::TransposeData() noexcept
 	CheckMaxColumnWidths();
 }
 
-size_t mrt::CSVData::GetRowCount() const noexcept
+size_t mrt::CSVData::GetRowCount() const
 {
 	return m_Data.size();
 }
 
-size_t mrt::CSVData::GetColumnCount() const noexcept
+size_t mrt::CSVData::GetColumnCount() const
 {
 	return m_HeaderNames.size();
 }
 
-std::vector<std::vector<std::string>>& mrt::CSVData::GetTableData() noexcept
+std::vector<std::vector<std::string>>& mrt::CSVData::GetTableData()
 {
 	return m_Data;
 }
 
-const std::vector<std::vector<std::string>>& mrt::CSVData::GetTableData() const noexcept
+const std::vector<std::vector<std::string>>& mrt::CSVData::GetTableData() const
 {
 	return m_Data;
 }
 
-void mrt::CSVData::SetValue(size_t row, size_t column, const std::string& value) noexcept
+void mrt::CSVData::SetValue(size_t row, size_t column, const std::string& value)
 {
 	m_Data[row][column] = value;
 }
 
-mrt::CSVData_Error mrt::CSVData::GetError() const noexcept
+mrt::CSVData_Error mrt::CSVData::GetError() const
 {
 	return m_Error;
 }
 
-mrt::CSVData_UndoRedoState mrt::CSVData::Undo() noexcept
+mrt::CSVData_UndoRedoState mrt::CSVData::Undo()
 {
 	if (m_UndoIndex > 0)
 	{
@@ -355,7 +355,7 @@ mrt::CSVData_UndoRedoState mrt::CSVData::Undo() noexcept
 	return CSVData_UndoRedoState::CAN_UNDO;
 }
 
-mrt::CSVData_UndoRedoState mrt::CSVData::Redo() noexcept
+mrt::CSVData_UndoRedoState mrt::CSVData::Redo()
 {
 	if (m_RedoIndex > 0)
 	{
@@ -399,7 +399,7 @@ mrt::CSVData_UndoRedoState mrt::CSVData::Redo() noexcept
 	return CSVData_UndoRedoState::CAN_REDO;
 }
 
-void mrt::CSVData::CreateUndo() noexcept
+void mrt::CSVData::CreateUndo()
 {
 	if (m_UndoIndex < m_MaxUndoRedo)
 	{
@@ -424,7 +424,7 @@ void mrt::CSVData::CreateUndo() noexcept
 	}
 }
 
-void mrt::CSVData::ClearUndoRedo() noexcept
+void mrt::CSVData::ClearUndoRedo()
 {
 	for (size_t i = 0; i < m_MaxUndoRedo; ++i)
 	{

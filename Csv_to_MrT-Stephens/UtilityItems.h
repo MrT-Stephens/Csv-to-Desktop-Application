@@ -3,7 +3,6 @@
 #include <wx/wx.h>
 
 #include <string>
-#include <sstream>
 
 #include "CSV_to_Logo.xpm"		// Icons array is called 'CSV_to_Logo'
 
@@ -12,13 +11,13 @@
 
 namespace mrtApp
 {
-	const std::string APP_NAME = "CSV to...";
-	const std::string APP_VERSION = "v0.1.1";
+	extern const std::string APP_NAME;
+	extern const std::string APP_VERSION;
 
-	const std::string APP_TITLE = APP_NAME + " " + APP_VERSION;
+	extern const std::string APP_TITLE;
 
-	const std::string GITHUB_URL = "https://github.com/MrT-Stephens";
-	const std::string DONATE_URL = "";
+	extern const std::string GITHUB_URL;
+	extern const std::string DONATE_URL;
 
 	struct AppColours
 	{

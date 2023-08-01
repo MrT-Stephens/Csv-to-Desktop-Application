@@ -1,5 +1,13 @@
 #include "Main.h"
 
+const std::string mrtApp::APP_NAME = "CSV to...";
+const std::string mrtApp::APP_VERSION = "v0.1.1";
+
+const std::string mrtApp::APP_TITLE = mrtApp::APP_NAME + " " + mrtApp::APP_VERSION;
+
+const std::string mrtApp::GITHUB_URL = "https://github.com/MrT-Stephens";
+const std::string mrtApp::DONATE_URL = "";
+
 bool MrT_App::OnInit()
 {
     Main_Frame* mainFrame = new Main_Frame(mrtApp::APP_TITLE, wxDefaultPosition, { 700, 800 }, wxDEFAULT_FRAME_STYLE);
@@ -22,7 +30,8 @@ Main_Frame::Main_Frame(const wxString& title, const wxPoint& pos, const wxSize& 
     m_Panels = {                                                        // Initialising the panels and their names.
         std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoSQL_Panel(m_Notebook, "CSV to SQL ", &m_Colours), "SQL"),
         std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoASCII_Panel(m_Notebook, "CSV to Ascii ", &m_Colours), "Ascii"),
-        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoMarkdown_Panel(m_Notebook, "CSV to Markdown", &m_Colours), "Markdown")
+        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoMarkdown_Panel(m_Notebook, "CSV to Markdown", &m_Colours), "Markdown"),
+        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoXML_Panel(m_Notebook, "CSV to XML", &m_Colours), "XML")
     };
 
     for (std::pair<CSVto_PanelBase*, std::string>& panel : m_Panels)    // Looping through 'm_Panels' and adding the panels to the notebook.

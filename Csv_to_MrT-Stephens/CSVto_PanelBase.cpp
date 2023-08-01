@@ -485,25 +485,7 @@ void CSVto_PanelBase::SetupDataOutputSection()
 		{
 			if (!m_OutputDataTextBox->IsEmpty())
 			{
-				wxFileDialog saveFileDialog(this, "Download File", (wxStandardPaths::Get().GetDocumentsDir()), "", "Text files (*.txt)|*.txt", wxFD_SAVE);
-
-				if (saveFileDialog.ShowModal() == wxID_OK)
-				{
-					std::ofstream file(saveFileDialog.GetPath().ToStdString());
-
-					if (!file.is_open())
-					{
-						mrt::MrT_UniDialog errorDialog(this, "Error", "Failed to save file!\nPlease try to re-save the file.",
-							m_Colours, wxICON(wxICON_ERROR), mrt::MrT_UniDialogType_OK, { 400, 200 });
-
-						errorDialog.ShowModal();
-					}
-					else
-					{
-						file << std::move(m_OutputDataTextBox->GetValue().ToStdString());
-					}
-					file.close();
-				}
+				OutputFile();
 			}
 		}
 	);
@@ -511,6 +493,29 @@ void CSVto_PanelBase::SetupDataOutputSection()
 	m_DataOutputBtnSizer->Add(m_DownloadBtn, 1, wxALL | wxEXPAND | wxCENTER, FromDIP(10));
 
 	m_MainSizer->Add(m_DataOutputBtnSizer, 0, wxEXPAND | wxALL, FromDIP(0));
+}
+
+void CSVto_PanelBase::OutputFile()
+{
+	wxFileDialog saveFileDialog(this, "Download File", (wxStandardPaths::Get().GetDocumentsDir()), "", "Text files (*.txt)|*.txt", wxFD_SAVE);
+
+	if (saveFileDialog.ShowModal() == wxID_OK)
+	{
+		std::ofstream file(saveFileDialog.GetPath().ToStdString());
+
+		if (!file.is_open())
+		{
+			mrt::MrT_UniDialog errorDialog(this, "Error", "Failed to save file!\nPlease try to re-save the file.",
+				m_Colours, wxICON(wxICON_ERROR), mrt::MrT_UniDialogType_OK, { 400, 200 });
+
+			errorDialog.ShowModal();
+		}
+		else
+		{
+			file << std::move(m_OutputDataTextBox->GetValue().ToStdString());
+		}
+		file.close();
+	}
 }
 
 void CSVto_PanelBase::PopulateData()

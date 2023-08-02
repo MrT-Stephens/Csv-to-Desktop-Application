@@ -15,12 +15,12 @@ void CSVtoXML_Panel::SetupSpecificOutputSectionItems()
 {
 	m_OutputSettingsSizer3 = new wxBoxSizer(wxHORIZONTAL);
 
-	m_ExcludePrologCheckBox = new wxCheckBox(this, wxID_ANY, "Exclude prolog statement", wxDefaultPosition, wxDefaultSize);
+	m_ExcludePrologCheckBox = new wxCheckBox(this, wxID_ANY, "Exclude prolog", wxDefaultPosition, wxDefaultSize);
 	m_ExcludePrologCheckBox->SetMinSize({ 120, 30 });
 	m_ExcludePrologCheckBox->SetOwnFont(MAIN_FONT_TEXT(11));
 	m_ExcludePrologCheckBox->SetOwnBackgroundColour(m_Colours->BACKGROUND);
 	m_ExcludePrologCheckBox->SetOwnForegroundColour(m_Colours->FOREGROUND);
-	m_ExcludePrologCheckBox->SetToolTip("Exclude the prolog in generated XML");
+	m_ExcludePrologCheckBox->SetToolTip("Exclude the prolog in the generated XML");
 
 	m_ExcludePrologCheckBox->Bind(wxEVT_CHECKBOX, [this](wxCommandEvent& event)
 		{
@@ -50,6 +50,44 @@ void CSVtoXML_Panel::SetupSpecificOutputSectionItems()
 	m_LeftSizer = new wxBoxSizer(wxVERTICAL);
 	m_LeftSizer->Add(m_ExcludePrologCheckBox, 0, wxRIGHT | wxLEFT | wxTOP | wxEXPAND | wxCENTER, FromDIP(10));
 	m_LeftSizer->Add(m_MinifyXmlCheckBox, 0, wxALL | wxEXPAND | wxCENTER, FromDIP(10));
+
+	m_NameSpaceTextBox = new wxTextCtrl(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize);
+	m_NameSpaceTextBox->SetValue("namespace");
+	m_NameSpaceTextBox->SetMinSize({ 120, 30 });
+	m_NameSpaceTextBox->SetOwnFont(MAIN_FONT_TEXT(11));
+	m_NameSpaceTextBox->SetOwnBackgroundColour(m_Colours->PRIMARY);
+	m_NameSpaceTextBox->SetOwnForegroundColour(m_Colours->FOREGROUND);
+	m_NameSpaceTextBox->SetToolTip("Set a namespace for the data, empty for no namespace");
+
+	m_NameSpaceTextBox->Bind(wxEVT_TEXT, [this](wxCommandEvent& event)
+		{
+			if (!m_OutputDataTextBox->IsEmpty())
+			{
+				m_TextBoxTimer.Start(2000);
+			}
+		}
+	);
+
+	m_XmlnsTextBox = new wxTextCtrl(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize);
+	m_XmlnsTextBox->SetValue("namespaceURI");
+	m_XmlnsTextBox->SetMinSize({ 120, 30 });
+	m_XmlnsTextBox->SetOwnFont(MAIN_FONT_TEXT(11));
+	m_XmlnsTextBox->SetOwnBackgroundColour(m_Colours->PRIMARY);
+	m_XmlnsTextBox->SetOwnForegroundColour(m_Colours->FOREGROUND);
+	m_XmlnsTextBox->SetToolTip("Set a URI for the namespace, empty for no URI");
+
+	m_XmlnsTextBox->Bind(wxEVT_TEXT, [this](wxCommandEvent& event)
+		{
+			if (!m_OutputDataTextBox->IsEmpty())
+			{
+				m_TextBoxTimer.Start(2000);
+			}
+		}
+	);
+
+	m_MiddleSizer = new wxBoxSizer(wxVERTICAL);
+	m_MiddleSizer->Add(m_NameSpaceTextBox, 0, wxRIGHT | wxLEFT | wxTOP | wxEXPAND | wxCENTER, FromDIP(10));
+	m_MiddleSizer->Add(m_XmlnsTextBox, 0, wxALL | wxEXPAND | wxCENTER, FromDIP(10));
 
 	m_RootNameTextBox = new wxTextCtrl(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize);
 	m_RootNameTextBox->SetValue("root");
@@ -100,6 +138,7 @@ void CSVtoXML_Panel::SetupSpecificOutputSectionItems()
 	m_RightSizer->Add(m_ElementNameTextBox, 0, wxALL | wxEXPAND | wxCENTER, FromDIP(10));
 
 	m_OutputSettingsSizer3->Add(m_LeftSizer, 1, wxALL | wxEXPAND | wxCENTER, FromDIP(0));
+	m_OutputSettingsSizer3->Add(m_MiddleSizer, 1, wxALL | wxEXPAND | wxCENTER, FromDIP(0));
 	m_OutputSettingsSizer3->Add(m_RightSizer, 1, wxALL | wxEXPAND | wxCENTER, FromDIP(0));
 
 	m_MainSizer->Add(m_OutputSettingsSizer3, 0, wxEXPAND | wxALL, FromDIP(0));
@@ -139,6 +178,11 @@ void CSVtoXML_Panel::PopulateOutputDataTextBox()
 
 		mrt::XML_Node<std::string> root(m_RootNameTextBox->GetValue().ToStdString());
 
+		if (!m_XmlnsTextBox->IsEmpty() && !m_NameSpaceTextBox->IsEmpty())
+		{
+			root.EmplaceAttribute("xmlns", m_XmlnsTextBox->GetValue().ToStdString());
+		}
+
 		for (size_t i0 = 0; i0 < m_CSVData->GetRowCount(); ++i0)
 		{
 			mrt::XML_Node<std::string> element(m_ElementNameTextBox->GetValue().ToStdString());
@@ -153,7 +197,7 @@ void CSVtoXML_Panel::PopulateOutputDataTextBox()
 			root.AddChild(element);
 		}
 
-		mrt::XML_Document<std::string> doc(root, "1.0", "", !m_ExcludePrologCheckBox->GetValue(), !m_MinifyXmlCheckBox->GetValue());
+		mrt::XML_Document<std::string> doc(root, "1.0", m_NameSpaceTextBox->GetValue().ToStdString(), !m_ExcludePrologCheckBox->GetValue(), !m_MinifyXmlCheckBox->GetValue());
 
 		mrt::XML_Document<std::string>::OStrStream ss;
 

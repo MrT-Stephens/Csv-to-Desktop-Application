@@ -162,10 +162,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CSVtoHTML_Panel.cpp" />
+    <ClCompile Include="CSVtoLatex_Panel.cpp" />
     <ClCompile Include="CSVtoXML_Panel.cpp" />
     <ClCompile Include="CSVtoXML_Panel.h" />
     <ClCompile Include="TableGenerators.cpp" />
-    <ClCompile Include="CSVData.cpp" />
     <ClCompile Include="CSVtoASCII_Panel.cpp" />
     <ClCompile Include="CSVtoMarkdown.cpp" />
     <ClCompile Include="CSVtoSQL_Panel.cpp" />
@@ -175,6 +176,8 @@
     <ClCompile Include="MrT_wxDialogs.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CSVtoHTML_Panel.h" />
+    <ClInclude Include="CSVtoLatex_Panel.h" />
     <ClInclude Include="TableGenerators.h" />
     <ClInclude Include="CSVtoMarkdown.h" />
     <ClInclude Include="UtilityItems.h" />

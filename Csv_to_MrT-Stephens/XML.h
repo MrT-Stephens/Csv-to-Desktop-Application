@@ -91,7 +91,7 @@ namespace mrt
 		using IFstream = typename std::basic_ifstream<ValueType>;
 
 		// Constructors
-		XML_Document(const XML_Node<_StrType>& root, const _StrType& version, const _StrType& namespaceWord = _StrType(), bool addProlog = true, bool newLines = true);
+		XML_Document(const XML_Node<_StrType>& root, const _StrType& version, const _StrType& nameSpace = _StrType(), bool addProlog = true, bool newLines = true);
 
 		// Copiers & Assignments
 		XML_Document(const XML_Document<_StrType>& other);
@@ -122,9 +122,9 @@ namespace mrt
 		static XML_Document_FileError WriteDocument(const _StrType& path, const XML_Document& document);
 
 		// Recursive called functions to read or writes nodes to input or ouput streams.
-		static void WriteChildrenNodes(OStream* fs, const XML_Node<_StrType>& node, bool newLines, size_t tabs = 1);
+		static void WriteChildrenNodes(OStream* fs, const XML_Node<_StrType>& node, const _StrType& nameSpace, bool newLines, size_t tabs = 1);
 
-		static void ReadChildrenNodes(IStream* fs, XML_Node<_StrType>& node);
+		static void ReadChildrenNodes(IStream* fs, XML_Node<_StrType>& node, const _StrType& nameSpace);
 
 		// Universal read and write functions. USE THESE IF OUTPUTTING OR INPUTTING TO STRING STREAM, COUT, etc.
 		static void ReadDocumentFromStream(IStream* fs, XML_Document& document);
@@ -136,16 +136,19 @@ namespace mrt
 	static _StrType getXMLprolog(const _StrType& version);
 
 	template <class _StrType>
-	static _StrType getStartNode(const XML_Node<_StrType>& node);
+	static _StrType getStartNode(const XML_Node<_StrType>& node, const _StrType& nameSpace);
 
 	template <class _StrType>
-	static _StrType getEndNode(const XML_Node<_StrType>& node);
+	static _StrType getEndNode(const XML_Node<_StrType>& node, const _StrType& nameSpace);
 
 	template <class _StrType>
 	static _StrType getTabs(size_t amount);
 
 	template <class _StrType>
 	static _StrType getNewLine(bool newLines);
+
+	template <class _CastType, class _InType>
+	_CastType string_cast(const _InType& str);
 }
 
 template <class _StrType>
@@ -287,8 +290,8 @@ const std::vector<mrt::XML_Node<_StrType>>& mrt::XML_Node<_StrType>::GetAllChild
 
 
 template <class _StrType>
-mrt::XML_Document<_StrType>::XML_Document(const XML_Node<_StrType>& root, const _StrType& version, const _StrType& namespaceWord, bool addProlog, bool newLines) :
-	m_Root(root), m_Version(version), m_Namespace(namespaceWord), m_AddProlog(addProlog), m_NewLines(newLines) { }
+mrt::XML_Document<_StrType>::XML_Document(const XML_Node<_StrType>& root, const _StrType& version, const _StrType& nameSpace, bool addProlog, bool newLines) :
+	m_Root(root), m_Version(version), m_Namespace(nameSpace), m_AddProlog(addProlog), m_NewLines(newLines) { }
 
 template <class _StrType>
 mrt::XML_Document<_StrType>::XML_Document(const XML_Document& other) :
@@ -371,38 +374,38 @@ mrt::XML_Document_FileError mrt::XML_Document<_StrType>::WriteDocument(const _St
 		fs << getXMLprolog<_StrType>(document.GetVersion()) << getNewLine<_StrType>(document.GetNewLines());
 	}
 
-	fs << getStartNode(document.GetRoot()) << getNewLine<_StrType>(document.GetNewLines());
+	fs << getStartNode(document.GetRoot(), document.GetNamespace()) << getNewLine<_StrType>(document.GetNewLines());
 
-	WriteChildrenNodes(&fs, document.GetRoot(), document.GetNewLines());
+	WriteChildrenNodes(&fs, document.GetRoot(), document.GetNamespace(), document.GetNewLines());
 
-	fs << getEndNode(document.GetRoot()) << getNewLine<_StrType>(document.GetNewLines());
+	fs << getEndNode(document.GetRoot(), document.GetNamespace()) << getNewLine<_StrType>(document.GetNewLines());
 
 	fs.close();
 	return XML_Document_FileError::SUCCESS;
 }
 
 template <class _StrType>
-void mrt::XML_Document<_StrType>::ReadChildrenNodes(IStream* fs, XML_Node<_StrType>& node)
+void mrt::XML_Document<_StrType>::ReadChildrenNodes(IStream* fs, XML_Node<_StrType>& node, const _StrType& nameSpace)
 {
 
 }
 
 template <class _StrType>
-void mrt::XML_Document<_StrType>::WriteChildrenNodes(OStream* fs, const XML_Node<_StrType>& node, bool newLines, size_t tabs)
+void mrt::XML_Document<_StrType>::WriteChildrenNodes(OStream* fs, const XML_Node<_StrType>& node, const _StrType& nameSpace, bool newLines, size_t tabs)
 {
 	for (const XML_Node<_StrType>& child : node.GetAllChildren())
 	{
 		if (child.GetAllChildren().size() > 0)
 		{
-			*fs << (newLines ? getTabs<_StrType>(tabs) : _StrType()) << getStartNode<_StrType>(child) << getNewLine<_StrType>(newLines);
+			*fs << (newLines ? getTabs<_StrType>(tabs) : _StrType()) << getStartNode<_StrType>(child, nameSpace) << getNewLine<_StrType>(newLines);
 
-			WriteChildrenNodes(fs, child, newLines, tabs + 1);
+			WriteChildrenNodes(fs, child, nameSpace, newLines, tabs + 1);
 
-			*fs << (newLines ? getTabs<_StrType>(tabs) : _StrType()) << getEndNode<_StrType>(child) << getNewLine<_StrType>(newLines);
+			*fs << (newLines ? getTabs<_StrType>(tabs) : _StrType()) << getEndNode<_StrType>(child, nameSpace) << getNewLine<_StrType>(newLines);
 		}
 		else
 		{
-			*fs << (newLines ? getTabs<_StrType>(tabs) : _StrType()) << getStartNode<_StrType>(child) << child.GetValue() << getEndNode(child) << getNewLine<_StrType>(newLines);
+			*fs << (newLines ? getTabs<_StrType>(tabs) : _StrType()) << getStartNode<_StrType>(child, nameSpace) << child.GetValue() << getEndNode(child, nameSpace) << getNewLine<_StrType>(newLines);
 		}
 	}
 }
@@ -421,11 +424,11 @@ void mrt::XML_Document<_StrType>::WriteDocumentToStream(OStream* fs, const XML_D
 		*fs << getXMLprolog<_StrType>(document.GetVersion()) << getNewLine<_StrType>(document.GetNewLines());
 	}
 
-	*fs << getStartNode(document.GetRoot()) << getNewLine<_StrType>(document.GetNewLines());
+	*fs << getStartNode(document.GetRoot(), document.GetNamespace()) << getNewLine<_StrType>(document.GetNewLines());
 
-	WriteChildrenNodes(fs, document.GetRoot(), document.GetNewLines());
+	WriteChildrenNodes(fs, document.GetRoot(), document.GetNamespace(), document.GetNewLines());
 
-	*fs << getEndNode(document.GetRoot()) << getNewLine<_StrType>(document.GetNewLines());
+	*fs << getEndNode(document.GetRoot(), document.GetNamespace()) << getNewLine<_StrType>(document.GetNewLines());
 }
 
 
@@ -449,15 +452,22 @@ std::u8string mrt::getXMLprolog(const std::u8string& version)
 }
 
 template <class _StrType>
-_StrType mrt::getStartNode(const XML_Node<_StrType>& node)
+_StrType mrt::getStartNode(const XML_Node<_StrType>& node, const _StrType& nameSpace)
 {
 	typename XML_Document<_StrType>::OStrStream ss;
 
-	ss << "<" << node.GetName();
+	ss << "<" << ((!nameSpace.empty()) ? nameSpace + string_cast<_StrType>(":") : nameSpace) << node.GetName();
 
 	for (const XML_Attribute<_StrType>& attribute : node.GetAllAttributes())
 	{
-		ss << " " << attribute.m_Name << "=\"" << attribute.m_Value << "\"";
+		if (!nameSpace.empty() && attribute.m_Name == string_cast<_StrType>("xmlns"))
+		{
+			ss << " xmlns:" << nameSpace << "=\"" << attribute.m_Value << "\"";
+		}
+		else
+		{
+			ss << " " << attribute.m_Name << "=\"" << attribute.m_Value << "\"";
+		}
 	}
 
 	ss << ">";
@@ -466,21 +476,21 @@ _StrType mrt::getStartNode(const XML_Node<_StrType>& node)
 }
 
 template <>
-std::string mrt::getEndNode(const XML_Node<std::string>& node)
+std::string mrt::getEndNode(const XML_Node<std::string>& node, const std::string& nameSpace)
 {
-	return std::format("</{}>", node.GetName());
+	return (nameSpace.empty()) ? std::format("</{}>", node.GetName()) : std::format("</{}:{}>", nameSpace, node.GetName());
 }
 
 template <>
-std::wstring mrt::getEndNode(const XML_Node<std::wstring>& node)
+std::wstring mrt::getEndNode(const XML_Node<std::wstring>& node, const std::wstring& nameSpace)
 {
-	return std::format(L"</{}>", node.GetName());
+	return (nameSpace.empty()) ? std::format(L"</{}>", node.GetName()) : std::format(L"</{}:{}>", nameSpace, node.GetName());
 }
 
 template <>
-std::u8string mrt::getEndNode(const XML_Node<std::u8string>& node)
+std::u8string mrt::getEndNode(const XML_Node<std::u8string>& node, const std::u8string& nameSpace)
 {
-	return u8"</" + node.GetName() + u8">";
+	return (nameSpace.empty()) ? u8"</" + node.GetName() + u8">" : u8"</" + nameSpace + u8":" + node.GetName() + u8">";
 }
 
 template <class _StrType>
@@ -505,4 +515,12 @@ template <>
 std::u8string mrt::getNewLine(bool newLines)
 {
 	return newLines ? u8"\n" : u8"";
+}
+
+template <class _CastType, class _InType>
+_CastType mrt::string_cast(const _InType& str)
+{
+	typename std::basic_ostringstream<typename _CastType::value_type> ss;
+	ss << str;
+	return ss.str();
 }

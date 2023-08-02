@@ -1,0 +1,15 @@
+#pragma once
+
+#include "CSVto_PanelBase.h"
+
+class CSVtoHTML_Panel : public CSVto_PanelBase
+{
+private:
+
+public:
+	CSVtoHTML_Panel(wxWindow* _parent, const std::string& _name, const mrtApp::AppColours* _colours);
+
+	virtual void PopulateOutputDataTextBox() override;
+	virtual void SetupSpecificOutputSectionItems() override;
+	virtual void LockOrUnlockItems(bool lock) override;
+};

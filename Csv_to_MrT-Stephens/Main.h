@@ -8,6 +8,8 @@
 #include "CSVtoASCII_Panel.h"
 #include "CSVtoMarkdown.h"
 #include "CSVtoXML_Panel.h"
+#include "CSVtoHTML_Panel.h"
+#include "CSVtoLatex_Panel.h"
 
 class MrT_App : public wxApp
 {

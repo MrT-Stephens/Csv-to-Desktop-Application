@@ -34,13 +34,13 @@ namespace mrt
 	private:
 		std::ostringstream m_AsciiTableText;
 
-		const mrt::CSVData* const m_CSVData;
+		const mrt::CSVData<std::string>* const m_CSVData;
 
 		bool m_ForceRowSeparation;
 		std::string m_CommentCharacters;
 		int m_TableStyle, m_WhiteSpaceStyle;
 	public:
-		AsciiTableGenerator(const mrt::CSVData* const _csvData, int _tableStyle, const std::string& _commentCharacters, bool _forceRowSeparation, int _whiteSpaceStyle);
+		AsciiTableGenerator(const mrt::CSVData<std::string>* const _csvData, int _tableStyle, const std::string& _commentCharacters, bool _forceRowSeparation, int _whiteSpaceStyle);
 
 		void GenerateAsciiTable();
 
@@ -63,18 +63,18 @@ namespace mrt
 	private:
 		std::ostringstream m_MarkdownTableText;
 
-		const mrt::CSVData* const m_CSVData;
+		const mrt::CSVData<std::string>* const m_CSVData;
 
 		bool m_BoldFirstRow, m_BoldFirstCol;
 		int m_TableStyle, m_WhiteSpaceStyle;
 	public:
-		MarkdownTableGenerator(const mrt::CSVData* const _csvData, int _tableStyle, int _whiteSpaceStyle, bool _boldFirstRow, bool _boldFirstCol);
+		MarkdownTableGenerator(const mrt::CSVData<std::string>* const _csvData, int _tableStyle, int _whiteSpaceStyle, bool _boldFirstRow, bool _boldFirstCol);
 
 		void GenerateMarkdownTable();
 
 		std::ostringstream& GetMarkdownTableStream();
 		const std::ostringstream& GetMarkdownTableStream() const;
 
-		std::string GenerateDataLine(const std::vector<std::string>& _rowVector, const std::vector<unsigned int>& _columnWidths) const;
+		std::string GenerateDataLine(const std::vector<std::string>& _rowVector, const std::vector<size_t>& _columnWidths) const;
 	};
 }

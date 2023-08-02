@@ -31,7 +31,9 @@ Main_Frame::Main_Frame(const wxString& title, const wxPoint& pos, const wxSize& 
         std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoSQL_Panel(m_Notebook, "CSV to SQL ", &m_Colours), "SQL"),
         std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoASCII_Panel(m_Notebook, "CSV to Ascii ", &m_Colours), "Ascii"),
         std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoMarkdown_Panel(m_Notebook, "CSV to Markdown", &m_Colours), "Markdown"),
-        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoXML_Panel(m_Notebook, "CSV to XML", &m_Colours), "XML")
+        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoXML_Panel(m_Notebook, "CSV to XML", &m_Colours), "XML"),
+        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoHTML_Panel(m_Notebook, "CSV to HTML", &m_Colours), "HTML"),
+        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoLatex_Panel(m_Notebook, "CSV to Latex", &m_Colours), "Latex")
     };
 
     for (std::pair<CSVto_PanelBase*, std::string>& panel : m_Panels)    // Looping through 'm_Panels' and adding the panels to the notebook.

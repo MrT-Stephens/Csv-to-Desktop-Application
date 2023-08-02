@@ -66,7 +66,7 @@ void CSVto_PanelBase::SetupDataInputSection()
 
 				m_CurrentSortColumn = -1;
 				delete (m_CSVData);
-				m_CSVData = new mrt::CSVData(m_FileDir, true);
+				m_CSVData = new mrt::CSVData<std::string>(m_FileDir);
 
 				if (m_CSVData->GetError() == mrt::CSVData_Error::NONE)
 				{
@@ -103,7 +103,7 @@ void CSVto_PanelBase::SetupDataInputSection()
 		{
 			m_CurrentSortColumn = -1;
 			delete (this->m_CSVData);
-			m_CSVData = new mrt::CSVData({
+			m_CSVData = new mrt::CSVData<std::string>({
 				{ "Matthew", "Mann", "21", "M", "P001" },
 				{ "James", "Williams", "27", "M", "P002" },
 				{ "Matt", "Lewis", "18", "M", "P003" }, 
@@ -147,35 +147,35 @@ void CSVto_PanelBase::SetupDataInputSection()
 					m_CurrentSortOrder = ORDER_ASCENDING;
 				}
 
-				m_CSVData->SortByColumn(column, ((m_CurrentSortOrder == ORDER_ASCENDING) ? true : false));
+				m_CSVData->SortByColumn(m_CSVData, column, ((m_CurrentSortOrder == ORDER_ASCENDING) ? true : false));
 				PopulateData();
 			}
-			else if (column == -1)														// Checks to see if the column is the row number column.						
-			{
-				column += 1;
-				mrt::MrT_DataEditDialog headerEditDialog(this, "Header", m_Colours, m_CSVData->GetHeaderNames(), m_CSVData->GetHeaderNames(), {400, 400});
+			//else if (column == -1)														// Checks to see if the column is the row number column.						
+			//{
+			//	column += 1;
+			//	mrt::MrT_DataEditDialog headerEditDialog(this, "Header", m_Colours, m_CSVData->GetHeaderNames(), m_CSVData->GetHeaderNames(), {400, 400});
 
-				if (headerEditDialog.ShowModal() == wxID_APPLY)
-				{
-					auto headerData = m_CSVData->GetHeaderNames();
+			//	if (headerEditDialog.ShowModal() == wxID_APPLY)
+			//	{
+			//		auto headerData = m_CSVData->GetHeaderNames();
 
-					std::wstring headerName;
-					for (size_t i = 0; i < headerData.size(); ++i)
-					{
-						headerName = (m_CurrentSortColumn == i) ?
-							std::format(L"{} {}", (m_CurrentSortOrder == ORDER_ASCENDING ? L"\u2B9D" : L"\u2B9F"), mrt::StrToWstr(headerData[i])) : mrt::StrToWstr(headerData[i]);
+			//		std::wstring headerName;
+			//		for (size_t i = 0; i < headerData.size(); ++i)
+			//		{
+			//			headerName = (m_CurrentSortColumn == i) ?
+			//				std::format(L"{} {}", (m_CurrentSortOrder == ORDER_ASCENDING ? L"\u2B9D" : L"\u2B9F"), mrt::StrToWstr(headerData[i])) : mrt::StrToWstr(headerData[i]);
 
-						wxListItem tempItem;
-						m_DataInputListView->GetColumn(i + 1, tempItem);
-						tempItem.SetText(headerName);
-						m_DataInputListView->SetColumn(i + 1, tempItem);
-					}
-				}
-			}
+			//			wxListItem tempItem;
+			//			m_DataInputListView->GetColumn(i + 1, tempItem);
+			//			tempItem.SetText(headerName);
+			//			m_DataInputListView->SetColumn(i + 1, tempItem);
+			//		}
+			//	}
+			//}
 		}
 	);
 
-	m_DataInputListView->Bind(wxEVT_LIST_ITEM_SELECTED, [this](wxListEvent& event)
+	/*m_DataInputListView->Bind(wxEVT_LIST_ITEM_SELECTED, [this](wxListEvent& event)
 		{
 			long row = event.GetIndex();
 
@@ -191,7 +191,7 @@ void CSVto_PanelBase::SetupDataInputSection()
 				}
 			}
 		}
-	);
+	);*/
 
 	// Add the list view to the horizontal sizer
 	m_DataListViewSizer->Add(m_DataInputListView, 1, wxALL | wxEXPAND, FromDIP(10));
@@ -254,7 +254,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 			if (!m_OutputDataTextBox->IsEmpty())
 			{
 				m_CSVData->CreateUndo();
-				m_CSVData->CapitalizeData((m_IncludeHeaderBtn->GetLabel() == "Exclude Header" ? true : false));
+				m_CSVData->CapitalizeData(m_CSVData, (m_IncludeHeaderBtn->GetLabel() == "Exclude Header" ? true : false));
 				PopulateData();
 			}
 		}
@@ -275,7 +275,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 			if (!m_OutputDataTextBox->IsEmpty())
 			{
 				m_CSVData->CreateUndo();
-				m_CSVData->LowerUpperData((m_IncludeHeaderBtn->GetLabel() == "Exclude Header" ? true : false), true);
+				m_CSVData->LowerUpperData(m_CSVData, (m_IncludeHeaderBtn->GetLabel() == "Exclude Header" ? true : false), true);
 				PopulateData();
 			}
 		}
@@ -296,7 +296,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 			if (!m_OutputDataTextBox->IsEmpty())
 			{
 				m_CSVData->CreateUndo();
-				m_CSVData->LowerUpperData((m_IncludeHeaderBtn->GetLabel() == "Exclude Header" ? true : false), false);
+				m_CSVData->LowerUpperData(m_CSVData, (m_IncludeHeaderBtn->GetLabel() == "Exclude Header" ? true : false), false);
 				PopulateData();
 			}
 		}
@@ -362,7 +362,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 			if (!m_OutputDataTextBox->IsEmpty())
 			{
 				m_CSVData->CreateUndo();
-				m_CSVData->TransposeData();
+				m_CSVData->TransposeData(m_CSVData);
 				PopulateData();
 			}
 		}
@@ -383,7 +383,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 			if (!m_OutputDataTextBox->IsEmpty())
 			{
 				m_CSVData->CreateUndo();
-				m_CSVData->RemoveWhiteSpace((m_IncludeHeaderBtn->GetLabel() == "Exclude Header" ? true : false));
+				m_CSVData->RemoveWhiteSpace(m_CSVData, (m_IncludeHeaderBtn->GetLabel() == "Exclude Header" ? true : false));
 				PopulateData();
 			}
 		}

@@ -7,9 +7,6 @@
     <ClCompile Include="TableGenerators.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="CSVData.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
     <ClCompile Include="CSVtoASCII_Panel.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
@@ -32,6 +29,12 @@
       <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="CSVtoXML_Panel.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CSVtoLatex_Panel.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CSVtoHTML_Panel.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -61,6 +64,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="XML.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CSVtoHTML_Panel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CSVtoLatex_Panel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

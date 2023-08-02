@@ -28,7 +28,7 @@ protected:
 	// Main Items
 	std::string m_FileDir;
 	std::string m_PanelName;
-	mrt::CSVData* m_CSVData = nullptr;
+	mrt::CSVData<std::string>* m_CSVData = nullptr;
 
 	wxBoxSizer* m_MainSizer;
 	const mrtApp::AppColours* m_Colours;

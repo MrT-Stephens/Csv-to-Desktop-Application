@@ -18,7 +18,7 @@ std::string mrt::AddWhiteSpaceToString(std::string _str, unsigned int _amount, i
 	return _str;
 }
 
-mrt::AsciiTableGenerator::AsciiTableGenerator(const mrt::CSVData* const _csvData, int _tableStyle, const std::string& _commentCharacters, bool _forceRowSeparation, int _whiteSpaceStyle)
+mrt::AsciiTableGenerator::AsciiTableGenerator(const mrt::CSVData<std::string>* const _csvData, int _tableStyle, const std::string& _commentCharacters, bool _forceRowSeparation, int _whiteSpaceStyle)
 	: m_CSVData(_csvData), m_TableStyle(_tableStyle), m_CommentCharacters(_commentCharacters), m_ForceRowSeparation(_forceRowSeparation), m_WhiteSpaceStyle(_whiteSpaceStyle)
 {
 	GenerateAsciiTable();
@@ -175,7 +175,7 @@ std::string mrt::AsciiTableGenerator::GenerateSpacerLine(unsigned char _dataSpac
 	return std::forward<std::string>(oss.str());
 }
 
-mrt::MarkdownTableGenerator::MarkdownTableGenerator(const mrt::CSVData* const _csvData, int _tableStyle, int _whiteSpaceStyle, bool _boldFirstRow, bool _boldFirstCol)
+mrt::MarkdownTableGenerator::MarkdownTableGenerator(const mrt::CSVData<std::string>* const _csvData, int _tableStyle, int _whiteSpaceStyle, bool _boldFirstRow, bool _boldFirstCol)
 	: m_CSVData(_csvData), m_TableStyle(_tableStyle), m_WhiteSpaceStyle(_whiteSpaceStyle), m_BoldFirstRow(_boldFirstRow), m_BoldFirstCol(_boldFirstCol)
 {
 	GenerateMarkdownTable();
@@ -183,7 +183,7 @@ mrt::MarkdownTableGenerator::MarkdownTableGenerator(const mrt::CSVData* const _c
 
 void mrt::MarkdownTableGenerator::GenerateMarkdownTable()
 {
-	std::vector<unsigned int> columnWidths = m_CSVData->GetMaxColumnWidths();
+	std::vector<size_t> columnWidths = m_CSVData->GetMaxColumnWidths();
 
 	{
 		std::vector<std::string> headerRow = m_CSVData->GetHeaderNames();
@@ -243,7 +243,7 @@ const std::ostringstream& mrt::MarkdownTableGenerator::GetMarkdownTableStream() 
 	return m_MarkdownTableText;			// Returns a constant string stream object, can call .str() on the function call to get the table string.
 }
 
-std::string mrt::MarkdownTableGenerator::GenerateDataLine(const std::vector<std::string>& _rowVector, const std::vector<unsigned int>& _columnWidths) const
+std::string mrt::MarkdownTableGenerator::GenerateDataLine(const std::vector<std::string>& _rowVector, const std::vector<size_t>& _columnWidths) const
 {
 	std::ostringstream oss;
 

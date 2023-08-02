@@ -597,6 +597,8 @@ void CSVto_PanelBase::LockOrUnlockItems(bool lock)
 	m_ClearBtn->Enable(!lock);
 	m_TransposeBtn->Enable(!lock);
 	m_DeleteBlanksBtn->Enable(!lock);
+	m_UndoBtn->Enable(!lock);
+	m_RedoBtn->Enable(!lock);
 }
 
 void CSVto_PanelBase::HideOrShowBasicAdvItems(bool show)

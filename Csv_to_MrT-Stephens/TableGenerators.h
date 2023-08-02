@@ -15,7 +15,7 @@ namespace mrt
 		LEFT = 0, BOTH = 1, RIGHT = 2
 	};
 
-	std::string AddWhiteSpaceToString(std::string _str, unsigned int _amount, int _style, unsigned char _fillCharacter = ' ');
+	std::string AddWhiteSpaceToString(std::string _str, size_t _amount, int _style, unsigned char _fillCharacter = ' ');
 
 	enum AsciiTableGenerator_Styles
 	{

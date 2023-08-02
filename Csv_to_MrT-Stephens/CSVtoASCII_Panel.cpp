@@ -150,6 +150,8 @@ void CSVtoASCII_Panel::PopulateOutputDataTextBox()
 
 void CSVtoASCII_Panel::LockOrUnlockItems(bool lock)
 {
+	m_UndoBtn->Enable(!lock);
+	m_RedoBtn->Enable(!lock);
 	m_LoadData->Enable(!lock);
 	m_ExampleData->Enable(!lock);
 	m_LowercaseBtn->Enable(!lock);

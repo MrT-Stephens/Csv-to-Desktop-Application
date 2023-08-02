@@ -1,5 +1,7 @@
 #pragma once
 
+#include "UtilityItems.h"
+
 #include <format>
 #include <string>
 #include <vector>
@@ -148,7 +150,7 @@ namespace mrt
 	static _StrType getNewLine(bool newLines);
 
 	template <class _CastType, class _InType>
-	_CastType string_cast(const _InType& str);
+	static _CastType string_cast(const _InType& str);
 }
 
 template <class _StrType>

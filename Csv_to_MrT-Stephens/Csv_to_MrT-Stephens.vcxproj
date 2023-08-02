@@ -178,6 +178,7 @@
   <ItemGroup>
     <ClInclude Include="CSVtoHTML_Panel.h" />
     <ClInclude Include="CSVtoLatex_Panel.h" />
+    <ClInclude Include="HTML_Table.h" />
     <ClInclude Include="TableGenerators.h" />
     <ClInclude Include="CSVtoMarkdown.h" />
     <ClInclude Include="UtilityItems.h" />

@@ -1,6 +1,6 @@
 #include "TableGenerators.h"
 
-std::string mrt::AddWhiteSpaceToString(std::string _str, unsigned int _amount, int _style, unsigned char _fillCharacter)
+std::string mrt::AddWhiteSpaceToString(std::string _str, size_t _amount, int _style, unsigned char _fillCharacter)
 {
 	switch (_style)
 	{

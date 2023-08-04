@@ -83,7 +83,7 @@ void mrt::LaTex_Table<_StrType>::WriteToStream(OStream* stream, int tableStyle, 
 
 	if (m_CaptionLocationAbove && !m_Caption.empty())
 	{
-		*stream << "\\caption{" << m_Caption << "}\n";
+		*stream << "\\caption{" << m_Caption << "}\n" << getTabs(1);
 	}
 
 	WriteTabularToStream(stream, m_CSVData, tableStyle, textAllignment);
@@ -150,7 +150,7 @@ void mrt::LaTex_Table<_StrType>::WriteTabularToStream(OStream* stream, const mrt
 
 	*stream << "}\n";
 
-	if (tableStyle != Latex_Table_Border_Markdown || tableStyle != Latex_Table_Border_None)
+	if ((tableStyle != Latex_Table_Border_Markdown) && (tableStyle != Latex_Table_Border_None))
 	{
 		*stream << getTabs(1) << "\\hline\n";
 	}
@@ -162,8 +162,15 @@ void mrt::LaTex_Table<_StrType>::WriteTabularToStream(OStream* stream, const mrt
 
 		for (size_t i = 0; i < columnNames.size(); ++i)
 		{
-			*stream << columnNames[i] << ((i == columnNames.size() - 1) ? " \\\\\n" : " & ");
+			*stream << columnNames[i] << ((i == columnNames.size() - 1) ? " \\\\" : " & ");
 		}
+
+		if (tableStyle != Latex_Table_Border_None)
+		{
+			*stream << " \\hline";
+		}
+
+		*stream << "\n";
 
 		for (size_t i0 = 0; i0 < csvData->GetRowCount(); ++i0)
 		{
@@ -173,8 +180,20 @@ void mrt::LaTex_Table<_StrType>::WriteTabularToStream(OStream* stream, const mrt
 
 			for (size_t i1 = 0; i1 < row.size(); ++i1)
 			{
-				*stream << row[i1] << ((i1 == row.size() - 1) ? " \\\\\n" : " & ");
+				*stream << row[i1] << ((i1 == row.size() - 1) ? " \\\\" : " & ");
 			}
+
+			if (tableStyle == LaTex_Table_Border_All)
+			{
+				*stream << " \\hline";
+			}
+			else if ((tableStyle == LaTex_Table_Border_Excel || tableStyle == LaTex_Table_Border_MySql ||
+				tableStyle == Latex_Table_Border_Horizontal) && i0 == csvData->GetRowCount() - 1)
+			{
+				*stream << " \\hline";
+			}
+
+			*stream << "\n";
 		}
 	}
 

@@ -204,7 +204,7 @@ void CSVtoLaTex_Panel::PopulateOutputDataTextBox()
 #endif
 
 	{
-		mrt::LaTex_Table<std::string> table(m_CSVData, m_LabelTextBox->GetValue().ToStdString(), m_TableCaptionTextBox->GetValue().ToStdString(), m_CaptionLocationComboBox->GetSelection());
+		mrt::LaTex_Table<std::string> table(m_CSVData, m_LabelTextBox->GetValue().ToStdString(), m_TableCaptionTextBox->GetValue().ToStdString(), !m_CaptionLocationComboBox->GetSelection());
 
 		mrt::LaTex_Table<std::string>::OStrStream ss;
 

@@ -29,11 +29,11 @@ Main_Frame::Main_Frame(const wxString& title, const wxPoint& pos, const wxSize& 
 
     m_Panels = {                                                        // Initialising the panels and their names.
         std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoSQL_Panel(m_Notebook, "CSV to SQL ", &m_Colours), "SQL"),
-        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoASCII_Panel(m_Notebook, "CSV to Ascii ", &m_Colours), "Ascii"),
+        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoASCII_Panel(m_Notebook, "CSV to Ascii", &m_Colours), "Ascii"),
         std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoMarkdown_Panel(m_Notebook, "CSV to Markdown", &m_Colours), "Markdown"),
         std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoXML_Panel(m_Notebook, "CSV to XML", &m_Colours), "XML"),
         std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoHTML_Panel(m_Notebook, "CSV to HTML", &m_Colours), "HTML"),
-        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoLatex_Panel(m_Notebook, "CSV to Latex", &m_Colours), "Latex")
+        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoLaTex_Panel(m_Notebook, "CSV to LaTex", &m_Colours), "LaTex")
     };
 
     for (std::pair<CSVto_PanelBase*, std::string>& panel : m_Panels)    // Looping through 'm_Panels' and adding the panels to the notebook.
@@ -41,21 +41,22 @@ Main_Frame::Main_Frame(const wxString& title, const wxPoint& pos, const wxSize& 
 		m_Notebook->AddPage(panel.first, panel.second);
 	}
 
-    Bind(wxEVT_CLOSE_WINDOW, [this](wxCloseEvent& event)		        // Binding the close event to stop exceptions being thrown when the window is closed with threads running.
-        {
-            if (std::any_of(m_Panels.begin(), m_Panels.end(), [](const std::pair<CSVto_PanelBase*, std::string>& panel) { return panel.first->isThreadsRunning(); }))
-            {                                                           // If any of the panels have threads running, show a warning dialog.
-                mrt::MrT_UniDialog warningDialog(this, "Warning", "Threads are still running in the background.\nPlease wait for all threads to finish processing before exiting the application.",
-                    &m_Colours, wxICON(wxICON_WARNING), mrt::MrT_UniDialogType_OK, { 400, 200 });
+    Bind(wxEVT_CLOSE_WINDOW, &Main_Frame::OnClose, this);		        // Binding the close event to stop exceptions being thrown when the window is closed with threads running.
+}
 
-                warningDialog.ShowModal();
-            }
-            else
-            {
-				Destroy();                                              // If no threads are running, destroy the window.
-			}
-        }
-    );
+void Main_Frame::OnClose(wxCloseEvent& event)
+{
+    if (std::any_of(m_Panels.begin(), m_Panels.end(), [](const std::pair<CSVto_PanelBase*, std::string>& panel) { return panel.first->isThreadsRunning(); }))
+    {                                                                   // If any of the panels have threads running, show a warning dialog.
+        mrt::MrT_UniDialog warningDialog(this, "Warning", "Threads are still running in the background.\nPlease wait for all threads to finish processing before exiting the application.",
+            &m_Colours, wxICON(wxICON_WARNING), mrt::MrT_UniDialogType_OK, { 400, 200 });
+
+        warningDialog.ShowModal();
+    }
+    else
+    {
+        Destroy();                                                      // If no threads are running, destroy the window.
+    }
 }
 
 Main_Frame::~Main_Frame()

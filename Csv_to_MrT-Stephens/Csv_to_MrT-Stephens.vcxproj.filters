@@ -31,7 +31,7 @@
     <ClCompile Include="CSVtoXML_Panel.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="CSVtoLatex_Panel.cpp">
+    <ClCompile Include="CSVtoLaTex_Panel.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
     <ClCompile Include="CSVtoHTML_Panel.cpp">
@@ -69,10 +69,13 @@
     <ClInclude Include="CSVtoHTML_Panel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CSVtoLatex_Panel.h">
+    <ClInclude Include="CSVtoLaTex_Panel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="HTML_Table.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LaTex_Table.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

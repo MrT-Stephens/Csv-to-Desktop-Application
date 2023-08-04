@@ -24,7 +24,7 @@ enum ListVeiwSortOrder
 
 class CSVto_PanelBase : public wxPanel
 {
-protected:
+protected: 
 	// Main Items
 	std::string m_FileDir;
 	std::string m_PanelName;

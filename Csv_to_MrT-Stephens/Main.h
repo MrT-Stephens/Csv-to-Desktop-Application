@@ -26,6 +26,10 @@ private:
 
     std::vector<std::pair<CSVto_PanelBase*, std::string>> m_Panels;
 public:
+    // Constructor & Destructor
     Main_Frame(const wxString& title, const wxPoint& pos, const wxSize& size, long style);
     ~Main_Frame();
+
+    // Member Functions
+    void OnClose(wxCloseEvent& event);
 };

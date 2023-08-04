@@ -7,35 +7,35 @@
     <ClCompile Include="TableGenerators.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="CSVtoASCII_Panel.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CSVtoSQL_Panel.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CSVto_PanelBase.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
     <ClCompile Include="MrT_wxDialogs.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CSVtoMarkdown.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
     <ClCompile Include="CSVtoXML_Panel.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Panel Header Files</Filter>
     </ClCompile>
-    <ClCompile Include="CSVtoXML_Panel.cpp">
-      <Filter>Resource Files</Filter>
+    <ClCompile Include="CSVto_PanelBase.cpp">
+      <Filter>Resource Files\Panel Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="CSVtoLaTex_Panel.cpp">
-      <Filter>Resource Files</Filter>
+    <ClCompile Include="CSVtoASCII_Panel.cpp">
+      <Filter>Resource Files\Panel Resource Files</Filter>
     </ClCompile>
     <ClCompile Include="CSVtoHTML_Panel.cpp">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Panel Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CSVtoLaTex_Panel.cpp">
+      <Filter>Resource Files\Panel Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CSVtoMarkdown.cpp">
+      <Filter>Resource Files\Panel Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CSVtoSQL_Panel.cpp">
+      <Filter>Resource Files\Panel Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CSVtoXML_Panel.cpp">
+      <Filter>Resource Files\Panel Resource Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -45,31 +45,13 @@
     <ClInclude Include="CSVData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CSVtoASCII_Panel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CSVtoSQL_Panel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CSVto_PanelBase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Main.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="UtilityItems.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="CSVtoMarkdown.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="XML.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CSVtoHTML_Panel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CSVtoLaTex_Panel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="HTML_Table.h">
@@ -77,6 +59,24 @@
     </ClInclude>
     <ClInclude Include="LaTex_Table.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CSVto_PanelBase.h">
+      <Filter>Header Files\Panel Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CSVtoHTML_Panel.h">
+      <Filter>Header Files\Panel Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CSVtoASCII_Panel.h">
+      <Filter>Header Files\Panel Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CSVtoLaTex_Panel.h">
+      <Filter>Header Files\Panel Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CSVtoSQL_Panel.h">
+      <Filter>Header Files\Panel Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CSVtoMarkdown.h">
+      <Filter>Header Files\Panel Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -88,6 +88,12 @@
     </Filter>
     <Filter Include="Source Files">
       <UniqueIdentifier>{b432e69f-7d45-463d-ad24-9667479ee665}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Panel Header Files">
+      <UniqueIdentifier>{f7021d9b-4fad-4188-96d0-870b90973267}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Panel Resource Files">
+      <UniqueIdentifier>{4876a59a-6a3c-49f7-8551-5713ea76ef33}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

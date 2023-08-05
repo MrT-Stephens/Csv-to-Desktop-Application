@@ -58,6 +58,10 @@ Main_Frame::Main_Frame(const wxString& title, const wxPoint& pos, const wxSize& 
         std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoLaTex_Panel(m_Notebook, "CSV to LaTex", &m_Colours), "LaTex")
     };
 
+#if defined(MRT_DEBUG)
+    MRT_DEBUG_LOG_MSG(std::format("Created {} panels and added to wxNoteBook", m_Panels.size()));
+#endif
+
     for (std::pair<CSVto_PanelBase*, std::string>& panel : m_Panels)    // Looping through 'm_Panels' and adding the panels to the notebook.
 	{
 		m_Notebook->AddPage(panel.first, panel.second);
@@ -74,6 +78,10 @@ void Main_Frame::OnClose(wxCloseEvent& event)
             &m_Colours, wxICON(wxICON_WARNING), mrt::MrT_UniDialogType_OK, { 400, 200 });
 
         warningDialog.ShowModal();
+
+#if defined(MRT_DEBUG)
+		MRT_DEBUG_LOG_MSG("Warning message sent, threads are still running, unable to close app");
+#endif
     }
     else
     {

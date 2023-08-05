@@ -127,7 +127,7 @@ void CSVtoMarkdown_Panel::PopulateOutputDataTextBox()
 
 	auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
 
-	OutputDebugString(L"[MRT_DEBUG] Time taken by 'PopulateOutputDataTextBox' (MARKDOWN CLASS): " + std::to_string(duration.count()) + " milliseconds.\n");
+	MRT_DEBUG_LOG_TIME("Time taken by 'PopulateOutputDataTextBox' in Markdown class", duration.count(), "milliseconds");
 #endif
 
 	std::lock_guard<std::mutex> lock(m_OutputDataMutex);

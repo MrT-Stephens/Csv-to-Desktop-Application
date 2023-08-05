@@ -1,5 +1,9 @@
 #include "Main.h"
 
+#if defined(MRT_DEBUG)
+#include <Windows.h>   // For debugging
+#endif
+
 // Global variables for the application
 const std::string mrtApp::APP_NAME = "CSV to...";
 const std::string mrtApp::APP_VERSION = "v0.1.1";
@@ -15,6 +19,15 @@ const std::string mrtApp::DONATE_URL = "";
 
 bool MrT_App::OnInit()
 {
+#if defined(MRT_DEBUG)
+    AllocConsole();
+
+    freopen("CONOUT$", "w", stdout);
+    freopen("CONOUT$", "w", stderr);
+
+    MRT_DEBUG_LOG_MSG("Debugging enabled on application (" + mrtApp::APP_TITLE + ")");
+#endif
+
     Main_Frame* mainFrame = new Main_Frame(mrtApp::APP_TITLE, wxDefaultPosition, { 700, 800 }, wxDEFAULT_FRAME_STYLE);
 
     mainFrame->SetMinSize({ 700, 800 });

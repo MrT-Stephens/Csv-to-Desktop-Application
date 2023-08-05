@@ -106,9 +106,9 @@ void CSVto_PanelBase::SetupDataInputSection()
 			m_CSVData = new mrt::CSVData<std::string>({
 				{ "Matthew", "Mann", "21", "M", "P001" },
 				{ "James", "Williams", "27", "M", "P002" },
-				{ "Matt", "Lewis", "18", "M", "P003" }, 
-				{ "Sarah", "Vills", "22", "F", "P004" }}, 
-				{"firstName", "lastName", "age", "gender", "personId" });
+				{ "Matt", "Lewis", "18", "M", "P003" },
+				{ "Sarah", "Vills", "22", "F", "P004" } },
+				{ "firstName", "lastName", "age", "gender", "personId" });
 
 			PopulateData();
 		}

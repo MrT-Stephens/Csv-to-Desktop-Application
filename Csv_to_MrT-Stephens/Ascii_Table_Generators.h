@@ -253,7 +253,7 @@ _StrType mrt::AsciiTableGenerator<_StrType>::GenerateSpacerLine(unsigned char _d
 
 	for (size_t i = 0; i < m_CSVData->GetColumnCount(); ++i)
 	{
-		oss << _edgesCharacter << AddWhiteSpaceToString<_StrType>("", m_CSVData->GetMaxColumnWidth(i) + 2, WhiteSpaceStyle::LEFT, _dataSpaceCharacter);
+		oss << _edgesCharacter << AddWhiteSpaceToString<_StrType>(_StrType(), m_CSVData->GetMaxColumnWidth(i) + 2, WhiteSpaceStyle::LEFT, _dataSpaceCharacter);
 	}
 	oss << _edgesCharacter;
 
@@ -298,10 +298,10 @@ void mrt::MarkdownTableGenerator<_StrType>::GenerateMarkdownTable(OStream* strea
 		switch (_tableStyle)
 		{
 		case Markdown_Table_Normal:
-			*stream << '|' << AddWhiteSpaceToString<_StrType>("", columnWidths[i] + 2, WhiteSpaceStyle::LEFT, '-') << ((i == m_CSVData->GetColumnCount() - 1) ? "|\n" : "");
+			*stream << _StrType(1, '|') << AddWhiteSpaceToString<_StrType>(_StrType(), columnWidths[i] + 2, WhiteSpaceStyle::LEFT, '-') << ((i == m_CSVData->GetColumnCount() - 1) ? "|\n" : "");
 			break;
 		case Markdown_Table_Simple:
-			*stream << AddWhiteSpaceToString<_StrType>("", columnWidths[i] + 2, WhiteSpaceStyle::LEFT, '-') << ((i == m_CSVData->GetColumnCount() - 1) ? '\n' : '|');
+			*stream << AddWhiteSpaceToString<_StrType>(_StrType(), columnWidths[i] + 2, WhiteSpaceStyle::LEFT, '-') << ((i == m_CSVData->GetColumnCount() - 1) ? '\n' : '|');
 			break;
 		}
 	}

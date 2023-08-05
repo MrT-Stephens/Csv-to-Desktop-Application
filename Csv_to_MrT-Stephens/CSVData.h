@@ -263,7 +263,7 @@ mrt::CSVData_Error mrt::CSVData_Base<_StrType>::LoadCsv(CSVData_Base<_StrType>* 
 		std::vector<_StrType>& headerNames = csvData->GetHeaderNames();
 		std::vector<size_t>& maxColumnWidths = csvData->GetMaxColumnWidths();
 
-		while (std::getline(ss, word, ','))
+		while (std::getline(ss, word, typename _StrType::value_type(',')))
 		{
 			if (removeNonAscii)
 			{
@@ -288,7 +288,7 @@ mrt::CSVData_Error mrt::CSVData_Base<_StrType>::LoadCsv(CSVData_Base<_StrType>* 
 
 			for (size_t i = 0; i < headerNames.size(); ++i)
 			{
-				std::getline(ss, word, ',');
+				std::getline(ss, word, typename _StrType::value_type(','));
 
 				if (removeNonAscii)
 				{

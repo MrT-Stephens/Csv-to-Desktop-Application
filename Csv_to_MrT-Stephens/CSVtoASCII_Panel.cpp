@@ -1,5 +1,9 @@
 ﻿#include "CSVtoASCII_Panel.h"
 
+  /********************************/
+ /* CSVtoASCII_Panel Declaration */
+/********************************/
+
 CSVtoASCII_Panel::CSVtoASCII_Panel(wxWindow* _parent, const std::string& _name, const mrtApp::AppColours* _colours) 
 	: CSVto_PanelBase(_parent, _name, _colours)
 {
@@ -141,7 +145,6 @@ void CSVtoASCII_Panel::PopulateOutputDataTextBox()
 
 	OutputDebugString(L"[MRT_DEBUG] Time taken by 'PopulateOutputDataTextBox' (ASCII CLASS): " + std::to_string(duration.count()) + " milliseconds.\n");
 #endif
-
 	std::lock_guard<std::mutex> lock(m_OutputDataMutex);
 
 	m_TextBoxThreadRunning = false;

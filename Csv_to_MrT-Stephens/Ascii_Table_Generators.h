@@ -30,6 +30,10 @@ namespace mrt
 		ExtendedAscii_Table_MySQL = 7
 	};
 
+	  /***********************************/
+	 /* AsciiTableGenerator Declaration */
+	/***********************************/
+
 	template <class _StrType>
 	class AsciiTableGenerator
 	{
@@ -62,6 +66,10 @@ namespace mrt
 		Markdown_Table_Normal = 0,
 		Markdown_Table_Simple = 1
 	};
+
+	  /**************************************/
+	 /* MarkdownTableGenerator Declaration */
+	/**************************************/
 
 	template <class _StrType>
 	class MarkdownTableGenerator
@@ -110,7 +118,9 @@ _StrType mrt::AddWhiteSpaceToString(_StrType _str, size_t _amount, int _style, t
 	return _str;
 }
 
-
+  /**************************************/
+ /* AsciiTableGenerator Implementation */
+/**************************************/
 
 template <class _StrType>
 mrt::AsciiTableGenerator<_StrType>::AsciiTableGenerator(const mrt::CSVData<_StrType>* const _csvData)
@@ -260,7 +270,9 @@ _StrType mrt::AsciiTableGenerator<_StrType>::GenerateSpacerLine(unsigned char _d
 	return std::forward<_StrType>(oss.str());
 }
 
-
+  /*****************************************/
+ /* MarkdownTableGenerator Implementation */
+/*****************************************/
 
 template <class _StrType>
 mrt::MarkdownTableGenerator<_StrType>::MarkdownTableGenerator(const mrt::CSVData<_StrType>* const _csvData)

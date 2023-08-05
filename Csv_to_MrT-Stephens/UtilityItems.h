@@ -6,8 +6,16 @@
 
 #include "CSV_to_Logo.xpm"		// Icons array is called 'CSV_to_Logo'
 
+  /*********************/
+ /* MrT Global Macros */
+/*********************/
+
 #define MAIN_FONT_TEXT(size) wxFont(size, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, "", wxFONTENCODING_DEFAULT)
 #define MAIN_FONT_BOLD(size) wxFont(size, wxFONTFAMILY_MODERN, wxFONTSTYLE_MAX, wxFONTWEIGHT_EXTRAHEAVY, false, "", wxFONTENCODING_DEFAULT)
+
+  /*****************************/
+ /* MrT App Global Infomation */
+/*****************************/
 
 namespace mrtApp
 {

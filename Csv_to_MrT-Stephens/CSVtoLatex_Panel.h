@@ -3,6 +3,10 @@
 #include "LaTex_Table.h"
 #include "CSVto_PanelBase.h"
 
+  /********************************/
+ /* CSVtoLaTex_Panel Decleration */
+/********************************/
+
 class CSVtoLaTex_Panel : public CSVto_PanelBase
 {
 private:

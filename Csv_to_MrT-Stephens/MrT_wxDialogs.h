@@ -7,13 +7,12 @@
 
 #include "UtilityItems.h"
 
-namespace mrtApp
-{
-	
-}
-
 namespace mrt
 {
+	  /******************************/
+	 /* MrT_InfoDialog Declaration */
+	/******************************/
+
 	class MrT_InfoDialog : public wxDialog
 	{
 	private:
@@ -40,6 +39,10 @@ namespace mrt
 		MrT_UniDialogType_YES_NO_CANCEL = MrT_UniDialogType_YES | MrT_UniDialogType_NO | MrT_UniDialogType_CANCEL
 	};
 
+	  /*****************************/
+	 /* MrT_UniDialog Declaration */
+	/*****************************/
+
 	class MrT_UniDialog : public wxDialog			// Universal Dialog class for error, warning, and question dialogs
 	{
 	private:
@@ -51,6 +54,10 @@ namespace mrt
 		MrT_UniDialog(wxWindow* parent, const std::string& title, const std::string& message, const mrtApp::AppColours* colours, 
 			const wxIcon& icon, long dialogType = MrT_UniDialogType_None, const wxSize& size = wxDefaultSize);
 	};
+
+	  /**********************************/
+	 /* MrT_DataEditDialog Declaration */
+	/**********************************/
 
 	class MrT_DataEditDialog : public wxDialog
 	{

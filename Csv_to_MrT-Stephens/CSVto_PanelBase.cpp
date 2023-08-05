@@ -1,5 +1,9 @@
 ﻿#include "CSVto_PanelBase.h"
 
+  /**********************************/
+ /* CSVto_PanelBase Implementation */
+/**********************************/
+
 CSVto_PanelBase::CSVto_PanelBase(wxWindow* _parent, const std::string& _name, const mrtApp::AppColours* _colours) 
 	: wxPanel(_parent), m_PanelName(_name), m_Colours(_colours)
 {
@@ -636,6 +640,10 @@ bool CSVto_PanelBase::isThreadsRunning()
 
 	return (m_ListViewThreadRunning || m_TextBoxThreadRunning) ? true : false;
 }
+
+  /**************************************/
+ /* MrT Global Function Implementation */
+/**************************************/
 
 std::wstring mrt::StrToWstr(const std::string& str)
 {

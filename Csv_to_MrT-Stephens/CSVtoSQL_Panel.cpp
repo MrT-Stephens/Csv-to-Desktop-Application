@@ -1,5 +1,9 @@
 #include "CSVtoSQL_Panel.h"
 
+  /*********************************/
+ /* CSVtoSQL_Panel Implementation */
+/*********************************/
+
 CSVtoSQL_Panel::CSVtoSQL_Panel(wxWindow* _parent, const std::string& _name, const mrtApp::AppColours* _colours) 
 	: CSVto_PanelBase(_parent, _name, _colours)
 {

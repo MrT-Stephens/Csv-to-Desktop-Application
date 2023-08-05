@@ -3,6 +3,10 @@
 #include "XML.h"
 #include "CSVto_PanelBase.h"
 
+  /******************************/
+ /* CSVtoXML_Panel Declaration */
+/******************************/
+
 class CSVtoXML_Panel : public CSVto_PanelBase
 {
 private:

@@ -1,5 +1,9 @@
 #include "CSVtoMarkdown_Panel.h"
 
+  /**************************************/
+ /* CSVtoMarkdown_Panel Implementation */
+/**************************************/
+
 CSVtoMarkdown_Panel::CSVtoMarkdown_Panel(wxWindow* _parent, const std::string& _name, const mrtApp::AppColours* _colours)
 	: CSVto_PanelBase(_parent, _name, _colours)
 {

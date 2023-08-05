@@ -1,16 +1,19 @@
 #pragma once
 
+// wxWidgets includes
 #include <wx/wx.h>
 #include <wx/clipbrd.h>
 #include <wx/listctrl.h>
 #include <wx/stdpaths.h> 
 #include <wx/filename.h>
 
+// std includes
 #include <mutex>
 #include <thread>
 #include <format>
 #include <iomanip>
 
+// MrT includes
 #include "CSVData.h"
 #include "MrT_wxDialogs.h"
 #include "UtilityItems.h"
@@ -21,6 +24,10 @@ enum ListVeiwSortOrder
 	ORDER_ASCENDING = 1,
 	ORDER_DESCENDING = 2
 };
+
+  /*******************************/
+ /* CSVto_PanelBase Declaration */
+/*******************************/
 
 class CSVto_PanelBase : public wxPanel
 {
@@ -72,6 +79,10 @@ public:
 	void PopulateData();
 	bool isThreadsRunning();
 };
+
+  /***********************/
+ /* MrT Global Function */
+/***********************/
 
 namespace mrt
 {

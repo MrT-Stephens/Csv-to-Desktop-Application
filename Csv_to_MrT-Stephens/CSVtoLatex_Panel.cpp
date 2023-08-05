@@ -1,5 +1,9 @@
 #include "CSVtoLaTex_Panel.h"
 
+  /***********************************/
+ /* CSVtoLaTex_Panel Implementation */
+/***********************************/
+
 CSVtoLaTex_Panel::CSVtoLaTex_Panel(wxWindow* _parent, const std::string& _name, const mrtApp::AppColours* _colours)
 	: CSVto_PanelBase(_parent, _name, _colours)
 {

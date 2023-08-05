@@ -1,7 +1,12 @@
 #pragma once
 
+// MrT Includes
 #include "CSVto_PanelBase.h"
 #include "Ascii_Table_Generators.h"
+
+  /********************************/
+ /* CSVtoASCII_Panel Declaration */
+/********************************/
 
 class CSVtoASCII_Panel : public CSVto_PanelBase
 {

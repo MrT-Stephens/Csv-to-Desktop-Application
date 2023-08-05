@@ -11,12 +11,20 @@
 
 namespace mrt
 {
+	  /*****************************/
+	 /* XML_Attribute Declaration */
+	/*****************************/
+
 	template <class _StrType>
 	struct XML_Attribute
 	{
 		_StrType m_Name;
 		_StrType m_Value;
 	};
+
+	  /************************/
+	 /* XML_Node Declaration */
+	/************************/
 
 	template <class _StrType>
 	class XML_Node
@@ -72,6 +80,10 @@ namespace mrt
 		SUCCESS = 0,
 		FAILED_TO_OPEN = 1
 	};
+
+	  /****************************/
+	 /* XML_Document Declaration */
+	/****************************/
 
 	template <class _StrType>
 	class XML_Document
@@ -134,6 +146,10 @@ namespace mrt
 		static void WriteDocumentToStream(OStream* fs, const XML_Document& document);
 	};
 
+	  /************************/
+	 /* MrT Global Functions */
+	/************************/
+
 	template <class _StrType>
 	static _StrType getXMLprolog(const _StrType& version);
 
@@ -152,6 +168,10 @@ namespace mrt
 	template <class _CastType, class _InType>
 	static _CastType string_cast(const _InType& str);
 }
+
+  /***************************/
+ /* XML_Node Implementation */
+/***************************/
 
 template <class _StrType>
 mrt::XML_Node<_StrType>::XML_Node(const _StrType& name, const _StrType& value) : m_Name(name), m_Value(value) { }
@@ -289,7 +309,9 @@ std::vector<mrt::XML_Node<_StrType>>& mrt::XML_Node<_StrType>::GetAllChildren() 
 template <class _StrType>
 const std::vector<mrt::XML_Node<_StrType>>& mrt::XML_Node<_StrType>::GetAllChildren() const { return m_Children; }
 
-
+  /*******************************/
+ /* XML_Document Implementation */
+/*******************************/
 
 template <class _StrType>
 mrt::XML_Document<_StrType>::XML_Document(const XML_Node<_StrType>& root, const _StrType& version, const _StrType& nameSpace, bool addProlog, bool newLines) :
@@ -433,7 +455,9 @@ void mrt::XML_Document<_StrType>::WriteDocumentToStream(OStream* fs, const XML_D
 	*fs << getEndNode(document.GetRoot(), document.GetNamespace()) << getNewLine<_StrType>(document.GetNewLines());
 }
 
-
+  /***************************************/
+ /* MrT Global Functions Implementation */
+/***************************************/
 
 template <>
 std::string mrt::getXMLprolog(const std::string& version)

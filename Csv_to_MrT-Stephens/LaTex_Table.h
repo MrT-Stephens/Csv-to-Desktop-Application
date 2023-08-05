@@ -21,6 +21,10 @@ namespace mrt
 		Latex_Table_Border_None = 5
 	};
 
+	  /***************************/
+	 /* LaTex_Table Declaration */
+	/***************************/
+
 	template <class _StrType>
 	class LaTex_Table
 	{
@@ -51,6 +55,10 @@ namespace mrt
 		static _StrType getTabs(size_t amount);
 	};
 }
+
+  /******************************/
+ /* LaTex_Table Implementation */
+/******************************/
 
 template <class _StrType>
 mrt::LaTex_Table<_StrType>::LaTex_Table(const mrt::CSVData<_StrType>* const csvData, const _StrType& label, const _StrType& caption, bool captionLocationAbove) :

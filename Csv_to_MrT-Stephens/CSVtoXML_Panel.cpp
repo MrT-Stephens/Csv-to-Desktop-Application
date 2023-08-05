@@ -1,5 +1,9 @@
 #include "CSVtoXML_Panel.h"
 
+  /*********************************/
+ /* CSVtoXML_Panel Implementation */
+/*********************************/
+
 CSVtoXML_Panel::CSVtoXML_Panel(wxWindow* _parent, const std::string& _name, const mrtApp::AppColours* _colours)
 	: CSVto_PanelBase(_parent, _name, _colours)
 {

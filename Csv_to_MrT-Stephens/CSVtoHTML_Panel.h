@@ -3,6 +3,10 @@
 #include "HTML_Table.h"
 #include "CSVto_PanelBase.h"
 
+  /*******************************/
+ /* CSVtoHTML_Panel Declaration */
+/*******************************/
+
 class CSVtoHTML_Panel : public CSVto_PanelBase
 {
 private:

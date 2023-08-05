@@ -2,6 +2,10 @@
 
 #include "CSVto_PanelBase.h"
 
+  /******************************/
+ /* CSVtoSQL_Panel Declaration */
+/******************************/
+
 class CSVtoSQL_Panel : public CSVto_PanelBase
 {
 private:

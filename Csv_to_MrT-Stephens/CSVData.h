@@ -28,6 +28,10 @@ namespace mrt
 		CAN_REDO = 3
 	};
 
+	  /**********************************/
+	 /* CSVData_Base Class Declaration */
+	/**********************************/
+
 	template <class _StrType>
 	class CSVData_Base
 	{
@@ -91,6 +95,10 @@ namespace mrt
 		static CSVData_Error SaveCsv(const CSVData_Base<_StrType>* const csvData, const _StrType& fileDir);
 	};
 
+	  /************************/
+	 /* CSVData Deceleration */
+	/************************/
+
 	template <class _StrType>
 	class CSVData : public CSVData_Base<_StrType>
 	{
@@ -134,6 +142,10 @@ namespace mrt
 		static void TransposeData(CSVData_Base<_StrType>* const csvData);
 	};
 }
+
+  /*******************************/
+ /* CSVData_Base Implementation */
+/*******************************/
 
 template <class _StrType>
 mrt::CSVData_Base<_StrType>::CSVData_Base(const _StrType& filePath, bool removeNonAscii)
@@ -348,7 +360,9 @@ mrt::CSVData_Error mrt::CSVData_Base<_StrType>::SaveCsv(const CSVData_Base<_StrT
 	return CSVData_Error::NONE;
 }
 
-
+  /**************************/
+ /* CSVData Implementation */
+/**************************/
 
 template <class _StrType>
 mrt::CSVData<_StrType>::CSVData(const _StrType& fileDir) : CSVData_Base<_StrType>(fileDir) { }

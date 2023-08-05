@@ -1,5 +1,9 @@
 #include "MrT_wxDialogs.h"
 
+  /*********************************/
+ /* MrT_InfoDialog Implementation */
+/*********************************/
+
 mrt::MrT_InfoDialog::MrT_InfoDialog(wxWindow* parent, const std::string& title, const std::string& message, const mrtApp::AppColours* colours, const wxSize& size)
 	: wxDialog(parent, wxID_ANY, "", wxDefaultPosition, size, (wxDEFAULT_DIALOG_STYLE & ~(wxSYSTEM_MENU)) | wxSTAY_ON_TOP)
 {
@@ -83,6 +87,10 @@ mrt::MrT_InfoDialog::MrT_InfoDialog(wxWindow* parent, const std::string& title, 
 
 	SetSizer(m_MainSizer);
 }
+
+  /********************************/
+ /* MrT_UniDialog Implementation */
+/********************************/
 
 mrt::MrT_UniDialog::MrT_UniDialog(wxWindow* parent, const std::string& title, const std::string& message, const mrtApp::AppColours* colours, const wxIcon& icon, long dialogType, const wxSize& size) 
 	: wxDialog(parent, wxID_ANY, "", wxDefaultPosition, size, (wxDEFAULT_DIALOG_STYLE & ~(wxSYSTEM_MENU)) | wxSTAY_ON_TOP)
@@ -183,6 +191,9 @@ mrt::MrT_UniDialog::MrT_UniDialog(wxWindow* parent, const std::string& title, co
 	SetSizer(m_MainSizer);
 }
 
+  /*************************************/
+ /* MrT_DataEditDialog Implementation */
+/*************************************/
 
 mrt::MrT_DataEditDialog::MrT_DataEditDialog(wxWindow* parent, const std::string& title, const mrtApp::AppColours* colours,
 	const std::vector<std::string>& dataEditTitles, std::vector<std::string>& editableData, const wxSize& size)

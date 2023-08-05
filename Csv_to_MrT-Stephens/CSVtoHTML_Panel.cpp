@@ -1,5 +1,9 @@
 #include "CSVtoHTML_Panel.h"
 
+  /**********************************/
+ /* CSVtoHTML_Panel Implementation */
+/**********************************/
+
 CSVtoHTML_Panel::CSVtoHTML_Panel(wxWindow* _parent, const std::string& _name, const mrtApp::AppColours* _colours)
 	: CSVto_PanelBase(_parent, _name, _colours)
 {

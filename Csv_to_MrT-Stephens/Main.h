@@ -11,11 +11,19 @@
 #include "CSVtoHTML_Panel.h"
 #include "CSVtoLatex_Panel.h"
 
+  /***********************/
+ /* MrT_App Declaration */
+/***********************/
+
 class MrT_App : public wxApp
 {
 public:
     virtual bool OnInit() override;
 };
+
+  /**************************/
+ /* Main_Frame Declaration */
+/**************************/
 
 class Main_Frame : public wxFrame
 {

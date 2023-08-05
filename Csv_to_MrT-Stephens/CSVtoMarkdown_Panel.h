@@ -3,6 +3,10 @@
 #include "CSVto_PanelBase.h"
 #include "Ascii_Table_Generators.h"
 
+  /***********************************/
+ /* CSVtoMarkdown_Panel Declaration */
+/***********************************/
+
 class CSVtoMarkdown_Panel : public CSVto_PanelBase
 {
 private:

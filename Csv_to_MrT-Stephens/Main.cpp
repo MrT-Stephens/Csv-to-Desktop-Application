@@ -1,5 +1,6 @@
 #include "Main.h"
 
+// Global variables for the application
 const std::string mrtApp::APP_NAME = "CSV to...";
 const std::string mrtApp::APP_VERSION = "v0.1.1";
 
@@ -7,6 +8,10 @@ const std::string mrtApp::APP_TITLE = mrtApp::APP_NAME + " " + mrtApp::APP_VERSI
 
 const std::string mrtApp::GITHUB_URL = "https://github.com/MrT-Stephens";
 const std::string mrtApp::DONATE_URL = "";
+
+  /**************************/
+ /* MrT_App Implementation */
+/**************************/
 
 bool MrT_App::OnInit()
 {
@@ -18,6 +23,10 @@ bool MrT_App::OnInit()
 
     return true;
 }
+
+  /*****************************/
+ /* Main_Frame Implementation */
+/*****************************/
 
 Main_Frame::Main_Frame(const wxString& title, const wxPoint& pos, const wxSize& size, long style) 
     : wxFrame(nullptr, wxID_ANY, title, pos, size, style)
@@ -67,7 +76,4 @@ Main_Frame::~Main_Frame()
 	}
 }
 
-wxIMPLEMENT_APP(MrT_App);          
-
-// Hovering over buttons, change the colour of the text.
-// Flickering on the open file button.
+wxIMPLEMENT_APP(MrT_App);   									        // Implementing the application.

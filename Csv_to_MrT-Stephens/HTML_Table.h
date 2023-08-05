@@ -8,6 +8,10 @@
 
 namespace mrt
 {
+	  /**************************/
+	 /* HTML_Table Declaration */
+	/**************************/
+
 	template <class _StrType>
 	class HTML_Table
 	{
@@ -35,6 +39,10 @@ namespace mrt
 		static _StrType getNewLine(bool newLines);
 	};
 }
+
+  /*****************************/
+ /* HTML_Table Implementation */
+/*****************************/
 
 template <class _StrType>
 mrt::HTML_Table<_StrType>::HTML_Table(const mrt::CSVData<_StrType>* const csvData) : m_CSVData(csvData) { }

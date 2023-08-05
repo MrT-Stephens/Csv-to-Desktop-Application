@@ -75,6 +75,10 @@ void CSVto_PanelBase::SetupDataInputSection()
 				if (m_CSVData->GetError() == mrt::CSVData_Error::NONE)
 				{
 					PopulateData();
+
+#if defined(MRT_DEBUG)
+					MRT_DEBUG_LOG_MSG(std::format("File inputted successfully ({})", m_FileDir));
+#endif
 				}
 				else if (m_CSVData->GetError() == mrt::CSVData_Error::CANNOT_OPEN_FILE)
 				{
@@ -82,6 +86,10 @@ void CSVto_PanelBase::SetupDataInputSection()
 						m_Colours, wxICON(wxICON_ERROR), mrt::MrT_UniDialogType_OK, { 400, 200 });
 
 					errorDialog.ShowModal();
+
+#if defined(MRT_DEBUG)
+					MRT_DEBUG_LOG_MSG(std::format("Failed to open file ({})", m_FileDir));
+#endif
 				}
 				else
 				{
@@ -89,6 +97,10 @@ void CSVto_PanelBase::SetupDataInputSection()
 						m_Colours, wxICON(wxICON_ERROR), mrt::MrT_UniDialogType_OK, { 400, 200 });
 
 					errorDialog.ShowModal();
+
+#if defined(MRT_DEBUG)
+					MRT_DEBUG_LOG_MSG(std::format("Failed to input data from file ({})", m_FileDir));
+#endif
 				}
 			}
 		}
@@ -113,6 +125,10 @@ void CSVto_PanelBase::SetupDataInputSection()
 				{ "Matt", "Lewis", "18", "M", "P003" },
 				{ "Sarah", "Vills", "22", "F", "P004" } },
 				{ "firstName", "lastName", "age", "gender", "personId" });
+
+#if defined(MRT_DEBUG)
+			MRT_DEBUG_LOG_MSG("Preveiw file inputted successfully");
+#endif
 
 			PopulateData();
 		}
@@ -513,6 +529,10 @@ void CSVto_PanelBase::OutputFile()
 				m_Colours, wxICON(wxICON_ERROR), mrt::MrT_UniDialogType_OK, { 400, 200 });
 
 			errorDialog.ShowModal();
+
+#if defined(MRT_DEBUG)
+			MRT_DEBUG_LOG_MSG(std::format("Failed to save file at path ({})", saveFileDialog.GetPath().ToStdString()));
+#endif
 		}
 		else
 		{

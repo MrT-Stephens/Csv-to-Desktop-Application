@@ -11,8 +11,7 @@
 /*********************/
 
 #if defined(MRT_DEBUG)
-#define MRT_DEBUG_LOG_MSG(msg) std::cout << "[MRT_DEBUG] " << msg << ".\n"
-#define MRT_DEBUG_LOG_ERR(msg) std::cerr << "[MRT_DEBUG] '" << __FILE__ << "' (Line: " << __LINE__ << "), " << msg << ".\n"
+#define MRT_DEBUG_LOG_MSG(msg) std::cout << "[MRT_DEBUG] " << "(Time: " << std::chrono::system_clock::now() << ") " << msg << ".\n"
 #define MRT_DEBUG_LOG_TIME(msg, runTime, timeUnits) std::cout << "[MRT_DEBUG] " << msg << " (Time: " << runTime << " " << timeUnits << ").\n"
 #endif
 

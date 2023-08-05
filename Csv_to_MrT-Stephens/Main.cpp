@@ -25,7 +25,7 @@ bool MrT_App::OnInit()
     freopen("CONOUT$", "w", stdout);
     freopen("CONOUT$", "w", stderr);
 
-    MRT_DEBUG_LOG_MSG("Debugging enabled on application (" + mrtApp::APP_TITLE + ")");
+    MRT_DEBUG_LOG_MSG(std::format("Debugging enabled on application ({})", mrtApp::APP_TITLE));
 #endif
 
     Main_Frame* mainFrame = new Main_Frame(mrtApp::APP_TITLE, wxDefaultPosition, { 700, 800 }, wxDEFAULT_FRAME_STYLE);

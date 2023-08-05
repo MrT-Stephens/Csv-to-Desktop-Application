@@ -33,7 +33,7 @@ bool MrT_App::OnInit()
     mainFrame->SetMinSize({ 700, 800 });
     mainFrame->SetIcon(CSV_to_Logo);
     mainFrame->Show(true);
-
+    
     return true;
 }
 

@@ -1,4 +1,4 @@
-#include "CSVtoMarkdown.h"
+#include "CSVtoMarkdown_Panel.h"
 
 CSVtoMarkdown_Panel::CSVtoMarkdown_Panel(wxWindow* _parent, const std::string& _name, const mrtApp::AppColours* _colours)
 	: CSVto_PanelBase(_parent, _name, _colours)
@@ -109,9 +109,13 @@ void CSVtoMarkdown_Panel::PopulateOutputDataTextBox()
 #endif
 
 	{
-		mrt::MarkdownTableGenerator markdownTableGenerator(m_CSVData, m_TableStyle->GetSelection(), m_TextAlignment->GetSelection(), m_BoldFirstRow->GetValue(), m_BoldFirstCol->GetValue());
+		mrt::MarkdownTableGenerator<std::string> markdownTableGenerator(m_CSVData);
 
-		m_OutputDataTextBox->AppendText(std::forward<std::string>(markdownTableGenerator.GetMarkdownTableStream().str()));
+		mrt::MarkdownTableGenerator<std::string>::OStrStream ss;
+
+		markdownTableGenerator.GenerateMarkdownTable(&ss, m_TableStyle->GetSelection(), m_TextAlignment->GetSelection(), m_BoldFirstRow->GetValue(), m_BoldFirstCol->GetValue());
+
+		m_OutputDataTextBox->SetValue(ss.str());
 	}
 
 #if defined(MRT_DEBUG)

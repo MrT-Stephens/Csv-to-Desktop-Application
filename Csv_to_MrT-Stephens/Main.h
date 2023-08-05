@@ -6,7 +6,7 @@
 #include "UtilityItems.h"
 #include "CSVtoSQL_Panel.h"
 #include "CSVtoASCII_Panel.h"
-#include "CSVtoMarkdown.h"
+#include "CSVtoMarkdown_Panel.h"
 #include "CSVtoXML_Panel.h"
 #include "CSVtoHTML_Panel.h"
 #include "CSVtoLatex_Panel.h"

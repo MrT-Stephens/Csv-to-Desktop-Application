@@ -49,7 +49,7 @@ namespace mrt
 		using IFstream = typename std::basic_ifstream<ValueType>;
 
 		// Default Constructors
-		CSVData_Base(const _StrType& filePath);
+		CSVData_Base(const _StrType& filePath, bool removeNonAscii = true);
 		CSVData_Base(std::vector<std::vector<_StrType>>&& data = {}, std::vector<_StrType>&& headerNames = {});
 
 		// Copy Constructors
@@ -87,7 +87,7 @@ namespace mrt
 
 		static void CheckMaxColumnWidths(CSVData_Base<_StrType>* const csvData);
 
-		static CSVData_Error LoadCsv(CSVData_Base<_StrType>* const csvData, const _StrType& fileDir);
+		static CSVData_Error LoadCsv(CSVData_Base<_StrType>* const csvData, const _StrType& fileDir, bool removeNonAscii);
 		static CSVData_Error SaveCsv(const CSVData_Base<_StrType>* const csvData, const _StrType& fileDir);
 	};
 
@@ -136,9 +136,9 @@ namespace mrt
 }
 
 template <class _StrType>
-mrt::CSVData_Base<_StrType>::CSVData_Base(const _StrType& filePath)
+mrt::CSVData_Base<_StrType>::CSVData_Base(const _StrType& filePath, bool removeNonAscii)
 {
-	m_Error = LoadCsv(this, filePath);
+	m_Error = LoadCsv(this, filePath, removeNonAscii);
 }
 
 template <class _StrType>
@@ -243,7 +243,7 @@ void mrt::CSVData_Base<_StrType>::CheckMaxColumnWidths(CSVData_Base<_StrType>* c
 }
 
 template <class _StrType>
-mrt::CSVData_Error mrt::CSVData_Base<_StrType>::LoadCsv(CSVData_Base<_StrType>* const csvData, const _StrType& fileDir)
+mrt::CSVData_Error mrt::CSVData_Base<_StrType>::LoadCsv(CSVData_Base<_StrType>* const csvData, const _StrType& fileDir, bool removeNonAscii)
 {
 	IFstream file(std::filesystem::path(fileDir), std::ios::in);
 
@@ -265,6 +265,15 @@ mrt::CSVData_Error mrt::CSVData_Base<_StrType>::LoadCsv(CSVData_Base<_StrType>* 
 
 		while (std::getline(ss, word, ','))
 		{
+			if (removeNonAscii)
+			{
+				word.erase(std::remove_if(word.begin(), word.end(), [](char c)->bool
+					{
+						return (static_cast<int>(c) < 0 || static_cast<int>(c) > 127) ? true : false;
+					}
+				), word.end());
+			}
+
 			headerNames.emplace_back(word);
 			maxColumnWidths.emplace_back(word.size());
 		}
@@ -280,6 +289,15 @@ mrt::CSVData_Error mrt::CSVData_Base<_StrType>::LoadCsv(CSVData_Base<_StrType>* 
 			for (size_t i = 0; i < headerNames.size(); ++i)
 			{
 				std::getline(ss, word, ',');
+
+				if (removeNonAscii)
+				{
+					word.erase(std::remove_if(word.begin(), word.end(), [](char c)->bool
+						{
+							return (static_cast<int>(c) < 0 || static_cast<int>(c) > 127) ? true : false;
+						}
+					), word.end());
+				}
 
 				row[i] = word;
 

@@ -166,7 +166,6 @@
     <ClCompile Include="CSVtoLaTex_Panel.cpp" />
     <ClCompile Include="CSVtoXML_Panel.cpp" />
     <ClCompile Include="CSVtoXML_Panel.h" />
-    <ClCompile Include="TableGenerators.cpp" />
     <ClCompile Include="CSVtoASCII_Panel.cpp" />
     <ClCompile Include="CSVtoMarkdown.cpp" />
     <ClCompile Include="CSVtoSQL_Panel.cpp" />
@@ -180,8 +179,8 @@
     <ClInclude Include="CSVtoLaTex_Panel.h" />
     <ClInclude Include="HTML_Table.h" />
     <ClInclude Include="LaTex_Table.h" />
-    <ClInclude Include="TableGenerators.h" />
-    <ClInclude Include="CSVtoMarkdown.h" />
+    <ClInclude Include="Ascii_Table_Generators.h" />
+    <ClInclude Include="CSVtoMarkdown_Panel.h" />
     <ClInclude Include="UtilityItems.h" />
     <ClInclude Include="CSVData.h" />
     <ClInclude Include="CSVtoASCII_Panel.h" />

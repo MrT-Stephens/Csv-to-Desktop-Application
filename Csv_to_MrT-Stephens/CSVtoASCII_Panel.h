@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CSVto_PanelBase.h"
-#include "TableGenerators.h"
+#include "Ascii_Table_Generators.h"
 
 class CSVtoASCII_Panel : public CSVto_PanelBase
 {

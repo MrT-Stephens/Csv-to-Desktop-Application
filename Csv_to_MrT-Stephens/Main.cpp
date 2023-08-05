@@ -6,7 +6,7 @@
 
 // Global variables for the application
 const std::string mrtApp::APP_NAME = "CSV to...";
-const std::string mrtApp::APP_VERSION = "v0.1.1";
+const std::string mrtApp::APP_VERSION = "v0.1.0";
 
 const std::string mrtApp::APP_TITLE = mrtApp::APP_NAME + " " + mrtApp::APP_VERSION;
 

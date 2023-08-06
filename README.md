@@ -1,5 +1,4 @@
-
-![screenshot](https://github.com/MrT-Stephens/Csv-to-Application/blob/master/Images/CSV_to_Logo.png)
+<img src="https://github.com/MrT-Stephens/Csv-to-Application/blob/master/Images/CSV_to_Logo.png" alt="drawing" width="200"/>
 <h1 align="center">
   <br>
   Csv to...

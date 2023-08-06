@@ -8,3 +8,7 @@
 
 <h4 align="center">A desktop application which converts CSV (Comma Separated Values) to many other types!</h4>
 
+<p align="center">
+  <a href="#current-features">Current Features</a> •
+  <a href="#how-to-use">How To Use</a>
+</p>

@@ -12,3 +12,7 @@
   <a href="#current-features">Current Features</a> •
   <a href="#how-to-use">How To Use</a>
 </p>
+
+## Current Features
+
+## How To Use

@@ -93,4 +93,7 @@
       <UniqueIdentifier>{4876a59a-6a3c-49f7-8551-5713ea76ef33}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="CSV to v0.1.0.exe.manifest" />
+  </ItemGroup>
 </Project>

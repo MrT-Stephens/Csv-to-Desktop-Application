@@ -28,7 +28,7 @@ void CSVto_PanelBase::SetupDataInputSection()
 			mrt::MrT_InfoDialog infoMessageBox(this, "Infomation", 
 				"Hello,\n\nThis software is continuously being developed for better performance, less bugs, more features, and better user experience."
 				"\n\nCsv to... is a free to use software and if you like it enough consider donating."
-				"\n\nIf you have got issues with the software or you just want to share you feedback, click the email button or contact me through GitHub.",
+				"\n\nIf you have got issues with the software or you just want to share you feedback, please contact me through GitHub.",
 				m_Colours, {400, 500});
 
 			infoMessageBox.ShowModal();
@@ -170,48 +170,8 @@ void CSVto_PanelBase::SetupDataInputSection()
 				m_CSVData->SortByColumn(m_CSVData, column, ((m_CurrentSortOrder == ORDER_ASCENDING) ? true : false));
 				PopulateData();
 			}
-			//else if (column == -1)														// Checks to see if the column is the row number column.						
-			//{
-			//	column += 1;
-			//	mrt::MrT_DataEditDialog headerEditDialog(this, "Header", m_Colours, m_CSVData->GetHeaderNames(), m_CSVData->GetHeaderNames(), {400, 400});
-
-			//	if (headerEditDialog.ShowModal() == wxID_APPLY)
-			//	{
-			//		auto headerData = m_CSVData->GetHeaderNames();
-
-			//		std::wstring headerName;
-			//		for (size_t i = 0; i < headerData.size(); ++i)
-			//		{
-			//			headerName = (m_CurrentSortColumn == i) ?
-			//				std::format(L"{} {}", (m_CurrentSortOrder == ORDER_ASCENDING ? L"\u2B9D" : L"\u2B9F"), mrt::StrToWstr(headerData[i])) : mrt::StrToWstr(headerData[i]);
-
-			//			wxListItem tempItem;
-			//			m_DataInputListView->GetColumn(i + 1, tempItem);
-			//			tempItem.SetText(headerName);
-			//			m_DataInputListView->SetColumn(i + 1, tempItem);
-			//		}
-			//	}
-			//}
 		}
 	);
-
-	/*m_DataInputListView->Bind(wxEVT_LIST_ITEM_SELECTED, [this](wxListEvent& event)
-		{
-			long row = event.GetIndex();
-
-			mrt::MrT_DataEditDialog rowEditDialog(this, std::format("Row {}", row), m_Colours, m_CSVData->GetHeaderNames(), m_CSVData->GetRowData(row), { 400, 400 });
-
-			if (rowEditDialog.ShowModal() == wxID_APPLY)
-			{
-				auto rowData = m_CSVData->GetRowData(row);
-
-				for (size_t i = 0; i < rowData.size(); ++i)
-				{
-					m_DataInputListView->SetItem(row, i + 1, rowData[i]);
-				}
-			}
-		}
-	);*/
 
 	// Add the list view to the horizontal sizer
 	m_DataListViewSizer->Add(m_DataInputListView, 1, wxALL | wxEXPAND, FromDIP(10));

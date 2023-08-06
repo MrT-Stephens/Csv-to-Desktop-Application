@@ -30,7 +30,6 @@ namespace mrtApp
 	extern const std::string APP_TITLE;
 
 	extern const std::string GITHUB_URL;
-	extern const std::string DONATE_URL;
 
 	struct AppColours
 	{

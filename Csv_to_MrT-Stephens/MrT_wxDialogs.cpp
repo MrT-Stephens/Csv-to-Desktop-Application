@@ -55,20 +55,6 @@ mrt::MrT_InfoDialog::MrT_InfoDialog(wxWindow* parent, const std::string& title, 
 
 	m_ButtonSizer->Add(m_GitHubButton, 1, wxALL | wxEXPAND, FromDIP(10));
 
-	m_DonateButton = new wxButton(this, wxID_ANY, "Donate", wxDefaultPosition, wxDefaultSize);
-	m_DonateButton->SetOwnForegroundColour(colours->SECONDARY);
-	m_DonateButton->SetOwnBackgroundColour(colours->PRIMARY);
-	m_DonateButton->SetOwnFont(MAIN_FONT_TEXT(10));
-	m_DonateButton->SetMinSize({ 120, 30 });
-
-	m_DonateButton->Bind(wxEVT_BUTTON, [this](wxCommandEvent& event)
-		{
-			wxLaunchDefaultBrowser(mrtApp::DONATE_URL);
-		}
-	);
-
-	m_ButtonSizer->Add(m_DonateButton, 1, wxALL | wxEXPAND, FromDIP(10));
-
 	m_OkButton = new wxButton(this, wxID_CLOSE, "Close", wxDefaultPosition, wxDefaultSize);
 	m_OkButton->SetOwnForegroundColour(colours->SECONDARY);
 	m_OkButton->SetOwnBackgroundColour(colours->PRIMARY);

@@ -21,7 +21,7 @@ namespace mrt
 		wxStaticLine* m_LogoTileLine;
 		wxStaticText* m_Title, * m_AppName;
 		wxBoxSizer* m_MainSizer, * m_ButtonSizer;
-		wxButton* m_OkButton, * m_GitHubButton, * m_DonateButton;
+		wxButton* m_OkButton, * m_GitHubButton;
 	public:
 		MrT_InfoDialog(wxWindow* parent, const std::string& title, const std::string& message, const mrtApp::AppColours* colours, const wxSize& size = wxDefaultSize);
 	};

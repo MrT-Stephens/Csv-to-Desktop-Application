@@ -11,7 +11,6 @@ const std::string mrtApp::APP_VERSION = "v0.1.0";
 const std::string mrtApp::APP_TITLE = mrtApp::APP_NAME + " " + mrtApp::APP_VERSION;
 
 const std::string mrtApp::GITHUB_URL = "https://github.com/MrT-Stephens";
-const std::string mrtApp::DONATE_URL = "";
 
   /**************************/
  /* MrT_App Implementation */

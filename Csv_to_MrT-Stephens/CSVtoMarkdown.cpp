@@ -20,7 +20,7 @@ void CSVtoMarkdown_Panel::SetupSpecificOutputSectionItems()
 	m_OutputSettingsSizer3 = new wxBoxSizer(wxHORIZONTAL);
 
 	m_BoldFirstRow = new wxCheckBox(this, wxID_ANY, "Bold First Row");
-	m_BoldFirstRow->SetMinSize({ 120, 30 });
+	m_BoldFirstRow->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_BoldFirstRow->SetOwnFont(MAIN_FONT_TEXT(11));
 	m_BoldFirstRow->SetOwnBackgroundColour(m_Colours->BACKGROUND);
 	m_BoldFirstRow->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -36,7 +36,7 @@ void CSVtoMarkdown_Panel::SetupSpecificOutputSectionItems()
 	);
 
 	m_BoldFirstCol = new wxCheckBox(this, wxID_ANY, "Bold First Column");
-	m_BoldFirstCol->SetMinSize({ 120, 30 });
+	m_BoldFirstCol->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_BoldFirstCol->SetOwnFont(MAIN_FONT_TEXT(11));
 	m_BoldFirstCol->SetOwnBackgroundColour(m_Colours->BACKGROUND);
 	m_BoldFirstCol->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -60,7 +60,7 @@ void CSVtoMarkdown_Panel::SetupSpecificOutputSectionItems()
 
 	m_TableStyle = new wxComboBox(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, m_TableStyleChoices, wxCB_READONLY);
 	m_TableStyle->SetSelection(0);
-	m_TableStyle->SetMinSize({ 120, 30 });
+	m_TableStyle->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_TableStyle->SetOwnFont(MAIN_FONT_TEXT(11));
 	m_TableStyle->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_TableStyle->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -81,7 +81,7 @@ void CSVtoMarkdown_Panel::SetupSpecificOutputSectionItems()
 
 	m_TextAlignment = new wxComboBox(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, m_TextAlignmentChoices, wxCB_READONLY);
 	m_TextAlignment->SetSelection(0);
-	m_TextAlignment->SetMinSize({ 120, 30 });
+	m_TextAlignment->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_TextAlignment->SetOwnFont(MAIN_FONT_TEXT(11));
 	m_TextAlignment->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_TextAlignment->SetOwnForegroundColour(m_Colours->FOREGROUND);

@@ -20,7 +20,7 @@ void CSVto_PanelBase::SetupDataInputSection()
 	m_DataInBtnSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	m_LogoButton = new wxBitmapButton(this, wxID_ANY, wxBitmap(CSV_to_Logo).ConvertToImage().Rescale(50, 50, wxIMAGE_QUALITY_HIGH), wxDefaultPosition, wxDefaultSize);
-	m_LogoButton->SetMinSize({ 60, 60 });
+	m_LogoButton->SetMinSize(FromDIP(wxSize(60, 60)));
 	m_LogoButton->SetBackgroundColour(m_Colours->PRIMARY);
 
 	m_LogoButton->Bind(wxEVT_BUTTON, [this](wxCommandEvent& _evt)
@@ -29,7 +29,7 @@ void CSVto_PanelBase::SetupDataInputSection()
 				"Hello,\n\nThis software is continuously being developed for better performance, less bugs, more features, and better user experience."
 				"\n\nCsv to... is a free to use software and if you like it enough consider donating."
 				"\n\nIf you have got issues with the software or you just want to share you feedback, please contact me through GitHub.",
-				m_Colours, {400, 500});
+				m_Colours, FromDIP(wxSize(400, 500)));
 
 			infoMessageBox.ShowModal();
 		}
@@ -53,7 +53,7 @@ void CSVto_PanelBase::SetupDataInputSection()
 
 	// Create the open file button and format it
 	m_LoadData = new wxButton(this, wxID_ANY, "Open File", wxDefaultPosition, wxDefaultSize);
-	m_LoadData->SetMinSize({ 120, 25 });
+	m_LoadData->SetMinSize(FromDIP(wxSize(120, 25)));
 	m_LoadData->SetOwnFont(MAIN_FONT_TEXT(10));
 	m_LoadData->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_LoadData->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -83,7 +83,7 @@ void CSVto_PanelBase::SetupDataInputSection()
 				else if (m_CSVData->GetError() == mrt::CSVData_Error::CANNOT_OPEN_FILE)
 				{
 					mrt::MrT_UniDialog errorDialog(this, "Error", "Failed to open file.\nPlease try to re-open the file.",
-						m_Colours, wxICON(wxICON_ERROR), mrt::MrT_UniDialogType_OK, { 400, 200 });
+						m_Colours, wxICON(wxICON_ERROR), mrt::MrT_UniDialogType_OK, FromDIP(wxSize(400, 200)));
 
 					errorDialog.ShowModal();
 
@@ -94,7 +94,7 @@ void CSVto_PanelBase::SetupDataInputSection()
 				else
 				{
 					mrt::MrT_UniDialog errorDialog(this, "Error", "Failed to input data from file.\nPlease try to re-open the file.",
-						m_Colours, wxICON(wxICON_ERROR), mrt::MrT_UniDialogType_OK, { 400, 200 });
+						m_Colours, wxICON(wxICON_ERROR), mrt::MrT_UniDialogType_OK, FromDIP(wxSize(400, 200)));
 
 					errorDialog.ShowModal();
 
@@ -108,7 +108,7 @@ void CSVto_PanelBase::SetupDataInputSection()
 
 	// Create the example file button and format it
 	m_ExampleData = new wxButton(this, wxID_ANY, "Preview Data", wxDefaultPosition, wxDefaultSize);
-	m_ExampleData->SetMinSize({ 120, 25 });
+	m_ExampleData->SetMinSize(FromDIP(wxSize(120, 25)));
 	m_ExampleData->SetOwnFont(MAIN_FONT_TEXT(10));
 	m_ExampleData->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_ExampleData->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -192,7 +192,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 	m_OutputHeadingSizer->Add(editor_Text, 0, wxLEFT | wxRIGHT | wxTOP | wxCENTER, FromDIP(10));
 
 	m_BasicAdvViewBtn = new wxButton(this, wxID_ANY, "Advanced View", wxDefaultPosition, wxDefaultSize);
-	m_BasicAdvViewBtn->SetMinSize({ 120, 30 });
+	m_BasicAdvViewBtn->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_BasicAdvViewBtn->SetOwnFont(MAIN_FONT_TEXT(10));
 	m_BasicAdvViewBtn->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_BasicAdvViewBtn->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -222,7 +222,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 	m_MainSizer->Add(m_OutputHeadingSizer, 0, wxEXPAND | wxALL, FromDIP(0));
 
 	m_CapitalizeBtn = new wxButton(this, wxID_ANY, "Capitalize", wxDefaultPosition, wxDefaultSize);
-	m_CapitalizeBtn->SetMinSize({ 120, 30 });
+	m_CapitalizeBtn->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_CapitalizeBtn->SetOwnFont(MAIN_FONT_TEXT(10));
 	m_CapitalizeBtn->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_CapitalizeBtn->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -243,7 +243,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 	m_OutputSettingsSizer1->Add(m_CapitalizeBtn, 1, wxALL | wxEXPAND | wxCENTER, FromDIP(10));
 
 	m_LowercaseBtn = new wxButton(this, wxID_ANY, "Lowercase", wxDefaultPosition, wxDefaultSize);
-	m_LowercaseBtn->SetMinSize({ 120, 30 });
+	m_LowercaseBtn->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_LowercaseBtn->SetOwnFont(MAIN_FONT_TEXT(10));
 	m_LowercaseBtn->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_LowercaseBtn->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -264,7 +264,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 	m_OutputSettingsSizer1->Add(m_LowercaseBtn, 1, wxALL | wxEXPAND | wxCENTER, FromDIP(10));
 
 	m_UppercaseBtn = new wxButton(this, wxID_ANY, "Uppercase", wxDefaultPosition, wxDefaultSize);
-	m_UppercaseBtn->SetMinSize({ 120, 30 });
+	m_UppercaseBtn->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_UppercaseBtn->SetOwnFont(MAIN_FONT_TEXT(10));
 	m_UppercaseBtn->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_UppercaseBtn->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -285,7 +285,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 	m_OutputSettingsSizer1->Add(m_UppercaseBtn, 1, wxALL | wxEXPAND | wxCENTER, FromDIP(10));
 
 	m_UndoBtn = new wxButton(this, wxID_ANY, "Undo", wxDefaultPosition, wxDefaultSize);
-	m_UndoBtn->SetMinSize({ 120, 30 });
+	m_UndoBtn->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_UndoBtn->SetOwnFont(MAIN_FONT_TEXT(10));
 	m_UndoBtn->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_UndoBtn->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -307,7 +307,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 	m_OutputSettingsSizer1->Add(m_UndoBtn, 1, wxALL | wxEXPAND | wxCENTER, FromDIP(10));
 
 	m_IncludeHeaderBtn = new wxButton(this, wxID_ANY, "Include Header", wxDefaultPosition, wxDefaultSize);
-	m_IncludeHeaderBtn->SetMinSize({ 120, 30 });
+	m_IncludeHeaderBtn->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_IncludeHeaderBtn->SetOwnFont(MAIN_FONT_TEXT(10));
 	m_IncludeHeaderBtn->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_IncludeHeaderBtn->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -330,7 +330,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 	m_OutputSettingsSizer2->Add(m_IncludeHeaderBtn, 1, wxRIGHT | wxLEFT | wxEXPAND | wxCENTER, FromDIP(10));
 
 	m_TransposeBtn = new wxButton(this, wxID_ANY, "Transpose", wxDefaultPosition, wxDefaultSize);
-	m_TransposeBtn->SetMinSize({ 120, 30 });
+	m_TransposeBtn->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_TransposeBtn->SetOwnFont(MAIN_FONT_TEXT(10));
 	m_TransposeBtn->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_TransposeBtn->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -351,7 +351,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 	m_OutputSettingsSizer2->Add(m_TransposeBtn, 1, wxRIGHT | wxLEFT | wxEXPAND | wxCENTER, FromDIP(10));
 
 	m_DeleteBlanksBtn = new wxButton(this, wxID_ANY, "Delete Spaces", wxDefaultPosition, wxDefaultSize);
-	m_DeleteBlanksBtn->SetMinSize({ 120, 30 });
+	m_DeleteBlanksBtn->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_DeleteBlanksBtn->SetOwnFont(MAIN_FONT_TEXT(10));
 	m_DeleteBlanksBtn->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_DeleteBlanksBtn->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -372,7 +372,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 	m_OutputSettingsSizer2->Add(m_DeleteBlanksBtn, 1, wxRIGHT | wxLEFT | wxEXPAND | wxCENTER, FromDIP(10));
 
 	m_RedoBtn = new wxButton(this, wxID_ANY, "Redo", wxDefaultPosition, wxDefaultSize);
-	m_RedoBtn->SetMinSize({ 120, 30 });
+	m_RedoBtn->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_RedoBtn->SetOwnFont(MAIN_FONT_TEXT(10));
 	m_RedoBtn->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_RedoBtn->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -419,7 +419,7 @@ void CSVto_PanelBase::SetupDataOutputSection()
 	m_DataOutputBtnSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	m_ClearBtn = new wxButton(this, wxID_ANY, "Clear Data", wxDefaultPosition, wxDefaultSize);
-	m_ClearBtn->SetMinSize({ 120, 30 });
+	m_ClearBtn->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_ClearBtn->SetOwnFont(MAIN_FONT_TEXT(10));
 	m_ClearBtn->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_ClearBtn->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -437,7 +437,7 @@ void CSVto_PanelBase::SetupDataOutputSection()
 	m_DataOutputBtnSizer->Add(m_ClearBtn, 1, wxALL | wxEXPAND | wxCENTER, FromDIP(10));
 
 	m_CopyDataBtn = new wxButton(this, wxID_ANY, "Copy", wxDefaultPosition, wxDefaultSize);
-	m_CopyDataBtn->SetMinSize({ 120, 30 });
+	m_CopyDataBtn->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_CopyDataBtn->SetOwnFont(MAIN_FONT_TEXT(10));
 	m_CopyDataBtn->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_CopyDataBtn->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -455,7 +455,7 @@ void CSVto_PanelBase::SetupDataOutputSection()
 	m_DataOutputBtnSizer->Add(m_CopyDataBtn, 1, wxALL | wxEXPAND | wxCENTER, FromDIP(10));
 
 	m_DownloadBtn = new wxButton(this, wxID_ANY, "Download", wxDefaultPosition, wxDefaultSize);
-	m_DownloadBtn->SetMinSize({ 120, 30 });
+	m_DownloadBtn->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_DownloadBtn->SetOwnFont(MAIN_FONT_TEXT(10));
 	m_DownloadBtn->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_DownloadBtn->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -486,7 +486,7 @@ void CSVto_PanelBase::OutputFile()
 		if (!file.is_open())
 		{
 			mrt::MrT_UniDialog errorDialog(this, "Error", "Failed to save file!\nPlease try to re-save the file.",
-				m_Colours, wxICON(wxICON_ERROR), mrt::MrT_UniDialogType_OK, { 400, 200 });
+				m_Colours, wxICON(wxICON_ERROR), mrt::MrT_UniDialogType_OK, FromDIP(wxSize(400, 200)));
 
 			errorDialog.ShowModal();
 

@@ -20,7 +20,7 @@ void CSVtoLaTex_Panel::SetupSpecificOutputSectionItems()
 	m_OutputSettingsSizer3 = new wxBoxSizer(wxHORIZONTAL);
 
 	m_HereOrTopCheckBox = new wxCheckBox(this, wxID_ANY, "Here or top of page", wxDefaultPosition, wxDefaultSize);
-	m_HereOrTopCheckBox->SetMinSize({ 120, 30 });
+	m_HereOrTopCheckBox->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_HereOrTopCheckBox->SetOwnFont(MAIN_FONT_TEXT(11));
 	m_HereOrTopCheckBox->SetOwnBackgroundColour(m_Colours->BACKGROUND);
 	m_HereOrTopCheckBox->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -36,7 +36,7 @@ void CSVtoLaTex_Panel::SetupSpecificOutputSectionItems()
 	);
 
 	m_MinimalWorkingCheckBox = new wxCheckBox(this, wxID_ANY, "Minimal working", wxDefaultPosition, wxDefaultSize);
-	m_MinimalWorkingCheckBox->SetMinSize({ 120, 30 });
+	m_MinimalWorkingCheckBox->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_MinimalWorkingCheckBox->SetOwnFont(MAIN_FONT_TEXT(11));
 	m_MinimalWorkingCheckBox->SetOwnBackgroundColour(m_Colours->BACKGROUND);
 	m_MinimalWorkingCheckBox->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -57,7 +57,7 @@ void CSVtoLaTex_Panel::SetupSpecificOutputSectionItems()
 
 	m_LabelTextBox = new wxTextCtrl(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize);
 	m_LabelTextBox->SetValue("label");
-	m_LabelTextBox->SetMinSize({ 120, 30 });
+	m_LabelTextBox->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_LabelTextBox->SetOwnFont(MAIN_FONT_TEXT(11));
 	m_LabelTextBox->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_LabelTextBox->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -84,7 +84,7 @@ void CSVtoLaTex_Panel::SetupSpecificOutputSectionItems()
 
 	m_TableCaptionTextBox = new wxTextCtrl(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize);
 	m_TableCaptionTextBox->SetValue("caption");
-	m_TableCaptionTextBox->SetMinSize({ 120, 30 });
+	m_TableCaptionTextBox->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_TableCaptionTextBox->SetOwnFont(MAIN_FONT_TEXT(11));
 	m_TableCaptionTextBox->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_TableCaptionTextBox->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -112,7 +112,7 @@ void CSVtoLaTex_Panel::SetupSpecificOutputSectionItems()
 
 	m_TableBorderComboBox = new wxComboBox(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, m_BorderOptions, wxCB_READONLY);
 	m_TableBorderComboBox->SetSelection(0);
-	m_TableBorderComboBox->SetMinSize({ 120, 30 });
+	m_TableBorderComboBox->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_TableBorderComboBox->SetOwnFont(MAIN_FONT_TEXT(11));
 	m_TableBorderComboBox->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_TableBorderComboBox->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -132,7 +132,7 @@ void CSVtoLaTex_Panel::SetupSpecificOutputSectionItems()
 
 	m_CaptionLocationComboBox = new wxComboBox(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, m_CaptionLocationOptions, wxCB_READONLY);
 	m_CaptionLocationComboBox->SetSelection(0);
-	m_CaptionLocationComboBox->SetMinSize({ 120, 30 });
+	m_CaptionLocationComboBox->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_CaptionLocationComboBox->SetOwnFont(MAIN_FONT_TEXT(11));
 	m_CaptionLocationComboBox->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_CaptionLocationComboBox->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -157,7 +157,7 @@ void CSVtoLaTex_Panel::SetupSpecificOutputSectionItems()
 
 	m_TableAlignmentComboBox = new wxComboBox(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, m_AlignmentOptions, wxCB_READONLY);
 	m_TableAlignmentComboBox->SetSelection(0);
-	m_TableAlignmentComboBox->SetMinSize({ 120, 30 });
+	m_TableAlignmentComboBox->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_TableAlignmentComboBox->SetOwnFont(MAIN_FONT_TEXT(11));
 	m_TableAlignmentComboBox->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_TableAlignmentComboBox->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -174,7 +174,7 @@ void CSVtoLaTex_Panel::SetupSpecificOutputSectionItems()
 
 	m_TextAligmentComboBox = new wxComboBox(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, m_AlignmentOptions, wxCB_READONLY);
 	m_TextAligmentComboBox->SetSelection(0);
-	m_TextAligmentComboBox->SetMinSize({ 120, 30 });
+	m_TextAligmentComboBox->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_TextAligmentComboBox->SetOwnFont(MAIN_FONT_TEXT(11));
 	m_TextAligmentComboBox->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_TextAligmentComboBox->SetOwnForegroundColour(m_Colours->FOREGROUND);

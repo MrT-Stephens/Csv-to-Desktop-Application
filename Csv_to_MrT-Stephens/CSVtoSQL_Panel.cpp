@@ -20,7 +20,7 @@ void CSVtoSQL_Panel::SetupSpecificOutputSectionItems()
 	m_OutputSettingsSizer3 = new wxBoxSizer(wxHORIZONTAL);
 
 	m_GenerateTable = new wxCheckBox(this, wxID_ANY, "Generate create table code", wxDefaultPosition, wxDefaultSize);
-	m_GenerateTable->SetMinSize({ 120, 30 });
+	m_GenerateTable->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_GenerateTable->SetOwnFont(MAIN_FONT_TEXT(11));
 	m_GenerateTable->SetOwnBackgroundColour(m_Colours->BACKGROUND);
 	m_GenerateTable->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -36,7 +36,7 @@ void CSVtoSQL_Panel::SetupSpecificOutputSectionItems()
 	);
 
 	m_InsertMultiRows = new wxCheckBox(this, wxID_ANY, "Insert multiple rows", wxDefaultPosition, wxDefaultSize);
-	m_InsertMultiRows->SetMinSize({ 120, 30 });
+	m_InsertMultiRows->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_InsertMultiRows->SetOwnFont(MAIN_FONT_TEXT(11));
 	m_InsertMultiRows->SetOwnBackgroundColour(m_Colours->BACKGROUND);
 	m_InsertMultiRows->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -57,7 +57,7 @@ void CSVtoSQL_Panel::SetupSpecificOutputSectionItems()
 
 	m_TableNameInput = new wxTextCtrl(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize);
 	m_TableNameInput->SetValue("Table Name");
-	m_TableNameInput->SetMinSize({ 120, 30 });
+	m_TableNameInput->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_TableNameInput->SetOwnFont(MAIN_FONT_TEXT(11));
 	m_TableNameInput->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_TableNameInput->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -89,7 +89,7 @@ void CSVtoSQL_Panel::SetupSpecificOutputSectionItems()
 
 	m_QuoteTypeSelect = new wxComboBox(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, m_QuotesChoices, wxCB_READONLY);
 	m_QuoteTypeSelect->SetSelection(0);
-	m_QuoteTypeSelect->SetMinSize({ 120, 30 });
+	m_QuoteTypeSelect->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_QuoteTypeSelect->SetOwnFont(MAIN_FONT_TEXT(11));
 	m_QuoteTypeSelect->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_QuoteTypeSelect->SetOwnForegroundColour(m_Colours->FOREGROUND);

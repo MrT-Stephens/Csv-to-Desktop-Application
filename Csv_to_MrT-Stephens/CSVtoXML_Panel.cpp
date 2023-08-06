@@ -20,7 +20,7 @@ void CSVtoXML_Panel::SetupSpecificOutputSectionItems()
 	m_OutputSettingsSizer3 = new wxBoxSizer(wxHORIZONTAL);
 
 	m_ExcludePrologCheckBox = new wxCheckBox(this, wxID_ANY, "Exclude prolog", wxDefaultPosition, wxDefaultSize);
-	m_ExcludePrologCheckBox->SetMinSize({ 120, 30 });
+	m_ExcludePrologCheckBox->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_ExcludePrologCheckBox->SetOwnFont(MAIN_FONT_TEXT(11));
 	m_ExcludePrologCheckBox->SetOwnBackgroundColour(m_Colours->BACKGROUND);
 	m_ExcludePrologCheckBox->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -36,7 +36,7 @@ void CSVtoXML_Panel::SetupSpecificOutputSectionItems()
 	);
 
 	m_MinifyXmlCheckBox = new wxCheckBox(this, wxID_ANY, "Minify XML statements", wxDefaultPosition, wxDefaultSize);
-	m_MinifyXmlCheckBox->SetMinSize({ 120, 30 });
+	m_MinifyXmlCheckBox->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_MinifyXmlCheckBox->SetOwnFont(MAIN_FONT_TEXT(11));
 	m_MinifyXmlCheckBox->SetOwnBackgroundColour(m_Colours->BACKGROUND);
 	m_MinifyXmlCheckBox->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -57,7 +57,7 @@ void CSVtoXML_Panel::SetupSpecificOutputSectionItems()
 
 	m_NameSpaceTextBox = new wxTextCtrl(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize);
 	m_NameSpaceTextBox->SetValue("namespace");
-	m_NameSpaceTextBox->SetMinSize({ 120, 30 });
+	m_NameSpaceTextBox->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_NameSpaceTextBox->SetOwnFont(MAIN_FONT_TEXT(11));
 	m_NameSpaceTextBox->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_NameSpaceTextBox->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -74,7 +74,7 @@ void CSVtoXML_Panel::SetupSpecificOutputSectionItems()
 
 	m_XmlnsTextBox = new wxTextCtrl(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize);
 	m_XmlnsTextBox->SetValue("namespaceURI");
-	m_XmlnsTextBox->SetMinSize({ 120, 30 });
+	m_XmlnsTextBox->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_XmlnsTextBox->SetOwnFont(MAIN_FONT_TEXT(11));
 	m_XmlnsTextBox->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_XmlnsTextBox->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -95,7 +95,7 @@ void CSVtoXML_Panel::SetupSpecificOutputSectionItems()
 
 	m_RootNameTextBox = new wxTextCtrl(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize);
 	m_RootNameTextBox->SetValue("root");
-	m_RootNameTextBox->SetMinSize({ 120, 30 });
+	m_RootNameTextBox->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_RootNameTextBox->SetOwnFont(MAIN_FONT_TEXT(11));
 	m_RootNameTextBox->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_RootNameTextBox->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -122,7 +122,7 @@ void CSVtoXML_Panel::SetupSpecificOutputSectionItems()
 
 	m_ElementNameTextBox = new wxTextCtrl(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize);
 	m_ElementNameTextBox->SetValue("element");
-	m_ElementNameTextBox->SetMinSize({ 120, 30 });
+	m_ElementNameTextBox->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_ElementNameTextBox->SetOwnFont(MAIN_FONT_TEXT(11));
 	m_ElementNameTextBox->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_ElementNameTextBox->SetOwnForegroundColour(m_Colours->FOREGROUND);

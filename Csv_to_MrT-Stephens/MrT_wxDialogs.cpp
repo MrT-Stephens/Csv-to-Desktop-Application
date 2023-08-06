@@ -45,7 +45,7 @@ mrt::MrT_InfoDialog::MrT_InfoDialog(wxWindow* parent, const std::string& title, 
 	m_GitHubButton->SetOwnForegroundColour(colours->SECONDARY);
 	m_GitHubButton->SetOwnBackgroundColour(colours->PRIMARY);
 	m_GitHubButton->SetOwnFont(MAIN_FONT_TEXT(10));
-	m_GitHubButton->SetMinSize({ 120, 30 });
+	m_GitHubButton->SetMinSize(FromDIP(wxSize(120, 30)));
 
 	m_GitHubButton->Bind(wxEVT_BUTTON, [this](wxCommandEvent& event)
 		{
@@ -59,7 +59,7 @@ mrt::MrT_InfoDialog::MrT_InfoDialog(wxWindow* parent, const std::string& title, 
 	m_OkButton->SetOwnForegroundColour(colours->SECONDARY);
 	m_OkButton->SetOwnBackgroundColour(colours->PRIMARY);
 	m_OkButton->SetOwnFont(MAIN_FONT_TEXT(10));
-	m_OkButton->SetMinSize({ 120, 30 });
+	m_OkButton->SetMinSize(FromDIP(wxSize(120, 30)));
 
 	m_OkButton->Bind(wxEVT_BUTTON, [this](wxCommandEvent& event)
 		{
@@ -113,7 +113,7 @@ mrt::MrT_UniDialog::MrT_UniDialog(wxWindow* parent, const std::string& title, co
 		m_OkButton->SetOwnForegroundColour(colours->SECONDARY);
 		m_OkButton->SetOwnBackgroundColour(colours->PRIMARY);
 		m_OkButton->SetOwnFont(MAIN_FONT_TEXT(10));
-		m_OkButton->SetMinSize({ 120, 30 });
+		m_OkButton->SetMinSize(FromDIP(wxSize(120, 30)));
 
 		m_OkButton->Bind(wxEVT_BUTTON, [this](wxCommandEvent& event)
 			{
@@ -129,7 +129,7 @@ mrt::MrT_UniDialog::MrT_UniDialog(wxWindow* parent, const std::string& title, co
 		m_YesButton->SetOwnForegroundColour(colours->SECONDARY);
 		m_YesButton->SetOwnBackgroundColour(colours->PRIMARY);
 		m_YesButton->SetOwnFont(MAIN_FONT_TEXT(10));
-		m_YesButton->SetMinSize({ 120, 30 });
+		m_YesButton->SetMinSize(FromDIP(wxSize(120, 30)));
 
 		m_YesButton->Bind(wxEVT_BUTTON, [this](wxCommandEvent& event)
 			{
@@ -145,7 +145,7 @@ mrt::MrT_UniDialog::MrT_UniDialog(wxWindow* parent, const std::string& title, co
 		m_NoButton->SetOwnForegroundColour(colours->SECONDARY);
 		m_NoButton->SetOwnBackgroundColour(colours->PRIMARY);
 		m_NoButton->SetOwnFont(MAIN_FONT_TEXT(10));
-		m_NoButton->SetMinSize({ 120, 30 });
+		m_NoButton->SetMinSize(FromDIP(wxSize(120, 30)));
 
 		m_NoButton->Bind(wxEVT_BUTTON, [this](wxCommandEvent& event)
 			{
@@ -161,7 +161,7 @@ mrt::MrT_UniDialog::MrT_UniDialog(wxWindow* parent, const std::string& title, co
 		m_CancelButton->SetOwnForegroundColour(colours->SECONDARY);
 		m_CancelButton->SetOwnBackgroundColour(colours->PRIMARY);
 		m_CancelButton->SetOwnFont(MAIN_FONT_TEXT(10));
-		m_CancelButton->SetMinSize({ 120, 30 });
+		m_CancelButton->SetMinSize(FromDIP(wxSize(120, 30)));
 
 		m_CancelButton->Bind(wxEVT_BUTTON, [this](wxCommandEvent& event)
 			{
@@ -224,7 +224,7 @@ mrt::MrT_DataEditDialog::MrT_DataEditDialog(wxWindow* parent, const std::string&
 	m_ApplyButton->SetOwnForegroundColour(colours->SECONDARY);
 	m_ApplyButton->SetOwnBackgroundColour(colours->PRIMARY);
 	m_ApplyButton->SetOwnFont(MAIN_FONT_TEXT(10));
-	m_ApplyButton->SetMinSize({ 120, 30 });
+	m_ApplyButton->SetMinSize(FromDIP(wxSize(120, 30)));
 
 	m_ApplyButton->Bind(wxEVT_BUTTON, [this, &editableData](wxCommandEvent& event)
 		{
@@ -243,7 +243,7 @@ mrt::MrT_DataEditDialog::MrT_DataEditDialog(wxWindow* parent, const std::string&
 	m_CancelButton->SetOwnForegroundColour(colours->SECONDARY);
 	m_CancelButton->SetOwnBackgroundColour(colours->PRIMARY);
 	m_CancelButton->SetOwnFont(MAIN_FONT_TEXT(10));
-	m_CancelButton->SetMinSize({ 120, 30 });
+	m_CancelButton->SetMinSize(FromDIP(wxSize(120, 30)));
 
 	m_CancelButton->Bind(wxEVT_BUTTON, [this](wxCommandEvent& event)
 		{

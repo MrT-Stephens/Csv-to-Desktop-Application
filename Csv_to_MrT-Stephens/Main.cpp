@@ -27,9 +27,8 @@ bool MrT_App::OnInit()
     MRT_DEBUG_LOG_MSG(std::format("Debugging enabled on application ({})", mrtApp::APP_TITLE));
 #endif
 
-    Main_Frame* mainFrame = new Main_Frame(mrtApp::APP_TITLE, wxDefaultPosition, { 700, 800 }, wxDEFAULT_FRAME_STYLE);
+    Main_Frame* mainFrame = new Main_Frame(mrtApp::APP_TITLE, wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE);
 
-    mainFrame->SetMinSize({ 700, 800 });
     mainFrame->SetIcon(CSV_to_Logo);
     mainFrame->Show(true);
     
@@ -43,6 +42,8 @@ bool MrT_App::OnInit()
 Main_Frame::Main_Frame(const wxString& title, const wxPoint& pos, const wxSize& size, long style) 
     : wxFrame(nullptr, wxID_ANY, title, pos, size, style)
 {
+    SetMinSize(FromDIP(wxSize(700, 700)));                    // Setting the minimum size of the window.
+
     m_Notebook = new wxNotebook(this, wxNB_TOP | wxNB_FIXEDWIDTH); 	    // Creating the notebook to hold the panels.
     m_Notebook->SetOwnFont(MAIN_FONT_TEXT(11));
     m_Notebook->SetOwnBackgroundColour(m_Colours.BACKGROUND);

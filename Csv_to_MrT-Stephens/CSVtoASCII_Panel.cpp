@@ -20,7 +20,7 @@ void CSVtoASCII_Panel::SetupSpecificOutputSectionItems()
 	m_OutputSettingsSizer3 = new wxBoxSizer(wxHORIZONTAL);
 
 	m_ForceSeparators = new wxCheckBox(this, wxID_ANY, "Force Separation");
-	m_ForceSeparators->SetMinSize({ 120, 30 });
+	m_ForceSeparators->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_ForceSeparators->SetOwnFont(MAIN_FONT_TEXT(11));
 	m_ForceSeparators->SetOwnBackgroundColour(m_Colours->BACKGROUND);
 	m_ForceSeparators->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -46,7 +46,7 @@ void CSVtoASCII_Panel::SetupSpecificOutputSectionItems()
 
 	m_AsciiTableStyle = new wxComboBox(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, m_AsciiTableStyleChoices, wxCB_READONLY);
 	m_AsciiTableStyle->SetSelection(0);
-	m_AsciiTableStyle->SetMinSize({ 120, 30 });
+	m_AsciiTableStyle->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_AsciiTableStyle->SetOwnFont(MAIN_FONT_TEXT(11));
 	m_AsciiTableStyle->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_AsciiTableStyle->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -76,7 +76,7 @@ void CSVtoASCII_Panel::SetupSpecificOutputSectionItems()
 
 	m_CommentType = new wxComboBox(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, m_CommentTypeChoices, wxCB_READONLY);
 	m_CommentType->SetSelection(0);
-	m_CommentType->SetMinSize({ 120, 30 });
+	m_CommentType->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_CommentType->SetOwnFont(MAIN_FONT_TEXT(11));
 	m_CommentType->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_CommentType->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -97,7 +97,7 @@ void CSVtoASCII_Panel::SetupSpecificOutputSectionItems()
 
 	m_TextAlignment = new wxComboBox(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, m_TextAlignmentChoices, wxCB_READONLY);
 	m_TextAlignment->SetSelection(0);
-	m_TextAlignment->SetMinSize({ 120, 30 });
+	m_TextAlignment->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_TextAlignment->SetOwnFont(MAIN_FONT_TEXT(11));
 	m_TextAlignment->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_TextAlignment->SetOwnForegroundColour(m_Colours->FOREGROUND);

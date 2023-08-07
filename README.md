@@ -15,6 +15,13 @@
 </p>
 
 ## Key Features
+* Converts CSV files are in the format:
+```csv
+header1,header2,header3,header4
+data1,data2,data3,data4
+data5,data6,data7,data8
+
+```
 
 ## Documentation
 

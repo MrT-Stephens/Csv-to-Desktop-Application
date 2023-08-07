@@ -9,10 +9,13 @@
 <h4 align="center">A desktop application which converts CSV (Comma Separated Values) to many other types!</h4>
 
 <p align="center">
-  <a href="#current-features">Current Features</a> •
-  <a href="#how-to-use">How To Use</a>
+  <a href="#key-features">Key Features</a> •
+  <a href="#documentation">Documentation</a>
+  <a href="#future-improvements">Future Improvements</a>
 </p>
 
-## Current Features
+## Key Features
 
-## How To Use
+## Documentation
+
+## Future Improvements

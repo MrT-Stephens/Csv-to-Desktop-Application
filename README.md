@@ -34,6 +34,9 @@ data5,data6,data7,data8
    - Lowercase all data.
    - Capitalise all data.
    - Remove whitespace from all data.
+   - Transpose all the data.
+* If you don't like the result of the changed  data you can use the Undo and Redo buttons to undo or redo any changes made to the data.
+* By clicking on the column names in the list view you can sort by that column into ascending order by clicking once or decending  order by clicking twice.
 
 ## Documentation
 

@@ -17,9 +17,9 @@
 ## Key Features
 * Takes CSV files which include a header in the format:
 ```CSV
-header1,header2,header3,header4
-data1,data2,data3,data4
-data5,data6,data7,data8
+column1,column2,column3,column4
+item1,item2,item3,item4
+item5,item6,item7,item8
 ```
 * Converts the CSV to:
    - SQL insert statements.

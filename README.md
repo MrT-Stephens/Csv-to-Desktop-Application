@@ -15,13 +15,25 @@
 </p>
 
 ## Key Features
-* Converts CSV files are in the format:
+* Takes CSV files which include a header in the format:
 ```csv
 header1,header2,header3,header4
 data1,data2,data3,data4
 data5,data6,data7,data8
 
 ```
+* Converts the CSV to:
+   - SQL insert statements.
+   - Ascii tables.
+   - Markdown tables.
+   - XML.
+   - HTML tables.
+   - JSON.
+* Ability to change the format of the inserted data:
+   - Uppercase all data.
+   - Lowercase all data.
+   - Capitalise all data.
+   - Remove whitespace from all data.
 
 ## Documentation
 

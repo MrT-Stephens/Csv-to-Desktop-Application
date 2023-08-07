@@ -10,7 +10,7 @@
 
 <p align="center">
   <a href="#key-features">Key Features</a> •
-  <a href="#installation">Installation</a>
+  <a href="#installation">Installation</a> •
   <a href="#future-improvements">Future Improvements</a>
 </p>
 

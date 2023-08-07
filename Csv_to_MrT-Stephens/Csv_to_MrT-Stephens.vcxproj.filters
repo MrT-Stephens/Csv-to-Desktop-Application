@@ -34,6 +34,9 @@
     <ClCompile Include="CSVtoXML_Panel.cpp">
       <Filter>Resource Files\Panel Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="CSVtoJSON_Panel.cpp">
+      <Filter>Resource Files\Panel Resource Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ascii_Table_Generators.h">
@@ -73,6 +76,9 @@
       <Filter>Header Files\Panel Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CSVtoMarkdown_Panel.h">
+      <Filter>Header Files\Panel Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CSVtoJSON_Panel.h">
       <Filter>Header Files\Panel Header Files</Filter>
     </ClInclude>
   </ItemGroup>

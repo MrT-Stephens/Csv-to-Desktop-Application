@@ -50,12 +50,13 @@ Main_Frame::Main_Frame(const wxString& title, const wxPoint& pos, const wxSize& 
     m_Notebook->SetOwnForegroundColour(m_Colours.FOREGROUND);
 
     m_Panels = {                                                        // Initialising the panels and their names.
-        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoSQL_Panel(m_Notebook, "CSV to SQL ", &m_Colours), "SQL"),
+        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoSQL_Panel(m_Notebook, "CSV to SQL", &m_Colours), "SQL"),
         std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoASCII_Panel(m_Notebook, "CSV to Ascii", &m_Colours), "Ascii"),
         std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoMarkdown_Panel(m_Notebook, "CSV to Markdown", &m_Colours), "Markdown"),
         std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoXML_Panel(m_Notebook, "CSV to XML", &m_Colours), "XML"),
         std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoHTML_Panel(m_Notebook, "CSV to HTML", &m_Colours), "HTML"),
-        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoLaTex_Panel(m_Notebook, "CSV to LaTex", &m_Colours), "LaTex")
+        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoLaTex_Panel(m_Notebook, "CSV to LaTex", &m_Colours), "LaTex"),
+        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoJSON_Panel(m_Notebook, "CSV to JSON", &m_Colours), "JSON")
     };
 
 #if defined(MRT_DEBUG)

@@ -199,7 +199,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CSVtoHTML_Panel.cpp" />
-    <ClCompile Include="CSVtoJSON_Panel.cpp" />
     <ClCompile Include="CSVtoLaTex_Panel.cpp" />
     <ClCompile Include="CSVtoXML_Panel.cpp" />
     <ClCompile Include="CSVtoXML_Panel.h" />
@@ -213,7 +212,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CSVtoHTML_Panel.h" />
-    <ClInclude Include="CSVtoJSON_Panel.h" />
     <ClInclude Include="CSVtoLaTex_Panel.h" />
     <ClInclude Include="HTML_Table.h" />
     <ClInclude Include="LaTex_Table.h" />

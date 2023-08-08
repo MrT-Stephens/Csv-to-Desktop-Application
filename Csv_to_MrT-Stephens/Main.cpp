@@ -55,8 +55,7 @@ Main_Frame::Main_Frame(const wxString& title, const wxPoint& pos, const wxSize& 
         std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoMarkdown_Panel(m_Notebook, "CSV to Markdown", &m_Colours), "Markdown"),
         std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoXML_Panel(m_Notebook, "CSV to XML", &m_Colours), "XML"),
         std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoHTML_Panel(m_Notebook, "CSV to HTML", &m_Colours), "HTML"),
-        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoLaTex_Panel(m_Notebook, "CSV to LaTex", &m_Colours), "LaTex"),
-        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoJSON_Panel(m_Notebook, "CSV to JSON", &m_Colours), "JSON")
+        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoLaTex_Panel(m_Notebook, "CSV to LaTex", &m_Colours), "LaTex")
     };
 
 #if defined(MRT_DEBUG)

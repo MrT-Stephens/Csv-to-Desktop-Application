@@ -10,7 +10,6 @@
 #include "CSVtoXML_Panel.h"
 #include "CSVtoHTML_Panel.h"
 #include "CSVtoLatex_Panel.h"
-#include "CSVtoJSON_Panel.h"
 
   /***********************/
  /* MrT_App Declaration */

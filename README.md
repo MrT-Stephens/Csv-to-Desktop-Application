@@ -11,7 +11,8 @@
 <p align="center">
   <a href="#key-features">Key Features</a> •
   <a href="#installation">Installation</a> •
-  <a href="#future-improvements">Future Improvements</a>
+  <a href="#future-improvements">Future Improvements</a> • 
+  <a href="#libraries-used">Libraries Used
 </p>
 
 ## Key Features
@@ -40,3 +41,5 @@ item5,item6,item7,item8
 ## Installation
 
 ## Future Improvements
+
+## Libraries Used

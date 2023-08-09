@@ -49,3 +49,4 @@ item5,item6,item7,item8
 ## Future Improvements
 
 ## Libraries Used
+* [wxWidgets](https://www.wxwidgets.org/).

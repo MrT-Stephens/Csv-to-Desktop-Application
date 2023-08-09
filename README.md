@@ -32,7 +32,7 @@ item5,item6,item7,item8
    - Markdown tables.
    - XML.
    - HTML tables.
-   - JSON.
+   - LaTex tables.
    - Many more in the future!
 * Ability to change the format of the inserted data (click the advanced view button):
    - Uppercase all the data.

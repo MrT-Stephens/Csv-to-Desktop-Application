@@ -1,19 +1,20 @@
 #pragma once
 
-#include "UtilityItems.h"
+// Reading from file does not work with namespaces at the moment. Will fix later.
 
 #include <format>
 #include <string>
 #include <vector>
 #include <sstream>
+#include <fstream>
 #include <algorithm>
 #include <filesystem>
 
 namespace mrt
 {
 	  /*****************************/
-	 /* XML_Attribute Declaration */
-	/*****************************/
+     /* XML_Attribute Declaration */
+    /*****************************/
 
 	template <class _StrType>
 	struct XML_Attribute
@@ -23,8 +24,8 @@ namespace mrt
 	};
 
 	  /************************/
-	 /* XML_Node Declaration */
-	/************************/
+     /* XML_Node Declaration */
+    /************************/
 
 	template <class _StrType>
 	class XML_Node
@@ -36,6 +37,7 @@ namespace mrt
 		std::vector<XML_Node<_StrType>> m_Children;
 	public:
 		// Constructors
+		XML_Node();
 		XML_Node(const _StrType& name, const _StrType& value = _StrType());
 
 		// Copiers & Assignments
@@ -78,12 +80,14 @@ namespace mrt
 	enum class XML_Document_FileError
 	{
 		SUCCESS = 0,
-		FAILED_TO_OPEN = 1
+		FAILED_TO_OPEN = 1,
+		INCORRECT_PROLOG = 2,
+		FILE_EMPTY = 3
 	};
 
 	  /****************************/
-	 /* XML_Document Declaration */
-	/****************************/
+     /* XML_Document Declaration */
+    /****************************/
 
 	template <class _StrType>
 	class XML_Document
@@ -105,6 +109,7 @@ namespace mrt
 		using IFstream = typename std::basic_ifstream<ValueType>;
 
 		// Constructors
+		XML_Document(const _StrType& version, const _StrType& nameSpace = _StrType(), bool addProlog = true, bool newLines = true);
 		XML_Document(const XML_Node<_StrType>& root, const _StrType& version, const _StrType& nameSpace = _StrType(), bool addProlog = true, bool newLines = true);
 
 		// Copiers & Assignments
@@ -138,7 +143,7 @@ namespace mrt
 		// Recursive called functions to read or writes nodes to input or ouput streams.
 		static void WriteChildrenNodes(OStream* fs, const XML_Node<_StrType>& node, const _StrType& nameSpace, bool newLines, size_t tabs = 1);
 
-		static void ReadChildrenNodes(IStream* fs, XML_Node<_StrType>& node, const _StrType& nameSpace);
+		static void ReadChildrenNodes(_StrType* fs, XML_Node<_StrType>& node, const _StrType& nameSpace);
 
 		// Universal read and write functions. USE THESE IF OUTPUTTING OR INPUTTING TO STRING STREAM, COUT, etc.
 		static void ReadDocumentFromStream(IStream* fs, XML_Document& document);
@@ -147,8 +152,8 @@ namespace mrt
 	};
 
 	  /************************/
-	 /* MrT Global Functions */
-	/************************/
+     /* MrT Global Functions */
+    /************************/
 
 	template <class _StrType>
 	static _StrType getXMLprolog(const _StrType& version);
@@ -167,11 +172,17 @@ namespace mrt
 
 	template <class _CastType, class _InType>
 	static _CastType string_cast(const _InType& str);
+
+	template <class _StrType>
+	static XML_Node<_StrType> ReadNode(const _StrType& line);
 }
 
   /***************************/
  /* XML_Node Implementation */
 /***************************/
+
+template <class _StrType>
+mrt::XML_Node<_StrType>::XML_Node() : m_Name(), m_Value() { }
 
 template <class _StrType>
 mrt::XML_Node<_StrType>::XML_Node(const _StrType& name, const _StrType& value) : m_Name(name), m_Value(value) { }
@@ -314,6 +325,10 @@ const std::vector<mrt::XML_Node<_StrType>>& mrt::XML_Node<_StrType>::GetAllChild
 /*******************************/
 
 template <class _StrType>
+mrt::XML_Document<_StrType>::XML_Document(const _StrType& version, const _StrType& nameSpace, bool addProlog, bool newLines) :
+	m_Version(version), m_Namespace(nameSpace), m_AddProlog(addProlog), m_NewLines(newLines) { }
+
+template <class _StrType>
 mrt::XML_Document<_StrType>::XML_Document(const XML_Node<_StrType>& root, const _StrType& version, const _StrType& nameSpace, bool addProlog, bool newLines) :
 	m_Root(root), m_Version(version), m_Namespace(nameSpace), m_AddProlog(addProlog), m_NewLines(newLines) { }
 
@@ -378,8 +393,35 @@ mrt::XML_Document_FileError mrt::XML_Document<_StrType>::ReadDocument(const _Str
 		return XML_Document_FileError::FAILED_TO_OPEN;
 	}
 
+	_StrType fileContent{ std::istreambuf_iterator<typename _StrType::value_type>(fs), std::istreambuf_iterator<typename _StrType::value_type>() };
 
+	{
+		if (fileContent.empty())
+		{
+			fs.close();
+			return XML_Document_FileError::FILE_EMPTY;
+		}
+		else if (fileContent.find(getXMLprolog<_StrType>(document.GetVersion())) == _StrType::npos)
+		{
+			fs.close();
+			return XML_Document_FileError::INCORRECT_PROLOG;
+		}
 
+		fileContent.erase(std::remove_if(fileContent.begin(), fileContent.end(), [](auto c) { return (c == '\n') || (c == '\t'); }), fileContent.end());
+
+		fileContent.erase(0, getXMLprolog<_StrType>(document.GetVersion()).size());
+
+		_StrType rootData = fileContent.substr(0, fileContent.find('>') + 1);
+
+		document.m_Root = ReadNode<_StrType>(rootData);
+
+		fileContent.erase(0, rootData.size());
+		fileContent.erase(fileContent.size() - getEndNode<_StrType>(document.GetRoot(), document.GetNamespace()).size(), fileContent.size() - 1);
+	}
+
+	ReadChildrenNodes(&fileContent, document.GetRoot(), document.GetNamespace());
+
+	fs.close();
 	return XML_Document_FileError::SUCCESS;
 }
 
@@ -409,9 +451,32 @@ mrt::XML_Document_FileError mrt::XML_Document<_StrType>::WriteDocument(const _St
 }
 
 template <class _StrType>
-void mrt::XML_Document<_StrType>::ReadChildrenNodes(IStream* fs, XML_Node<_StrType>& node, const _StrType& nameSpace)
+void mrt::XML_Document<_StrType>::ReadChildrenNodes(_StrType* data, XML_Node<_StrType>& node, const _StrType& nameSpace)
 {
+	while (!data->empty())
+	{
+		typename _StrType::size_type childPos1 = data->find('>', data->find('>') + 1);
+		typename _StrType::size_type childPos2 = data->find('/');
 
+		if (childPos2 < childPos1)
+		{
+			node.AddChild(ReadNode<_StrType>(data->substr(0, childPos1 + 1)));
+			data->erase(0, childPos1 + 1);
+		}
+		else
+		{
+			_StrType childEndTag = data->substr(0, data->find('>') + 1);
+			childEndTag.insert(1, _StrType(1, '/'));
+
+			typename _StrType::size_type childPos3 = data->find(childEndTag);
+
+			_StrType newData = data->substr(data->find('>') + 1, (childPos3 - childEndTag.size()) + 1);
+
+			data->erase(0, childPos3 + childEndTag.size());
+
+			ReadChildrenNodes(&newData, node.AddChild(data->substr(1, data->find('>') - 1)), nameSpace);
+		}
+	}
 }
 
 template <class _StrType>
@@ -549,4 +614,34 @@ _CastType mrt::string_cast(const _InType& str)
 	typename std::basic_ostringstream<typename _CastType::value_type> ss;
 	ss << str;
 	return ss.str();
+}
+
+template <class _StrType>
+mrt::XML_Node<_StrType> mrt::ReadNode(const _StrType& line)
+{
+	_StrType name, value;
+
+	name = line.substr(line.find('<') + 1, line.find_first_of(string_cast<_StrType>("> ")) - 1);
+	value = line.substr(line.find('>') + 1, line.find('<', line.find('>')) - line.find('>') - 1);
+
+	XML_Node<_StrType> node(name, value);
+
+	if (line.find(' ') != _StrType::npos)
+	{
+		typename std::basic_istringstream<typename _StrType::value_type> ss(line.substr(line.find(' ') + 1, line.find('>')));
+
+		_StrType temp;
+		while (ss >> temp)
+		{
+			_StrType attrName, attrValue;
+
+			attrName = temp.substr(0, temp.find('='));
+
+			attrValue = temp.substr(temp.find('=') + 2, temp.find('"', temp.find('=') + 2) - temp.find('=') - 2);
+
+			node.EmplaceAttribute(attrName, attrValue);
+		}
+	}
+
+	return node;
 }

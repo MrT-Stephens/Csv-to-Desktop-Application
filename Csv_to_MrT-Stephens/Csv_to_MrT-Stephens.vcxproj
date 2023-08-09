@@ -75,21 +75,25 @@
     <OutDir>$(SoultionDir)bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SoultionDir)bin\intermediates\$(Platform)\$(Configuration)\</IntDir>
     <LibraryPath>$(USERPROFILE)\Documents\wxWidgets-3.2.2.1\lib\vc_lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SoultionDir)bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SoultionDir)bin\intermediates\$(Platform)\$(Configuration)\</IntDir>
     <LibraryPath>$(USERPROFILE)\Documents\wxWidgets-3.2.2.1\lib\vc_lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SoultionDir)bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SoultionDir)bin\intermediates\$(Platform)\$(Configuration)\</IntDir>
     <LibraryPath>$(USERPROFILE)\Documents\wxWidgets-3.2.2.1\lib\vc_x64_lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SoultionDir)bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SoultionDir)bin\intermediates\$(Platform)\$(Configuration)\</IntDir>
     <LibraryPath>$(USERPROFILE)\Documents\wxWidgets-3.2.2.1\lib\vc_x64_lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

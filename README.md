@@ -26,7 +26,7 @@ column1,column2,column3,column4
 item1,item2,item3,item4
 item5,item6,item7,item8
 ```
-* Converts the CSV to:
+* Converts the CSV data to:
    - SQL insert statements.
    - Ascii tables.
    - Markdown tables.

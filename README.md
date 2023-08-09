@@ -41,6 +41,7 @@ item5,item6,item7,item8
    - Transpose all the data.
 * If you don't like the result of the changed data you can use the Undo and Redo buttons to undo or redo any changes made to the data.
 * By clicking on the column names in the list view you can sort by that column into ascending order by clicking once or descending order by clicking twice.
+* Ability to copy the generated data to the clipboard or if you prefer you can download the generated data.
 
 ## Installation
 

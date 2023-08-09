@@ -55,7 +55,8 @@ Main_Frame::Main_Frame(const wxString& title, const wxPoint& pos, const wxSize& 
         std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoMarkdown_Panel(m_Notebook, "CSV to Markdown", &m_Colours), "Markdown"),
         std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoXML_Panel(m_Notebook, "CSV to XML", &m_Colours), "XML"),
         std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoHTML_Panel(m_Notebook, "CSV to HTML", &m_Colours), "HTML"),
-        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoLaTex_Panel(m_Notebook, "CSV to LaTex", &m_Colours), "LaTex")
+        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoLaTex_Panel(m_Notebook, "CSV to LaTex", &m_Colours), "LaTex"),
+        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoJSON_Panel(m_Notebook, "CSV to JSON", &m_Colours), "JSON")
     };
 
 #if defined(MRT_DEBUG)
@@ -75,7 +76,7 @@ void Main_Frame::OnClose(wxCloseEvent& event)
     if (std::any_of(m_Panels.begin(), m_Panels.end(), [](const std::pair<CSVto_PanelBase*, std::string>& panel) { return panel.first->isThreadsRunning(); }))
     {                                                                   // If any of the panels have threads running, show a warning dialog.
         mrt::MrT_UniDialog warningDialog(this, "Warning", "Threads are still running in the background.\nPlease wait for all threads to finish processing before exiting the application.",
-            &m_Colours, wxICON(wxICON_WARNING), mrt::MrT_UniDialogType_OK, { 400, 200 });
+            &m_Colours, wxICON(wxICON_WARNING), mrt::MrT_UniDialogType_OK, FromDIP(wxSize(400, 200)));
 
         warningDialog.ShowModal();
 

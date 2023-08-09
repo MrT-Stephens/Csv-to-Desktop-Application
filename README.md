@@ -14,7 +14,7 @@
   <a href="#future-improvements">Future Improvements</a> • 
   <a href="#libraries-used">Libraries Used
 </p>
-<br/><br/>
+
 <p align="center">
   <img src="https://github.com/MrT-Stephens/Csv-to-Application/blob/master/Images/CSV_to_App_Image.png" alt="drawing" align="center"/>
 </p>
@@ -33,7 +33,7 @@ item5,item6,item7,item8
    - XML.
    - HTML tables.
    - JSON.
-* Ability to change the format of the inserted data:
+* Ability to change the format of the inserted data (click the advanced view button):
    - Uppercase all the data.
    - Lowercase all the data.
    - Capitalise all the data.

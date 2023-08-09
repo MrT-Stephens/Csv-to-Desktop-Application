@@ -39,8 +39,8 @@ item5,item6,item7,item8
    - Capitalise all the data.
    - Remove whitespace from all the data.
    - Transpose all the data.
-* If you don't like the result of the changed  data you can use the Undo and Redo buttons to undo or redo any changes made to the data.
-* By clicking on the column names in the list view you can sort by that column into ascending order by clicking once or descending  order by clicking twice.
+* If you don't like the result of the changed data you can use the Undo and Redo buttons to undo or redo any changes made to the data.
+* By clicking on the column names in the list view you can sort by that column into ascending order by clicking once or descending order by clicking twice.
 
 ## Installation
 

@@ -17,7 +17,7 @@
 
 ## Key Features
 * Takes CSV files which include a header in the format:
-```CSV
+```csv
 column1,column2,column3,column4
 item1,item2,item3,item4
 item5,item6,item7,item8
@@ -30,13 +30,13 @@ item5,item6,item7,item8
    - HTML tables.
    - JSON.
 * Ability to change the format of the inserted data:
-   - Uppercase all data.
-   - Lowercase all data.
-   - Capitalise all data.
-   - Remove whitespace from all data.
+   - Uppercase all the data.
+   - Lowercase all the data.
+   - Capitalise all the data.
+   - Remove whitespace from all the data.
    - Transpose all the data.
 * If you don't like the result of the changed  data you can use the Undo and Redo buttons to undo or redo any changes made to the data.
-* By clicking on the column names in the list view you can sort by that column into ascending order by clicking once or decending  order by clicking twice.
+* By clicking on the column names in the list view you can sort by that column into ascending order by clicking once or descending  order by clicking twice.
 
 ## Installation
 

@@ -13,9 +13,9 @@
   <a href="#installation">Installation</a> •
   <a href="#future-improvements">Future Improvements</a> • 
   <a href="#libraries-used">Libraries Used
-  <br>
+  </br>
   <img src="https://github.com/MrT-Stephens/Csv-to-Application/blob/master/Images/CSV_to_App_Image.png" alt="drawing" align="center"/>
-  <br>
+  </br>
 </p>
 
 ## Key Features

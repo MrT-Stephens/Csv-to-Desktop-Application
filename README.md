@@ -3,7 +3,7 @@
   <img src="https://github.com/MrT-Stephens/Csv-to-Application/blob/master/Images/CSV_to_Logo.png" alt="drawing" width="200"/>
   <br>
   Csv to...
-  </br>
+  <br>
 </h1>
 
 <h4 align="center">A desktop application which converts CSV (Comma Separated Values) to many other types!</h4>
@@ -15,7 +15,7 @@
   <a href="#libraries-used">Libraries Used
   <br>
   <img src="https://github.com/MrT-Stephens/Csv-to-Application/blob/master/Images/CSV_to_App_Image.png" alt="drawing" align="center"/>
-  </br>
+  <br>
 </p>
 
 ## Key Features

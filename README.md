@@ -15,7 +15,7 @@
   <a href="#libraries-used">Libraries Used
 </p>
 
-<img align="center" src="https://github.com/MrT-Stephens/Csv-to-Application/blob/master/Images/CSV_to_App_Image.png" alt="drawing"/>
+<img src="https://github.com/MrT-Stephens/Csv-to-Application/blob/master/Images/CSV_to_App_Image.png" alt="drawing" align="center"/>
 
 ## Key Features
 * Takes CSV files which include a header in the format:

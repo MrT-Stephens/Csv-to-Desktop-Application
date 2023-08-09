@@ -8,18 +8,14 @@
 
 <h4 align="center">A desktop application which converts CSV (Comma Separated Values) to many other types!</h4>
 
-<br>
 <p align="center">
   <a href="#key-features">Key Features</a> •
   <a href="#installation">Installation</a> •
   <a href="#future-improvements">Future Improvements</a> • 
   <a href="#libraries-used">Libraries Used
 </p>
-<br>
 
-<h1 align="center">
-  <img src="https://github.com/MrT-Stephens/Csv-to-Application/blob/master/Images/CSV_to_App_Image.png" alt="drawing"/>
-</h1>
+<img align="center" src="https://github.com/MrT-Stephens/Csv-to-Application/blob/master/Images/CSV_to_App_Image.png" alt="drawing"/>
 
 ## Key Features
 * Takes CSV files which include a header in the format:

@@ -220,9 +220,11 @@
     <ClInclude Include="CSVtoJSON_Panel.h" />
     <ClInclude Include="CSVtoLaTex_Panel.h" />
     <ClInclude Include="HTML_Table.h" />
+    <ClInclude Include="JSON_Generator.h" />
     <ClInclude Include="LaTex_Table.h" />
     <ClInclude Include="Ascii_Table_Generators.h" />
     <ClInclude Include="CSVtoMarkdown_Panel.h" />
+    <ClInclude Include="Str_Validator.h" />
     <ClInclude Include="UtilityItems.h" />
     <ClInclude Include="CSVData.h" />
     <ClInclude Include="CSVtoASCII_Panel.h" />

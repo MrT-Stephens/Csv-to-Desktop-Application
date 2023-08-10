@@ -159,7 +159,7 @@ void CSVtoXML_Panel::OutputFile()
 		if (!file.is_open())
 		{
 			mrt::MrT_UniDialog errorDialog(this, "Error", "Failed to save file!\nPlease try to re-save the file.",
-				m_Colours, wxICON(wxICON_ERROR), mrt::MrT_UniDialogType_OK, { 400, 200 });
+				m_Colours, wxICON(wxICON_ERROR), mrt::MrT_UniDialogType_OK, FromDIP(wxSize(400, 200)));
 
 			errorDialog.ShowModal();
 		}

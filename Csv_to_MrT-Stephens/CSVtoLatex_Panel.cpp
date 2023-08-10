@@ -178,7 +178,7 @@ void CSVtoLaTex_Panel::SetupSpecificOutputSectionItems()
 	m_TextAligmentComboBox->SetOwnFont(MAIN_FONT_TEXT(11));
 	m_TextAligmentComboBox->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_TextAligmentComboBox->SetOwnForegroundColour(m_Colours->FOREGROUND);
-	m_TextAligmentComboBox->SetToolTip("Select a table alignment for the laTex table");
+	m_TextAligmentComboBox->SetToolTip("Select a text alignment for the laTex table");
 
 	m_TextAligmentComboBox->Bind(wxEVT_COMBOBOX, [this](wxCommandEvent& event)
 		{

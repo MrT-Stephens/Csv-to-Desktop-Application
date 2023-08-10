@@ -1,5 +1,6 @@
 #pragma once
 
+#include "JSON_Generator.h"
 #include "CSVto_PanelBase.h"
 
   /*******************************/
@@ -9,13 +10,16 @@
 class CSVtoJSON_Panel : public CSVto_PanelBase
 {
 private:
-	wxBoxSizer* m_OutputSettingsSizer3;
-	wxButton* m_TheadTbodyHtmlBtn;
-	wxCheckBox* m_MinifyHtmlCheckBox;
+	wxArrayString m_JSONStylesChoices;
+	wxBoxSizer* m_OutputSettingsSizer3, * m_LeftSizer, * m_RightSizer;
+	wxComboBox* m_JSONStylesComboBox;
+	wxButton* m_WrapperByDataBtn;
+	wxCheckBox* m_MinifyJSONCheckBox, * m_ParsingJSONCheckBox;
 public:
 	CSVtoJSON_Panel(wxWindow* _parent, const std::string& _name, const mrtApp::AppColours* _colours);
 
 	virtual void PopulateOutputDataTextBox() override;
 	virtual void SetupSpecificOutputSectionItems() override;
 	virtual void LockOrUnlockItems(bool lock) override;
+	virtual void OutputFile() override;
 };

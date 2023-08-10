@@ -39,3 +39,23 @@ namespace mrtApp
 		const wxColour SECONDARY{ 28, 230, 224 };
 	};
 }
+
+  /***************************/
+ /* MrT Global Declarations */
+/***************************/
+
+namespace mrt
+{
+	template <class _Numeric>
+	static _Numeric RoundToNearest10(_Numeric number);
+}
+
+  /******************************/
+ /* MrT Global Implementations */
+/******************************/
+
+template <class _Numeric>
+_Numeric mrt::RoundToNearest10(_Numeric number)
+{
+	return (number + 10) / 10 * 10;
+}

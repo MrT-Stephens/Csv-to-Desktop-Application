@@ -125,13 +125,14 @@ void CSVtoSQL_Panel::PopulateOutputDataTextBox()
 	// Create table code generation.
 	if (m_GenerateTable->GetValue())										// If the generate table checkbox is checked.
 	{																		// Will generate the create table statement.
+
 		std::ostringstream createTableCodeSS;
 
 		createTableCodeSS << "CREATE TABLE " << GenerateQuoteString(m_TableNameInput->GetValue().ToStdString()) << " (\n";
 
 		for (size_t i = 0; i < m_CSVData->GetColumnCount(); ++i)			// Loop through the header names and generate the columns. E.g. column1 VARCHAR(256) NOT NULL,
 		{
-			createTableCodeSS << "\t" << GenerateQuoteString(headerNames[i]) << " VARCHAR(256) NOT NULL" << ((i == m_CSVData->GetColumnCount() - 1) ? "\n);\n\n" : ",\n");
+			createTableCodeSS << "\t" << GenerateQuoteString(headerNames[i]) << " VARCHAR(" << mrt::RoundToNearest10<size_t>(m_CSVData->GetMaxColumnWidth(i)) << ") NOT NULL" << ((i == m_CSVData->GetColumnCount() - 1) ? "\n);\n\n" : ",\n");
 		}
 
 		m_OutputDataTextBox->AppendText(std::forward<std::string>(createTableCodeSS.str()));

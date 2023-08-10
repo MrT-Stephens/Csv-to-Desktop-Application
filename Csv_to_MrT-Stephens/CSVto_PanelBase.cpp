@@ -127,7 +127,7 @@ void CSVto_PanelBase::SetupDataInputSection()
 				{ "firstName", "lastName", "age", "gender", "personId" });
 
 #if defined(MRT_DEBUG)
-			MRT_DEBUG_LOG_MSG("Preveiw file inputted successfully");
+			MRT_DEBUG_LOG_MSG("Preview file inputted successfully");
 #endif
 
 			PopulateData();

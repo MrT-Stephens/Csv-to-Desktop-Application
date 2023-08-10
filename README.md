@@ -33,6 +33,7 @@ item5,item6,item7,item8
    - XML.
    - HTML tables.
    - LaTex tables.
+   - JSON objects, arrays, etc.
    - Many more in the future!
 * Ability to change the format of the inserted data (click the advanced view button):
    - Uppercase all the data.

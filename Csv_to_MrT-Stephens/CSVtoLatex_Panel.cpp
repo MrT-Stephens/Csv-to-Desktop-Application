@@ -56,7 +56,7 @@ void CSVtoLaTex_Panel::SetupSpecificOutputSectionItems()
 	m_LeftSizer->Add(m_MinimalWorkingCheckBox, 0, wxALL | wxEXPAND | wxCENTER, FromDIP(10));
 
 	m_LabelTextBox = new wxTextCtrl(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize);
-	m_LabelTextBox->SetValue("label");
+	m_LabelTextBox->SetHint("Label Name");
 	m_LabelTextBox->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_LabelTextBox->SetOwnFont(MAIN_FONT_TEXT(11));
 	m_LabelTextBox->SetOwnBackgroundColour(m_Colours->PRIMARY);
@@ -83,7 +83,7 @@ void CSVtoLaTex_Panel::SetupSpecificOutputSectionItems()
 	);
 
 	m_TableCaptionTextBox = new wxTextCtrl(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize);
-	m_TableCaptionTextBox->SetValue("caption");
+	m_TableCaptionTextBox->SetHint("Caption Name");
 	m_TableCaptionTextBox->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_TableCaptionTextBox->SetOwnFont(MAIN_FONT_TEXT(11));
 	m_TableCaptionTextBox->SetOwnBackgroundColour(m_Colours->PRIMARY);

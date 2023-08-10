@@ -56,7 +56,7 @@ void CSVtoXML_Panel::SetupSpecificOutputSectionItems()
 	m_LeftSizer->Add(m_MinifyXmlCheckBox, 0, wxALL | wxEXPAND | wxCENTER, FromDIP(10));
 
 	m_NameSpaceTextBox = new wxTextCtrl(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize);
-	m_NameSpaceTextBox->SetValue("namespace");
+	m_NameSpaceTextBox->SetHint("Namespace Name");
 	m_NameSpaceTextBox->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_NameSpaceTextBox->SetOwnFont(MAIN_FONT_TEXT(11));
 	m_NameSpaceTextBox->SetOwnBackgroundColour(m_Colours->PRIMARY);
@@ -73,7 +73,7 @@ void CSVtoXML_Panel::SetupSpecificOutputSectionItems()
 	);
 
 	m_XmlnsTextBox = new wxTextCtrl(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize);
-	m_XmlnsTextBox->SetValue("namespaceURI");
+	m_XmlnsTextBox->SetHint("Namespace URI");
 	m_XmlnsTextBox->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_XmlnsTextBox->SetOwnFont(MAIN_FONT_TEXT(11));
 	m_XmlnsTextBox->SetOwnBackgroundColour(m_Colours->PRIMARY);
@@ -94,7 +94,7 @@ void CSVtoXML_Panel::SetupSpecificOutputSectionItems()
 	m_MiddleSizer->Add(m_XmlnsTextBox, 0, wxALL | wxEXPAND | wxCENTER, FromDIP(10));
 
 	m_RootNameTextBox = new wxTextCtrl(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize);
-	m_RootNameTextBox->SetValue("root");
+	m_RootNameTextBox->SetHint("Root Name");
 	m_RootNameTextBox->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_RootNameTextBox->SetOwnFont(MAIN_FONT_TEXT(11));
 	m_RootNameTextBox->SetOwnBackgroundColour(m_Colours->PRIMARY);
@@ -121,7 +121,7 @@ void CSVtoXML_Panel::SetupSpecificOutputSectionItems()
 	);
 
 	m_ElementNameTextBox = new wxTextCtrl(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize);
-	m_ElementNameTextBox->SetValue("element");
+	m_ElementNameTextBox->SetHint("Element Name");
 	m_ElementNameTextBox->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_ElementNameTextBox->SetOwnFont(MAIN_FONT_TEXT(11));
 	m_ElementNameTextBox->SetOwnBackgroundColour(m_Colours->PRIMARY);

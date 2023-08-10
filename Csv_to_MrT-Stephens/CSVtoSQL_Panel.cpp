@@ -56,7 +56,7 @@ void CSVtoSQL_Panel::SetupSpecificOutputSectionItems()
 	m_CheckBoxSizer->Add(m_InsertMultiRows, 0, wxALL | wxEXPAND | wxCENTER, FromDIP(10));
 
 	m_TableNameInput = new wxTextCtrl(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize);
-	m_TableNameInput->SetValue("Table Name");
+	m_TableNameInput->SetHint("Table Name");
 	m_TableNameInput->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_TableNameInput->SetOwnFont(MAIN_FONT_TEXT(11));
 	m_TableNameInput->SetOwnBackgroundColour(m_Colours->PRIMARY);

@@ -133,6 +133,8 @@ void CSVtoCSV_Panel::LockOrUnlockItems(bool lock)
 	m_ClearBtn->Enable(!lock);
 	m_TransposeBtn->Enable(!lock);
 	m_DeleteBlanksBtn->Enable(!lock);
+	m_DelimiterComboBox->Enable(!lock);
+	m_IncludeHeaderCheckBox->Enable(!lock);
 }
 
 char CSVtoCSV_Panel::GetDelimiterType(int selection)

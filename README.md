@@ -27,6 +27,7 @@ item1,item2,item3,item4
 item5,item6,item7,item8
 ```
 * Converts the CSV data to:
+   - CSV with different delimiters.
    - SQL insert statements.
    - Ascii tables.
    - Markdown tables.

@@ -79,12 +79,3 @@ public:
 	void PopulateData();
 	bool isThreadsRunning();
 };
-
-  /***********************/
- /* MrT Global Function */
-/***********************/
-
-namespace mrt
-{
-	std::wstring StrToWstr(const std::string& str);
-}

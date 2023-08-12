@@ -29,8 +29,8 @@ namespace mrt
 	};
 
 	  /**********************************/
-	 /* CSVData_Base Class Declaration */
-	/**********************************/
+     /* CSVData_Base Class Declaration */
+    /**********************************/
 
 	template <class _StrType>
 	class CSVData_Base
@@ -49,6 +49,8 @@ namespace mrt
 		using IStream = typename std::basic_istream<ValueType>;
 		using OStream = typename std::basic_ostream<ValueType>;
 		using StrStream = typename std::basic_stringstream<ValueType>;
+		using OStrStream = typename std::basic_ostringstream<ValueType>;
+		using IStrStream = typename std::basic_istringstream<ValueType>;
 		using OFstream = typename std::basic_ofstream<ValueType>;
 		using IFstream = typename std::basic_ifstream<ValueType>;
 
@@ -92,12 +94,13 @@ namespace mrt
 		static void CheckMaxColumnWidths(CSVData_Base<_StrType>* const csvData);
 
 		static CSVData_Error LoadCsv(CSVData_Base<_StrType>* const csvData, const _StrType& fileDir, bool removeNonAscii);
-		static CSVData_Error SaveCsv(const CSVData_Base<_StrType>* const csvData, const _StrType& fileDir);
+		static CSVData_Error SaveCsv(const CSVData_Base<_StrType>* const csvData, const _StrType& fileDir, ValueType delimiter, bool includeHeader);
+		static void SaveCsvToStream(const CSVData_Base<_StrType>* const csvData, OStream* stream, ValueType delimiter, bool includeHeader);
 	};
 
 	  /************************/
-	 /* CSVData Deceleration */
-	/************************/
+     /* CSVData Deceleration */
+    /************************/
 
 	template <class _StrType>
 	class CSVData : public CSVData_Base<_StrType>
@@ -329,7 +332,7 @@ mrt::CSVData_Error mrt::CSVData_Base<_StrType>::LoadCsv(CSVData_Base<_StrType>* 
 }
 
 template <class _StrType>
-mrt::CSVData_Error mrt::CSVData_Base<_StrType>::SaveCsv(const CSVData_Base<_StrType>* const csvData, const _StrType& fileDir)
+mrt::CSVData_Error mrt::CSVData_Base<_StrType>::SaveCsv(const CSVData_Base<_StrType>* const csvData, const _StrType& fileDir, ValueType delimiter, bool includeHeader)
 {
 	OFstream file(std::filesystem::path(fileDir), std::ios::out);
 
@@ -338,13 +341,14 @@ mrt::CSVData_Error mrt::CSVData_Base<_StrType>::SaveCsv(const CSVData_Base<_StrT
 		return CSVData_Error::CANNOT_OPEN_FILE;
 	}
 
+	if (includeHeader)
 	{
 		const std::vector<_StrType>& headerNames = csvData->GetHeaderNames();
 
 		// Write Header Names
 		for (size_t i = 0; i < csvData->GetColumnCount(); ++i)
 		{
-			file << headerNames[i] << ((i != csvData->GetColumnCount() - 1) ? "," : "\n");
+			file << headerNames[i] << ((i != csvData->GetColumnCount() - 1) ? delimiter : '\n');
 		}
 	}
 
@@ -352,12 +356,35 @@ mrt::CSVData_Error mrt::CSVData_Base<_StrType>::SaveCsv(const CSVData_Base<_StrT
 	{
 		for (size_t i1 = 0; i1 < row.size(); ++i1)
 		{
-			file << row[i1] << ((i1 != row.size() - 1) ? "," : "\n");
+			file << row[i1] << ((i1 != row.size() - 1) ? delimiter : '\n');
 		}
 	}
 
 	file.close();
 	return CSVData_Error::NONE;
+}
+
+template <class _StrType>
+void mrt::CSVData_Base<_StrType>::SaveCsvToStream(const CSVData_Base<_StrType>* const csvData, OStream* stream, ValueType delimiter, bool includeHeader)
+{
+	if (includeHeader)
+	{
+		const std::vector<_StrType>& headerNames = csvData->GetHeaderNames();
+
+		// Write Header Names
+		for (size_t i = 0; i < csvData->GetColumnCount(); ++i)
+		{
+			*stream << headerNames[i] << ((i != csvData->GetColumnCount() - 1) ? delimiter : '\n');
+		}
+	}
+
+	for (const std::vector<_StrType>& row : csvData->GetTableData())
+	{
+		for (size_t i1 = 0; i1 < row.size(); ++i1)
+		{
+			*stream << row[i1] << ((i1 != row.size() - 1) ? delimiter : '\n');
+		}
+	}
 }
 
   /**************************/

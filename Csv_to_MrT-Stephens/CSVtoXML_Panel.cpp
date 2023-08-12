@@ -28,7 +28,7 @@ void CSVtoXML_Panel::SetupSpecificOutputSectionItems()
 
 	m_ExcludePrologCheckBox->Bind(wxEVT_CHECKBOX, [this](wxCommandEvent& event)
 		{
-			if (!m_OutputDataTextBox->IsEmpty())
+			if (m_CSVData != nullptr)
 			{
 				PopulateData();
 			}
@@ -44,7 +44,7 @@ void CSVtoXML_Panel::SetupSpecificOutputSectionItems()
 
 	m_MinifyXmlCheckBox->Bind(wxEVT_CHECKBOX, [this](wxCommandEvent& event)
 		{
-			if (!m_OutputDataTextBox->IsEmpty())
+			if (m_CSVData != nullptr)
 			{
 				PopulateData();
 			}
@@ -65,7 +65,7 @@ void CSVtoXML_Panel::SetupSpecificOutputSectionItems()
 
 	m_NameSpaceTextBox->Bind(wxEVT_TEXT, [this](wxCommandEvent& event)
 		{
-			if (!m_OutputDataTextBox->IsEmpty())
+			if (m_CSVData != nullptr)
 			{
 				m_TextBoxTimer.Start(2000);
 			}
@@ -82,7 +82,7 @@ void CSVtoXML_Panel::SetupSpecificOutputSectionItems()
 
 	m_XmlnsTextBox->Bind(wxEVT_TEXT, [this](wxCommandEvent& event)
 		{
-			if (!m_OutputDataTextBox->IsEmpty())
+			if (m_CSVData != nullptr)
 			{
 				m_TextBoxTimer.Start(2000);
 			}
@@ -103,7 +103,7 @@ void CSVtoXML_Panel::SetupSpecificOutputSectionItems()
 
 	m_RootNameTextBox->Bind(wxEVT_TEXT, [this](wxCommandEvent& event)
 		{
-			if (!m_OutputDataTextBox->IsEmpty())
+			if (m_CSVData != nullptr)
 			{
 				m_TextBoxTimer.Start(2000);
 			}
@@ -130,7 +130,7 @@ void CSVtoXML_Panel::SetupSpecificOutputSectionItems()
 
 	m_ElementNameTextBox->Bind(wxEVT_TEXT, [this](wxCommandEvent& event)
 		{
-			if (!m_OutputDataTextBox->IsEmpty())
+			if (m_CSVData != nullptr)
 			{
 				m_TextBoxTimer.Start(2000);
 			}

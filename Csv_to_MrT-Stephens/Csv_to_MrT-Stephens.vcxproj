@@ -202,6 +202,7 @@
     </ManifestResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CSVtoCSV_Panel.cpp" />
     <ClCompile Include="CSVtoHTML_Panel.cpp" />
     <ClCompile Include="CSVtoJSON_Panel.cpp" />
     <ClCompile Include="CSVtoLaTex_Panel.cpp" />
@@ -216,6 +217,7 @@
     <ClCompile Include="MrT_wxDialogs.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CSVtoCSV_Panel.h" />
     <ClInclude Include="CSVtoHTML_Panel.h" />
     <ClInclude Include="CSVtoJSON_Panel.h" />
     <ClInclude Include="CSVtoLaTex_Panel.h" />

@@ -28,7 +28,7 @@ void CSVtoASCII_Panel::SetupSpecificOutputSectionItems()
 
 	m_ForceSeparators->Bind(wxEVT_CHECKBOX, [this](wxCommandEvent& event)
 		{
-			if (!m_OutputDataTextBox->IsEmpty())
+			if (m_CSVData != nullptr)
 			{
 				PopulateData();
 			}
@@ -54,7 +54,7 @@ void CSVtoASCII_Panel::SetupSpecificOutputSectionItems()
 
 	m_AsciiTableStyle->Bind(wxEVT_COMBOBOX, [this](wxCommandEvent& event)
 		{
-			if (!m_OutputDataTextBox->IsEmpty())
+			if (m_CSVData != nullptr)
 			{
 				PopulateData();
 			}
@@ -84,7 +84,7 @@ void CSVtoASCII_Panel::SetupSpecificOutputSectionItems()
 
 	m_CommentType->Bind(wxEVT_COMBOBOX, [this](wxCommandEvent& event)
 		{
-			if (!m_OutputDataTextBox->IsEmpty())
+			if (m_CSVData != nullptr)
 			{
 				PopulateData();
 			}
@@ -105,7 +105,7 @@ void CSVtoASCII_Panel::SetupSpecificOutputSectionItems()
 
 	m_TextAlignment->Bind(wxEVT_COMBOBOX, [this](wxCommandEvent& event)
 		{
-			if (!m_OutputDataTextBox->IsEmpty())
+			if (m_CSVData != nullptr)
 			{
 				PopulateData();
 			}

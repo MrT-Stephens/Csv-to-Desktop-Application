@@ -231,7 +231,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 
 	m_CapitalizeBtn->Bind(wxEVT_BUTTON, [this](wxCommandEvent& event)
 		{
-			if (!m_OutputDataTextBox->IsEmpty())
+			if (m_CSVData != nullptr)
 			{
 				m_CSVData->CreateUndo();
 				m_CSVData->CapitalizeData(m_CSVData, (m_IncludeHeaderBtn->GetLabel() == "Exclude Header" ? true : false));
@@ -252,7 +252,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 
 	m_LowercaseBtn->Bind(wxEVT_BUTTON, [this](wxCommandEvent& event)
 		{
-			if (!m_OutputDataTextBox->IsEmpty())
+			if (m_CSVData != nullptr)
 			{
 				m_CSVData->CreateUndo();
 				m_CSVData->LowerUpperData(m_CSVData, (m_IncludeHeaderBtn->GetLabel() == "Exclude Header" ? true : false), true);
@@ -273,7 +273,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 
 	m_UppercaseBtn->Bind(wxEVT_BUTTON, [this](wxCommandEvent& event)
 		{
-			if (!m_OutputDataTextBox->IsEmpty())
+			if (m_CSVData != nullptr)
 			{
 				m_CSVData->CreateUndo();
 				m_CSVData->LowerUpperData(m_CSVData, (m_IncludeHeaderBtn->GetLabel() == "Exclude Header" ? true : false), false);
@@ -294,7 +294,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 
 	m_UndoBtn->Bind(wxEVT_BUTTON, [this](wxCommandEvent& event)
 		{
-			if (!m_OutputDataTextBox->IsEmpty())
+			if (m_CSVData != nullptr)
 			{
 				if (m_CSVData->Undo() == mrt::CSVData_UndoRedoState::CAN_UNDO)
 				{
@@ -339,7 +339,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 
 	m_TransposeBtn->Bind(wxEVT_BUTTON, [this](wxCommandEvent& event)
 		{
-			if (!m_OutputDataTextBox->IsEmpty())
+			if (m_CSVData != nullptr)
 			{
 				m_CSVData->CreateUndo();
 				m_CSVData->TransposeData(m_CSVData);
@@ -360,7 +360,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 
 	m_DeleteBlanksBtn->Bind(wxEVT_BUTTON, [this](wxCommandEvent& event)
 		{
-			if (!m_OutputDataTextBox->IsEmpty())
+			if (m_CSVData != nullptr)
 			{
 				m_CSVData->CreateUndo();
 				m_CSVData->RemoveWhiteSpace(m_CSVData, (m_IncludeHeaderBtn->GetLabel() == "Exclude Header" ? true : false));
@@ -381,7 +381,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 
 	m_RedoBtn->Bind(wxEVT_BUTTON, [this](wxCommandEvent& event)
 		{
-			if (!m_OutputDataTextBox->IsEmpty())
+			if (m_CSVData != nullptr)
 			{
 				if (m_CSVData->Redo() == mrt::CSVData_UndoRedoState::CAN_REDO)
 				{
@@ -445,7 +445,7 @@ void CSVto_PanelBase::SetupDataOutputSection()
 
 	m_CopyDataBtn->Bind(wxEVT_BUTTON, [this](wxCommandEvent& event)
 		{
-			if (!m_OutputDataTextBox->IsEmpty())
+			if (m_CSVData != nullptr)
 			{
 				wxClipboard::Get()->SetData(new wxTextDataObject(std::move(m_OutputDataTextBox->GetValue())));
 			}
@@ -463,7 +463,7 @@ void CSVto_PanelBase::SetupDataOutputSection()
 
 	m_DownloadBtn->Bind(wxEVT_BUTTON, [this](wxCommandEvent& event)
 		{
-			if (!m_OutputDataTextBox->IsEmpty())
+			if (m_CSVData != nullptr)
 			{
 				OutputFile();
 			}
@@ -619,18 +619,4 @@ bool CSVto_PanelBase::isThreadsRunning()
 	std::lock_guard<std::mutex> lock(m_OutputDataMutex);
 
 	return (m_ListViewThreadRunning || m_TextBoxThreadRunning) ? true : false;
-}
-
-  /**************************************/
- /* MrT Global Function Implementation */
-/**************************************/
-
-std::wstring mrt::StrToWstr(const std::string& str)
-{
-	std::wstringstream wss;
-
-	wss.imbue(std::locale(""));
-	wss << str.c_str();
-
-	return wss.str();
 }

@@ -28,7 +28,7 @@ void CSVtoLaTex_Panel::SetupSpecificOutputSectionItems()
 
 	m_HereOrTopCheckBox->Bind(wxEVT_CHECKBOX, [this](wxCommandEvent& event)
 		{
-			if (!m_OutputDataTextBox->IsEmpty())
+			if (m_CSVData != nullptr)
 			{
 				PopulateData();
 			}
@@ -44,7 +44,7 @@ void CSVtoLaTex_Panel::SetupSpecificOutputSectionItems()
 
 	m_MinimalWorkingCheckBox->Bind(wxEVT_CHECKBOX, [this](wxCommandEvent& event)
 		{
-			if (!m_OutputDataTextBox->IsEmpty())
+			if (m_CSVData != nullptr)
 			{
 				PopulateData();
 			}
@@ -65,7 +65,7 @@ void CSVtoLaTex_Panel::SetupSpecificOutputSectionItems()
 
 	m_LabelTextBox->Bind(wxEVT_TEXT, [this](wxCommandEvent& event)
 		{
-			if (!m_OutputDataTextBox->IsEmpty())
+			if (m_CSVData != nullptr)
 			{
 				m_Timer.Start(2000);
 			}
@@ -92,7 +92,7 @@ void CSVtoLaTex_Panel::SetupSpecificOutputSectionItems()
 
 	m_TableCaptionTextBox->Bind(wxEVT_TEXT, [this](wxCommandEvent& event)
 		{
-			if (!m_OutputDataTextBox->IsEmpty())
+			if (m_CSVData != nullptr)
 			{
 				m_Timer.Start(2000);
 			}
@@ -120,7 +120,7 @@ void CSVtoLaTex_Panel::SetupSpecificOutputSectionItems()
 
 	m_TableBorderComboBox->Bind(wxEVT_COMBOBOX, [this](wxCommandEvent& event)
 		{
-			if (!m_OutputDataTextBox->IsEmpty())
+			if (m_CSVData != nullptr)
 			{
 				PopulateData();
 			}
@@ -140,7 +140,7 @@ void CSVtoLaTex_Panel::SetupSpecificOutputSectionItems()
 
 	m_CaptionLocationComboBox->Bind(wxEVT_COMBOBOX, [this](wxCommandEvent& event)
 		{
-			if (!m_OutputDataTextBox->IsEmpty())
+			if (m_CSVData != nullptr)
 			{
 				PopulateData();
 			}
@@ -165,7 +165,7 @@ void CSVtoLaTex_Panel::SetupSpecificOutputSectionItems()
 
 	m_TableAlignmentComboBox->Bind(wxEVT_COMBOBOX, [this](wxCommandEvent& event)
 		{
-			if (!m_OutputDataTextBox->IsEmpty())
+			if (m_CSVData != nullptr)
 			{
 				PopulateData();
 			}
@@ -182,7 +182,7 @@ void CSVtoLaTex_Panel::SetupSpecificOutputSectionItems()
 
 	m_TextAligmentComboBox->Bind(wxEVT_COMBOBOX, [this](wxCommandEvent& event)
 		{
-			if (!m_OutputDataTextBox->IsEmpty())
+			if (m_CSVData != nullptr)
 			{
 				PopulateData();
 			}

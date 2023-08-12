@@ -47,7 +47,10 @@ namespace mrtApp
 namespace mrt
 {
 	template <class _Numeric>
-	static _Numeric RoundToNearest10(_Numeric number);
+	inline _Numeric RoundToNearest10(_Numeric number);
+
+	template <class _StrType>
+	inline std::wstring StrToWstr(const _StrType& str);
 }
 
   /******************************/
@@ -58,4 +61,15 @@ template <class _Numeric>
 _Numeric mrt::RoundToNearest10(_Numeric number)
 {
 	return (number + 10) / 10 * 10;
+}
+
+template <class _StrType>
+std::wstring mrt::StrToWstr(const _StrType& str)
+{
+	std::wstringstream wss;
+
+	wss.imbue(std::locale(""));
+	wss << str.c_str();
+
+	return wss.str();
 }

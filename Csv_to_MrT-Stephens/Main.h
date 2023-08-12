@@ -4,6 +4,7 @@
 #include <wx/notebook.h>
 
 #include "UtilityItems.h"
+#include "CSVtoCSV_Panel.h"
 #include "CSVtoSQL_Panel.h"
 #include "CSVtoASCII_Panel.h"
 #include "CSVtoMarkdown_Panel.h"

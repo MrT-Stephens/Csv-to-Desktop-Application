@@ -28,7 +28,7 @@ void CSVtoHTML_Panel::SetupSpecificOutputSectionItems()
 
 	m_MinifyHtmlCheckBox->Bind(wxEVT_CHECKBOX, [this](wxCommandEvent& event)
 		{
-			if (!m_OutputDataTextBox->IsEmpty())
+			if (m_CSVData != nullptr)
 			{
 				PopulateData();
 			}
@@ -53,7 +53,7 @@ void CSVtoHTML_Panel::SetupSpecificOutputSectionItems()
 				m_TheadTbodyHtmlBtn->SetLabel("Include thread and tbody");
 			}
 
-			if (!m_OutputDataTextBox->IsEmpty())
+			if (m_CSVData != nullptr)
 			{
 				PopulateData();
 			}

@@ -28,7 +28,7 @@ void CSVtoSQL_Panel::SetupSpecificOutputSectionItems()
 
 	m_GenerateTable->Bind(wxEVT_CHECKBOX, [this](wxCommandEvent& event)
 		{
-			if (!m_OutputDataTextBox->IsEmpty())
+			if (m_CSVData != nullptr)
 			{
 				PopulateData();
 			}
@@ -44,7 +44,7 @@ void CSVtoSQL_Panel::SetupSpecificOutputSectionItems()
 
 	m_InsertMultiRows->Bind(wxEVT_CHECKBOX, [this](wxCommandEvent& event)
 		{
-			if (!m_OutputDataTextBox->IsEmpty())
+			if (m_CSVData != nullptr)
 			{
 				PopulateData();
 			}
@@ -65,7 +65,7 @@ void CSVtoSQL_Panel::SetupSpecificOutputSectionItems()
 
 	m_TableNameInput->Bind(wxEVT_TEXT, [this](wxCommandEvent& event)
 		{
-			if (!m_OutputDataTextBox->IsEmpty())
+			if (m_CSVData != nullptr)
 			{
 				m_PopulateDataTimer.Start(2000);
 			}
@@ -97,7 +97,7 @@ void CSVtoSQL_Panel::SetupSpecificOutputSectionItems()
 
 	m_QuoteTypeSelect->Bind(wxEVT_COMBOBOX, [this](wxCommandEvent& event)
 		{
-			if (!m_OutputDataTextBox->IsEmpty())
+			if (m_CSVData != nullptr)
 			{
 				PopulateData();
 			}

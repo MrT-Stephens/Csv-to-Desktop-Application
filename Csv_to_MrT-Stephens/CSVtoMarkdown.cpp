@@ -28,7 +28,7 @@ void CSVtoMarkdown_Panel::SetupSpecificOutputSectionItems()
 
 	m_BoldFirstRow->Bind(wxEVT_CHECKBOX, [this](wxCommandEvent& event)
 		{
-			if (!m_OutputDataTextBox->IsEmpty())
+			if (m_CSVData != nullptr)
 			{
 				PopulateData();
 			}
@@ -44,7 +44,7 @@ void CSVtoMarkdown_Panel::SetupSpecificOutputSectionItems()
 
 	m_BoldFirstCol->Bind(wxEVT_CHECKBOX, [this](wxCommandEvent& event)
 		{
-			if (!m_OutputDataTextBox->IsEmpty())
+			if (m_CSVData != nullptr)
 			{
 				PopulateData();
 			}
@@ -68,7 +68,7 @@ void CSVtoMarkdown_Panel::SetupSpecificOutputSectionItems()
 
 	m_TableStyle->Bind(wxEVT_COMBOBOX, [this](wxCommandEvent& event)
 		{
-			if (!m_OutputDataTextBox->IsEmpty())
+			if (m_CSVData != nullptr)
 			{
 				PopulateData();
 			}
@@ -89,7 +89,7 @@ void CSVtoMarkdown_Panel::SetupSpecificOutputSectionItems()
 
 	m_TextAlignment->Bind(wxEVT_COMBOBOX, [this](wxCommandEvent& event)
 		{
-			if (!m_OutputDataTextBox->IsEmpty())
+			if (m_CSVData != nullptr)
 			{
 				PopulateData();
 			}

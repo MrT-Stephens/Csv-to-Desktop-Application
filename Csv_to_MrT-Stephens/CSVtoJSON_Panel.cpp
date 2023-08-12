@@ -28,7 +28,7 @@ void CSVtoJSON_Panel::SetupSpecificOutputSectionItems()
 
 	m_MinifyJSONCheckBox->Bind(wxEVT_CHECKBOX, [this](wxCommandEvent& event)
 		{
-			if (!m_OutputDataTextBox->IsEmpty())
+			if (m_CSVData != nullptr)
 			{
 				PopulateData();
 			}
@@ -44,7 +44,7 @@ void CSVtoJSON_Panel::SetupSpecificOutputSectionItems()
 
 	m_ParsingJSONCheckBox->Bind(wxEVT_CHECKBOX, [this](wxCommandEvent& event)
 		{
-			if (!m_OutputDataTextBox->IsEmpty())
+			if (m_CSVData != nullptr)
 			{
 				PopulateData();
 			}
@@ -73,7 +73,7 @@ void CSVtoJSON_Panel::SetupSpecificOutputSectionItems()
 				m_WrapperByDataBtn->SetLabel("Include wrapper by 'data'");
 			}
 
-			if (!m_OutputDataTextBox->IsEmpty())
+			if (m_CSVData != nullptr)
 			{
 				PopulateData();
 			}
@@ -97,7 +97,7 @@ void CSVtoJSON_Panel::SetupSpecificOutputSectionItems()
 
 	m_JSONStylesComboBox->Bind(wxEVT_COMBOBOX, [this](wxCommandEvent& event)
 		{
-			if (!m_OutputDataTextBox->IsEmpty())
+			if (m_CSVData != nullptr)
 			{
 				PopulateData();
 			}

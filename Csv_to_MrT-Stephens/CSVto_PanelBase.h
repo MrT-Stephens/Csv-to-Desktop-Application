@@ -51,7 +51,7 @@ protected:
 	// Output Settings Section
 	wxBoxSizer* m_OutputSettingsSizer1, * m_OutputSettingsSizer2, * m_OutputHeadingSizer;
 	wxButton* m_LowercaseBtn, * m_UppercaseBtn, * m_CapitalizeBtn, * m_TransposeBtn, 
-		* m_DeleteBlanksBtn, * m_UndoBtn, * m_RedoBtn, * m_BasicAdvViewBtn, * m_IncludeHeaderBtn;
+		* m_DeleteBlanksBtn, * m_UndoBtn, * m_RedoBtn, * m_BasicAdvViewBtn, * m_IncludeHeaderBtn, * m_EditDataBtn;
 
 	// Thread Items
 	std::mutex m_OutputDataMutex;

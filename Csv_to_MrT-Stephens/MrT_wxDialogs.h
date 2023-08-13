@@ -55,4 +55,25 @@ namespace mrt
 		MrT_UniDialog(wxWindow* parent, const std::string& title, const std::string& message, const mrtApp::AppColours* colours, 
 			const wxIcon& icon, long dialogType = MrT_UniDialogType_None, const wxSize& size = wxDefaultSize);
 	};
+
+	  /********************************/
+	 /* MrT_CSVDataEdit_Dialog Class */
+	/********************************/
+
+	class MrT_CSVDataEdit_Dialog : public wxDialog
+	{
+	private:
+		wxTimer m_Timer;
+		wxBoxSizer* m_MainSizer, * m_PanelSizer, * m_ButtonSizer;
+		wxScrolled<wxPanel>* m_MainPanel;
+		wxTextCtrl* m_RowNumberTextCtrl;
+		wxStaticText* m_RowNumberStaticText;
+		wxStaticLine* m_RowNumberStaticLine;
+
+		std::vector<wxTextCtrl*> m_DataEditCtrls;
+
+		wxButton* m_ApplyButton, * m_CancelButton;
+	public:
+		MrT_CSVDataEdit_Dialog(wxWindow* parent, mrt::CSVData<std::string>* const csvData, const mrtApp::AppColours* colours, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize);
+	};
 }

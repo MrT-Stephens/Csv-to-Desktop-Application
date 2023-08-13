@@ -191,6 +191,27 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 
 	m_OutputHeadingSizer->Add(editor_Text, 0, wxLEFT | wxRIGHT | wxTOP | wxCENTER, FromDIP(10));
 
+	m_EditDataBtn = new wxButton(this, wxID_ANY, "Edit Data", wxDefaultPosition, wxDefaultSize);
+	m_EditDataBtn->SetMinSize(FromDIP(wxSize(120, 30)));
+	m_EditDataBtn->SetOwnFont(MAIN_FONT_TEXT(10));
+	m_EditDataBtn->SetOwnBackgroundColour(m_Colours->PRIMARY);
+	m_EditDataBtn->SetOwnForegroundColour(m_Colours->FOREGROUND);
+	m_EditDataBtn->SetToolTip("Edit the list veiw data");
+
+	m_EditDataBtn->Bind(wxEVT_BUTTON, [this](wxCommandEvent& event)
+		{
+			if (m_CSVData != nullptr)
+			{
+				mrt::MrT_CSVDataEdit_Dialog editDialog(this, m_CSVData, m_Colours, wxDefaultPosition, FromDIP(wxSize(400, 400)));
+
+				if (editDialog.ShowModal() == wxID_APPLY)
+				{
+					PopulateData();
+				}
+			}
+		}
+	);
+
 	m_BasicAdvViewBtn = new wxButton(this, wxID_ANY, "Advanced View", wxDefaultPosition, wxDefaultSize);
 	m_BasicAdvViewBtn->SetMinSize(FromDIP(wxSize(120, 30)));
 	m_BasicAdvViewBtn->SetOwnFont(MAIN_FONT_TEXT(10));
@@ -217,6 +238,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 
 	m_OutputHeadingSizer->AddStretchSpacer(1);
 
+	m_OutputHeadingSizer->Add(m_EditDataBtn, 0, wxLEFT | wxTOP | wxCENTER, FromDIP(10));
 	m_OutputHeadingSizer->Add(m_BasicAdvViewBtn, 0, wxLEFT | wxRIGHT | wxTOP | wxCENTER, FromDIP(10));
 
 	m_MainSizer->Add(m_OutputHeadingSizer, 0, wxEXPAND | wxALL, FromDIP(0));

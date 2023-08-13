@@ -5,6 +5,7 @@
 #include <wx/wx.h>
 #include <wx/statline.h>
 
+#include "CSVData.h"
 #include "UtilityItems.h"
 
 namespace mrt
@@ -53,26 +54,5 @@ namespace mrt
 	public:
 		MrT_UniDialog(wxWindow* parent, const std::string& title, const std::string& message, const mrtApp::AppColours* colours, 
 			const wxIcon& icon, long dialogType = MrT_UniDialogType_None, const wxSize& size = wxDefaultSize);
-	};
-
-	  /**********************************/
-	 /* MrT_DataEditDialog Declaration */
-	/**********************************/
-
-	class MrT_DataEditDialog : public wxDialog
-	{
-	private:
-		// Main Items
-		wxScrolled<wxPanel>* m_Panel;
-		wxStaticText* m_Title;
-		wxBoxSizer* m_MainSizer, * m_ButtonSizer;
-		wxButton* m_ApplyButton, * m_CancelButton;
-
-		// Variable amount items
-		std::vector<wxStaticText*> m_DataEditTitles;
-		std::vector<wxTextCtrl*> m_DataEditBoxes;
-	public:
-		MrT_DataEditDialog(wxWindow* parent, const std::string& title, const mrtApp::AppColours* colours, 
-			const std::vector<std::string>& dataEditTitles, std::vector<std::string>& editableData, const wxSize& size = wxDefaultSize);
 	};
 }

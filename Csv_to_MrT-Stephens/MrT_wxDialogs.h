@@ -6,6 +6,7 @@
 #include <wx/statline.h>
 
 #include "CSVData.h"
+#include "Str_Validator.h"
 #include "UtilityItems.h"
 
 namespace mrt
@@ -67,7 +68,7 @@ namespace mrt
 		wxBoxSizer* m_MainSizer, * m_PanelSizer, * m_ButtonSizer;
 		wxScrolled<wxPanel>* m_MainPanel;
 		wxTextCtrl* m_RowNumberTextCtrl;
-		wxStaticText* m_RowNumberStaticText;
+		wxStaticText* m_RowNumberStaticText, * m_RowNumberMessageText, * m_RowDataStaticText;
 		wxStaticLine* m_RowNumberStaticLine;
 
 		std::vector<wxTextCtrl*> m_DataEditCtrls;

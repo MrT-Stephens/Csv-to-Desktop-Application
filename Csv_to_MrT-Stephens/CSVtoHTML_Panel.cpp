@@ -20,7 +20,7 @@ void CSVtoHTML_Panel::SetupSpecificOutputSectionItems()
 	m_OutputSettingsSizer3 = new wxBoxSizer(wxHORIZONTAL);
 
 	m_MinifyHtmlCheckBox = new wxCheckBox(this, wxID_ANY, "Minify the generated HTML", wxDefaultPosition, wxDefaultSize);
-	m_MinifyHtmlCheckBox->SetMinSize(FromDIP(wxSize(120, 30)));
+	m_MinifyHtmlCheckBox->SetMinSize(FromDIP(wxSize(120, 22)));
 	m_MinifyHtmlCheckBox->SetOwnFont(MAIN_FONT_TEXT(11));
 	m_MinifyHtmlCheckBox->SetOwnBackgroundColour(m_Colours->BACKGROUND);
 	m_MinifyHtmlCheckBox->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -36,7 +36,7 @@ void CSVtoHTML_Panel::SetupSpecificOutputSectionItems()
 	);
 
 	m_TheadTbodyHtmlBtn = new wxButton(this, wxID_ANY, "Include thread and tbody", wxDefaultPosition, wxDefaultSize);
-	m_TheadTbodyHtmlBtn->SetMinSize(FromDIP(wxSize(120, 30)));
+	m_TheadTbodyHtmlBtn->SetMinSize(FromDIP(wxSize(120, 22)));
 	m_TheadTbodyHtmlBtn->SetOwnFont(MAIN_FONT_TEXT(10));
 	m_TheadTbodyHtmlBtn->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_TheadTbodyHtmlBtn->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -102,6 +102,7 @@ void CSVtoHTML_Panel::PopulateOutputDataTextBox()
 
 void CSVtoHTML_Panel::LockOrUnlockItems(bool lock)
 {
+	m_EditDataBtn->Enable(!lock);
 	m_UndoBtn->Enable(!lock);
 	m_RedoBtn->Enable(!lock);
 	m_LoadData->Enable(!lock);

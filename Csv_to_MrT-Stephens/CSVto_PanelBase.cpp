@@ -53,7 +53,7 @@ void CSVto_PanelBase::SetupDataInputSection()
 
 	// Create the open file button and format it
 	m_LoadData = new wxButton(this, wxID_ANY, "Open File", wxDefaultPosition, wxDefaultSize);
-	m_LoadData->SetMinSize(FromDIP(wxSize(120, 25)));
+	m_LoadData->SetMinSize(wxSize(FromDIP(120), wxDefaultSize.GetY()));
 	m_LoadData->SetOwnFont(MAIN_FONT_TEXT(10));
 	m_LoadData->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_LoadData->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -108,7 +108,7 @@ void CSVto_PanelBase::SetupDataInputSection()
 
 	// Create the example file button and format it
 	m_ExampleData = new wxButton(this, wxID_ANY, "Preview Data", wxDefaultPosition, wxDefaultSize);
-	m_ExampleData->SetMinSize(FromDIP(wxSize(120, 25)));
+	m_ExampleData->SetMinSize(FromDIP(wxSize(FromDIP(120), wxDefaultSize.GetY())));
 	m_ExampleData->SetOwnFont(MAIN_FONT_TEXT(10));
 	m_ExampleData->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_ExampleData->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -167,7 +167,7 @@ void CSVto_PanelBase::SetupDataInputSection()
 					m_CurrentSortOrder = ORDER_ASCENDING;
 				}
 
-				m_CSVData->SortByColumn(m_CSVData, column, ((m_CurrentSortOrder == ORDER_ASCENDING) ? true : false));
+				m_CSVData->SortByColumn(m_CSVData, m_CurrentSortColumn, ((m_CurrentSortOrder == ORDER_ASCENDING) ? true : false));
 				PopulateData();
 			}
 		}
@@ -192,7 +192,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 	m_OutputHeadingSizer->Add(editor_Text, 0, wxLEFT | wxRIGHT | wxTOP | wxCENTER, FromDIP(10));
 
 	m_EditDataBtn = new wxButton(this, wxID_ANY, "Edit Data", wxDefaultPosition, wxDefaultSize);
-	m_EditDataBtn->SetMinSize(FromDIP(wxSize(120, 30)));
+	m_EditDataBtn->SetMinSize(wxSize(FromDIP(120), wxDefaultSize.GetY()));
 	m_EditDataBtn->SetOwnFont(MAIN_FONT_TEXT(10));
 	m_EditDataBtn->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_EditDataBtn->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -206,6 +206,9 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 
 				if (editDialog.ShowModal() == wxID_APPLY)
 				{
+					m_CSVData->CheckMaxColumnWidths(m_CSVData);
+					m_CurrentSortColumn = -1;
+
 					PopulateData();
 				}
 			}
@@ -213,7 +216,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 	);
 
 	m_BasicAdvViewBtn = new wxButton(this, wxID_ANY, "Advanced View", wxDefaultPosition, wxDefaultSize);
-	m_BasicAdvViewBtn->SetMinSize(FromDIP(wxSize(120, 30)));
+	m_BasicAdvViewBtn->SetMinSize(wxSize(FromDIP(120), wxDefaultSize.GetY()));
 	m_BasicAdvViewBtn->SetOwnFont(MAIN_FONT_TEXT(10));
 	m_BasicAdvViewBtn->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_BasicAdvViewBtn->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -244,7 +247,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 	m_MainSizer->Add(m_OutputHeadingSizer, 0, wxEXPAND | wxALL, FromDIP(0));
 
 	m_CapitalizeBtn = new wxButton(this, wxID_ANY, "Capitalize", wxDefaultPosition, wxDefaultSize);
-	m_CapitalizeBtn->SetMinSize(FromDIP(wxSize(120, 30)));
+	m_CapitalizeBtn->SetMinSize(wxSize(FromDIP(120), wxDefaultSize.GetY()));
 	m_CapitalizeBtn->SetOwnFont(MAIN_FONT_TEXT(10));
 	m_CapitalizeBtn->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_CapitalizeBtn->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -257,6 +260,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 			{
 				m_CSVData->CreateUndo();
 				m_CSVData->CapitalizeData(m_CSVData, (m_IncludeHeaderBtn->GetLabel() == "Exclude Header" ? true : false));
+				m_CurrentSortColumn = -1;
 				PopulateData();
 			}
 		}
@@ -265,7 +269,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 	m_OutputSettingsSizer1->Add(m_CapitalizeBtn, 1, wxALL | wxEXPAND | wxCENTER, FromDIP(10));
 
 	m_LowercaseBtn = new wxButton(this, wxID_ANY, "Lowercase", wxDefaultPosition, wxDefaultSize);
-	m_LowercaseBtn->SetMinSize(FromDIP(wxSize(120, 30)));
+	m_LowercaseBtn->SetMinSize(wxSize(FromDIP(120), wxDefaultSize.GetY()));
 	m_LowercaseBtn->SetOwnFont(MAIN_FONT_TEXT(10));
 	m_LowercaseBtn->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_LowercaseBtn->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -278,6 +282,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 			{
 				m_CSVData->CreateUndo();
 				m_CSVData->LowerUpperData(m_CSVData, (m_IncludeHeaderBtn->GetLabel() == "Exclude Header" ? true : false), true);
+				m_CurrentSortColumn = -1;
 				PopulateData();
 			}
 		}
@@ -286,7 +291,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 	m_OutputSettingsSizer1->Add(m_LowercaseBtn, 1, wxALL | wxEXPAND | wxCENTER, FromDIP(10));
 
 	m_UppercaseBtn = new wxButton(this, wxID_ANY, "Uppercase", wxDefaultPosition, wxDefaultSize);
-	m_UppercaseBtn->SetMinSize(FromDIP(wxSize(120, 30)));
+	m_UppercaseBtn->SetMinSize(wxSize(FromDIP(120), wxDefaultSize.GetY()));
 	m_UppercaseBtn->SetOwnFont(MAIN_FONT_TEXT(10));
 	m_UppercaseBtn->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_UppercaseBtn->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -299,6 +304,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 			{
 				m_CSVData->CreateUndo();
 				m_CSVData->LowerUpperData(m_CSVData, (m_IncludeHeaderBtn->GetLabel() == "Exclude Header" ? true : false), false);
+				m_CurrentSortColumn = -1;
 				PopulateData();
 			}
 		}
@@ -307,7 +313,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 	m_OutputSettingsSizer1->Add(m_UppercaseBtn, 1, wxALL | wxEXPAND | wxCENTER, FromDIP(10));
 
 	m_UndoBtn = new wxButton(this, wxID_ANY, "Undo", wxDefaultPosition, wxDefaultSize);
-	m_UndoBtn->SetMinSize(FromDIP(wxSize(120, 30)));
+	m_UndoBtn->SetMinSize(wxSize(FromDIP(120), wxDefaultSize.GetY()));
 	m_UndoBtn->SetOwnFont(MAIN_FONT_TEXT(10));
 	m_UndoBtn->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_UndoBtn->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -320,6 +326,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 			{
 				if (m_CSVData->Undo() == mrt::CSVData_UndoRedoState::CAN_UNDO)
 				{
+					m_CurrentSortColumn = -1;
 					PopulateData();
 				}
 			}
@@ -329,7 +336,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 	m_OutputSettingsSizer1->Add(m_UndoBtn, 1, wxALL | wxEXPAND | wxCENTER, FromDIP(10));
 
 	m_IncludeHeaderBtn = new wxButton(this, wxID_ANY, "Include Header", wxDefaultPosition, wxDefaultSize);
-	m_IncludeHeaderBtn->SetMinSize(FromDIP(wxSize(120, 30)));
+	m_IncludeHeaderBtn->SetMinSize(wxSize(FromDIP(120), wxDefaultSize.GetY()));
 	m_IncludeHeaderBtn->SetOwnFont(MAIN_FONT_TEXT(10));
 	m_IncludeHeaderBtn->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_IncludeHeaderBtn->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -352,7 +359,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 	m_OutputSettingsSizer2->Add(m_IncludeHeaderBtn, 1, wxRIGHT | wxLEFT | wxEXPAND | wxCENTER, FromDIP(10));
 
 	m_TransposeBtn = new wxButton(this, wxID_ANY, "Transpose", wxDefaultPosition, wxDefaultSize);
-	m_TransposeBtn->SetMinSize(FromDIP(wxSize(120, 30)));
+	m_TransposeBtn->SetMinSize(wxSize(FromDIP(120), wxDefaultSize.GetY()));
 	m_TransposeBtn->SetOwnFont(MAIN_FONT_TEXT(10));
 	m_TransposeBtn->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_TransposeBtn->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -365,6 +372,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 			{
 				m_CSVData->CreateUndo();
 				m_CSVData->TransposeData(m_CSVData);
+				m_CurrentSortColumn = -1;
 				PopulateData();
 			}
 		}
@@ -373,7 +381,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 	m_OutputSettingsSizer2->Add(m_TransposeBtn, 1, wxRIGHT | wxLEFT | wxEXPAND | wxCENTER, FromDIP(10));
 
 	m_DeleteBlanksBtn = new wxButton(this, wxID_ANY, "Delete Spaces", wxDefaultPosition, wxDefaultSize);
-	m_DeleteBlanksBtn->SetMinSize(FromDIP(wxSize(120, 30)));
+	m_DeleteBlanksBtn->SetMinSize(wxSize(FromDIP(120), wxDefaultSize.GetY()));
 	m_DeleteBlanksBtn->SetOwnFont(MAIN_FONT_TEXT(10));
 	m_DeleteBlanksBtn->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_DeleteBlanksBtn->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -386,6 +394,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 			{
 				m_CSVData->CreateUndo();
 				m_CSVData->RemoveWhiteSpace(m_CSVData, (m_IncludeHeaderBtn->GetLabel() == "Exclude Header" ? true : false));
+				m_CurrentSortColumn = -1;
 				PopulateData();
 			}
 		}
@@ -394,7 +403,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 	m_OutputSettingsSizer2->Add(m_DeleteBlanksBtn, 1, wxRIGHT | wxLEFT | wxEXPAND | wxCENTER, FromDIP(10));
 
 	m_RedoBtn = new wxButton(this, wxID_ANY, "Redo", wxDefaultPosition, wxDefaultSize);
-	m_RedoBtn->SetMinSize(FromDIP(wxSize(120, 30)));
+	m_RedoBtn->SetMinSize(wxSize(FromDIP(120), wxDefaultSize.GetY()));
 	m_RedoBtn->SetOwnFont(MAIN_FONT_TEXT(10));
 	m_RedoBtn->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_RedoBtn->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -407,6 +416,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 			{
 				if (m_CSVData->Redo() == mrt::CSVData_UndoRedoState::CAN_REDO)
 				{
+					m_CurrentSortColumn = -1;
 					PopulateData();
 				}
 			}
@@ -436,12 +446,12 @@ void CSVto_PanelBase::SetupDataOutputSection()
 
 	m_DataOutputSizer->Add(m_OutputDataTextBox, 1, wxEXPAND | wxALL, FromDIP(10));
 
-	m_MainSizer->Add(m_DataOutputSizer, 1, wxEXPAND | wxALL, FromDIP(0));
+	m_MainSizer->Add(m_DataOutputSizer, 2, wxEXPAND | wxALL, FromDIP(0));
 
 	m_DataOutputBtnSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	m_ClearBtn = new wxButton(this, wxID_ANY, "Clear Data", wxDefaultPosition, wxDefaultSize);
-	m_ClearBtn->SetMinSize(FromDIP(wxSize(120, 30)));
+	m_ClearBtn->SetMinSize(wxSize(FromDIP(120), wxDefaultSize.GetY()));
 	m_ClearBtn->SetOwnFont(MAIN_FONT_TEXT(10));
 	m_ClearBtn->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_ClearBtn->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -459,7 +469,7 @@ void CSVto_PanelBase::SetupDataOutputSection()
 	m_DataOutputBtnSizer->Add(m_ClearBtn, 1, wxALL | wxEXPAND | wxCENTER, FromDIP(10));
 
 	m_CopyDataBtn = new wxButton(this, wxID_ANY, "Copy", wxDefaultPosition, wxDefaultSize);
-	m_CopyDataBtn->SetMinSize(FromDIP(wxSize(120, 30)));
+	m_CopyDataBtn->SetMinSize(wxSize(FromDIP(120), wxDefaultSize.GetY()));
 	m_CopyDataBtn->SetOwnFont(MAIN_FONT_TEXT(10));
 	m_CopyDataBtn->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_CopyDataBtn->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -477,7 +487,7 @@ void CSVto_PanelBase::SetupDataOutputSection()
 	m_DataOutputBtnSizer->Add(m_CopyDataBtn, 1, wxALL | wxEXPAND | wxCENTER, FromDIP(10));
 
 	m_DownloadBtn = new wxButton(this, wxID_ANY, "Download", wxDefaultPosition, wxDefaultSize);
-	m_DownloadBtn->SetMinSize(FromDIP(wxSize(120, 30)));
+	m_DownloadBtn->SetMinSize(wxSize(FromDIP(120), wxDefaultSize.GetY()));
 	m_DownloadBtn->SetOwnFont(MAIN_FONT_TEXT(10));
 	m_DownloadBtn->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_DownloadBtn->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -561,7 +571,7 @@ void CSVto_PanelBase::PopulateDataListView()
 
 	for (size_t i0 = 0; (i0 < m_CSVData->GetRowCount()); ++i0)
 	{
-		m_DataInputListView->InsertItem(i0, std::to_string(i0));
+		m_DataInputListView->InsertItem(i0, std::to_string(i0 + 1));
 
 		const std::vector<std::string> data = m_CSVData->GetRowData(i0);
 
@@ -605,6 +615,7 @@ void CSVto_PanelBase::LockOrUnlockItems(bool lock)
 	m_DeleteBlanksBtn->Enable(!lock);
 	m_UndoBtn->Enable(!lock);
 	m_RedoBtn->Enable(!lock);
+	m_EditDataBtn->Enable(!lock);
 }
 
 void CSVto_PanelBase::HideOrShowBasicAdvItems(bool show)

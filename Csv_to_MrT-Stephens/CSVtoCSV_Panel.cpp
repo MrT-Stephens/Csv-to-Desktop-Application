@@ -20,7 +20,7 @@ void CSVtoCSV_Panel::SetupSpecificOutputSectionItems()
 	m_OutputSettingsSizer3 = new wxBoxSizer(wxHORIZONTAL);
 
 	m_IncludeHeaderCheckBox = new wxCheckBox(this, wxID_ANY, "Exclude header", wxDefaultPosition, wxDefaultSize);
-	m_IncludeHeaderCheckBox->SetMinSize(FromDIP(wxSize(120, 30)));
+	m_IncludeHeaderCheckBox->SetMinSize(FromDIP(wxSize(120, 22)));
 	m_IncludeHeaderCheckBox->SetOwnFont(MAIN_FONT_TEXT(11));
 	m_IncludeHeaderCheckBox->SetOwnBackgroundColour(m_Colours->BACKGROUND);
 	m_IncludeHeaderCheckBox->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -45,7 +45,7 @@ void CSVtoCSV_Panel::SetupSpecificOutputSectionItems()
 
 	m_DelimiterComboBox = new wxComboBox(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, m_DelimiterChoices, wxCB_READONLY);
 	m_DelimiterComboBox->SetSelection(0);
-	m_DelimiterComboBox->SetMinSize(FromDIP(wxSize(120, 30)));
+	m_DelimiterComboBox->SetMinSize(FromDIP(wxSize(120, 22)));
 	m_DelimiterComboBox->SetOwnFont(MAIN_FONT_TEXT(11));
 	m_DelimiterComboBox->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_DelimiterComboBox->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -123,6 +123,7 @@ void CSVtoCSV_Panel::PopulateOutputDataTextBox()
 
 void CSVtoCSV_Panel::LockOrUnlockItems(bool lock)
 {
+	m_EditDataBtn->Enable(!lock);
 	m_UndoBtn->Enable(!lock);
 	m_RedoBtn->Enable(!lock);
 	m_LoadData->Enable(!lock);

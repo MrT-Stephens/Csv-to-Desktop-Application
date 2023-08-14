@@ -20,7 +20,7 @@ void CSVtoJSON_Panel::SetupSpecificOutputSectionItems()
 	m_OutputSettingsSizer3 = new wxBoxSizer(wxHORIZONTAL);
 
 	m_MinifyJSONCheckBox = new wxCheckBox(this, wxID_ANY, "Minify JSON", wxDefaultPosition, wxDefaultSize);
-	m_MinifyJSONCheckBox->SetMinSize(FromDIP(wxSize(120, 30)));
+	m_MinifyJSONCheckBox->SetMinSize(FromDIP(wxSize(120, 22)));
 	m_MinifyJSONCheckBox->SetOwnFont(MAIN_FONT_TEXT(11));
 	m_MinifyJSONCheckBox->SetOwnBackgroundColour(m_Colours->BACKGROUND);
 	m_MinifyJSONCheckBox->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -36,7 +36,7 @@ void CSVtoJSON_Panel::SetupSpecificOutputSectionItems()
 	);
 
 	m_ParsingJSONCheckBox = new wxCheckBox(this, wxID_ANY, "Parsing JSON", wxDefaultPosition, wxDefaultSize);
-	m_ParsingJSONCheckBox->SetMinSize(FromDIP(wxSize(120, 30)));
+	m_ParsingJSONCheckBox->SetMinSize(FromDIP(wxSize(120, 22)));
 	m_ParsingJSONCheckBox->SetOwnFont(MAIN_FONT_TEXT(11));
 	m_ParsingJSONCheckBox->SetOwnBackgroundColour(m_Colours->BACKGROUND);
 	m_ParsingJSONCheckBox->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -56,7 +56,7 @@ void CSVtoJSON_Panel::SetupSpecificOutputSectionItems()
 	m_LeftSizer->Add(m_ParsingJSONCheckBox, 0, wxALL | wxEXPAND | wxCENTER, FromDIP(10));
 
 	m_WrapperByDataBtn = new wxButton(this, wxID_ANY, "Include wrapper by 'data'", wxDefaultPosition, wxDefaultSize);
-	m_WrapperByDataBtn->SetMinSize(FromDIP(wxSize(120, 30)));
+	m_WrapperByDataBtn->SetMinSize(FromDIP(wxSize(120, 22)));
 	m_WrapperByDataBtn->SetOwnFont(MAIN_FONT_TEXT(10));
 	m_WrapperByDataBtn->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_WrapperByDataBtn->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -89,7 +89,7 @@ void CSVtoJSON_Panel::SetupSpecificOutputSectionItems()
 
 	m_JSONStylesComboBox = new wxComboBox(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, m_JSONStylesChoices, wxCB_READONLY);
 	m_JSONStylesComboBox->SetSelection(0);
-	m_JSONStylesComboBox->SetMinSize(FromDIP(wxSize(120, 30)));
+	m_JSONStylesComboBox->SetMinSize(FromDIP(wxSize(120, 22)));
 	m_JSONStylesComboBox->SetOwnFont(MAIN_FONT_TEXT(11));
 	m_JSONStylesComboBox->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_JSONStylesComboBox->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -174,6 +174,7 @@ void CSVtoJSON_Panel::OutputFile()
 
 void CSVtoJSON_Panel::LockOrUnlockItems(bool lock)
 {
+	m_EditDataBtn->Enable(!lock);
 	m_UndoBtn->Enable(!lock);
 	m_RedoBtn->Enable(!lock);
 	m_LoadData->Enable(!lock);

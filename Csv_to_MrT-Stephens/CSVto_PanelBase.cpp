@@ -191,12 +191,12 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 
 	m_OutputHeadingSizer->Add(editor_Text, 0, wxLEFT | wxRIGHT | wxTOP | wxCENTER, FromDIP(10));
 
-	m_EditDataBtn = new wxButton(this, wxID_ANY, "Edit Data", wxDefaultPosition, wxDefaultSize);
+	m_EditDataBtn = new wxButton(this, wxID_ANY, "Edit Row", wxDefaultPosition, wxDefaultSize);
 	m_EditDataBtn->SetMinSize(wxSize(FromDIP(120), wxDefaultSize.GetY()));
 	m_EditDataBtn->SetOwnFont(MAIN_FONT_TEXT(10));
 	m_EditDataBtn->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_EditDataBtn->SetOwnForegroundColour(m_Colours->FOREGROUND);
-	m_EditDataBtn->SetToolTip("Edit the list veiw data");
+	m_EditDataBtn->SetToolTip("Edit a list view row. Zero for the header.");
 
 	m_EditDataBtn->Bind(wxEVT_BUTTON, [this](wxCommandEvent& event)
 		{

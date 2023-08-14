@@ -186,8 +186,9 @@ mrt::MrT_UniDialog::MrT_UniDialog(wxWindow* parent, const std::string& title, co
 /*****************************************/
 
 mrt::MrT_CSVDataEdit_Dialog::MrT_CSVDataEdit_Dialog(wxWindow* parent, mrt::CSVData<std::string>* const csvData, const mrtApp::AppColours* colours, const wxPoint& pos, const wxSize& size)
-	: wxDialog(parent, wxID_ANY, "Edit Table Data", pos, size, (wxDEFAULT_DIALOG_STYLE & ~(wxSYSTEM_MENU)) | wxSTAY_ON_TOP)
+	: wxDialog(parent, wxID_ANY, "Edit Row Data", pos, size, (wxDEFAULT_DIALOG_STYLE & ~(wxSYSTEM_MENU)) | wxSTAY_ON_TOP)
 {
+	SetIcon(CSV_to_Logo);
 	SetOwnBackgroundColour(colours->BACKGROUND);
 
 	m_MainSizer = new wxBoxSizer(wxVERTICAL);

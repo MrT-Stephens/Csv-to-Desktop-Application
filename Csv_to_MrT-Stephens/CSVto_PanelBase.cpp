@@ -446,7 +446,7 @@ void CSVto_PanelBase::SetupDataOutputSection()
 
 	m_DataOutputSizer->Add(m_OutputDataTextBox, 1, wxEXPAND | wxALL, FromDIP(10));
 
-	m_MainSizer->Add(m_DataOutputSizer, 2, wxEXPAND | wxALL, FromDIP(0));
+	m_MainSizer->Add(m_DataOutputSizer, 1, wxEXPAND | wxALL, FromDIP(0));
 
 	m_DataOutputBtnSizer = new wxBoxSizer(wxHORIZONTAL);
 

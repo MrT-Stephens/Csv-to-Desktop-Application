@@ -42,7 +42,7 @@ bool MrT_App::OnInit()
 Main_Frame::Main_Frame(const wxString& title, const wxPoint& pos, const wxSize& size, long style) 
     : wxFrame(nullptr, wxID_ANY, title, pos, size, style)
 {
-    SetMinSize(FromDIP(wxSize(700, 700)));                    // Setting the minimum size of the window.
+    SetMinSize(FromDIP(wxSize(700, 700)));                              // Setting the minimum size of the window.
 
     m_Notebook = new wxNotebook(this, wxNB_TOP | wxNB_FIXEDWIDTH); 	    // Creating the notebook to hold the panels.
     m_Notebook->SetOwnFont(MAIN_FONT_TEXT(11));

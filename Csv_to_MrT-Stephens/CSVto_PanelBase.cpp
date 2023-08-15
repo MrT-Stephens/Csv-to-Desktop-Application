@@ -135,7 +135,7 @@ void CSVto_PanelBase::SetupDataInputSection()
 	);
 
 	// Add the buttons to the horizontal sizer
-	m_DataInBtnSizer->AddStretchSpacer(1);
+	m_DataInBtnSizer->AddStretchSpacer(2);
 
 	m_DataInBtnSizer->Add(m_LoadData, 0, wxALL | wxEXPAND | wxCENTER, FromDIP(5));
 	m_DataInBtnSizer->Add(m_ExampleData, 0, wxALL | wxEXPAND | wxCENTER, FromDIP(5));
@@ -466,7 +466,7 @@ void CSVto_PanelBase::SetupDataOutputSection()
 		}
 	);
 
-	m_DataOutputBtnSizer->Add(m_ClearBtn, 1, wxALL | wxEXPAND | wxCENTER, FromDIP(10));
+	m_DataOutputBtnSizer->Add(m_ClearBtn, 1, wxLEFT | wxBOTTOM | wxRIGHT | wxEXPAND | wxCENTER, FromDIP(10));
 
 	m_CopyDataBtn = new wxButton(this, wxID_ANY, "Copy", wxDefaultPosition, wxDefaultSize);
 	m_CopyDataBtn->SetMinSize(wxSize(FromDIP(120), wxDefaultSize.GetY()));
@@ -484,7 +484,7 @@ void CSVto_PanelBase::SetupDataOutputSection()
 		}
 	);
 
-	m_DataOutputBtnSizer->Add(m_CopyDataBtn, 1, wxALL | wxEXPAND | wxCENTER, FromDIP(10));
+	m_DataOutputBtnSizer->Add(m_CopyDataBtn, 1, wxLEFT | wxBOTTOM | wxRIGHT | wxEXPAND | wxCENTER, FromDIP(10));
 
 	m_DownloadBtn = new wxButton(this, wxID_ANY, "Download", wxDefaultPosition, wxDefaultSize);
 	m_DownloadBtn->SetMinSize(wxSize(FromDIP(120), wxDefaultSize.GetY()));
@@ -502,7 +502,7 @@ void CSVto_PanelBase::SetupDataOutputSection()
 		}
 	);
 
-	m_DataOutputBtnSizer->Add(m_DownloadBtn, 1, wxALL | wxEXPAND | wxCENTER, FromDIP(10));
+	m_DataOutputBtnSizer->Add(m_DownloadBtn, 1, wxLEFT | wxBOTTOM | wxRIGHT | wxEXPAND | wxCENTER, FromDIP(10));
 
 	m_MainSizer->Add(m_DataOutputBtnSizer, 0, wxEXPAND | wxALL, FromDIP(0));
 }

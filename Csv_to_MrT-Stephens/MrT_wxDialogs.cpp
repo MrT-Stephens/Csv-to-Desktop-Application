@@ -228,7 +228,7 @@ mrt::MrT_CSVDataEdit_Dialog::MrT_CSVDataEdit_Dialog(wxWindow* parent, mrt::CSVDa
 
 			std::string value = m_RowNumberTextCtrl->GetValue().ToStdString();
 
-			if (validator.IsValid(value) && (std::stoull(value) >= 0 && std::stoull(value) <= csvData->GetRowCount()))
+			if (validator.IsValid(value) && (std::stoull(value) >= 0) && (std::stoull(value) <= csvData->GetRowCount()))
 			{
 				m_RowNumberMessageText->SetLabel(std::format("Enter a number between 0 and {}.", csvData->GetRowCount()));
 				m_RowNumberMessageText->SetOwnForegroundColour(*wxGREEN);

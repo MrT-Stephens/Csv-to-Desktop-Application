@@ -40,6 +40,12 @@
     <ClCompile Include="CSVtoCSV_Panel.cpp">
       <Filter>Resource Files\Panel Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="CSVtoPHP_Panel.cpp">
+      <Filter>Resource Files\Panel Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CSVtoRuby_Panel.cpp">
+      <Filter>Resource Files\Panel Resource Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ascii_Table_Generators.h">
@@ -92,6 +98,18 @@
     </ClInclude>
     <ClInclude Include="CSVtoCSV_Panel.h">
       <Filter>Header Files\Panel Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CSVtoPHP_Panel.h">
+      <Filter>Header Files\Panel Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PHP_Generator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CSVtoRuby_Panel.h">
+      <Filter>Header Files\Panel Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Ruby_Generator.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

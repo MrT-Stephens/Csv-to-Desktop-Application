@@ -206,6 +206,8 @@
     <ClCompile Include="CSVtoHTML_Panel.cpp" />
     <ClCompile Include="CSVtoJSON_Panel.cpp" />
     <ClCompile Include="CSVtoLaTex_Panel.cpp" />
+    <ClCompile Include="CSVtoPHP_Panel.cpp" />
+    <ClCompile Include="CSVtoRuby_Panel.cpp" />
     <ClCompile Include="CSVtoXML_Panel.cpp" />
     <ClCompile Include="CSVtoXML_Panel.h" />
     <ClCompile Include="CSVtoASCII_Panel.cpp" />
@@ -221,11 +223,15 @@
     <ClInclude Include="CSVtoHTML_Panel.h" />
     <ClInclude Include="CSVtoJSON_Panel.h" />
     <ClInclude Include="CSVtoLaTex_Panel.h" />
+    <ClInclude Include="CSVtoPHP_Panel.h" />
+    <ClInclude Include="CSVtoRuby_Panel.h" />
     <ClInclude Include="HTML_Table.h" />
     <ClInclude Include="JSON_Generator.h" />
     <ClInclude Include="LaTex_Table.h" />
     <ClInclude Include="Ascii_Table_Generators.h" />
     <ClInclude Include="CSVtoMarkdown_Panel.h" />
+    <ClInclude Include="PHP_Generator.h" />
+    <ClInclude Include="Ruby_Generator.h" />
     <ClInclude Include="Str_Validator.h" />
     <ClInclude Include="UtilityItems.h" />
     <ClInclude Include="CSVData.h" />

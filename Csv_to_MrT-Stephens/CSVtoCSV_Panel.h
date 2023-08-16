@@ -23,7 +23,7 @@ private:
 	wxArrayString m_DelimiterChoices;
 	wxBoxSizer* m_OutputSettingsSizer3;
 	wxComboBox* m_DelimiterComboBox;
-	wxCheckBox* m_IncludeHeaderCheckBox;
+	wxButton* m_IncludeHeaderButton, * m_QuotesButton;
 public:
 	CSVtoCSV_Panel(wxWindow* _parent, const std::string& _name, const mrtApp::AppColours* _colours);
 

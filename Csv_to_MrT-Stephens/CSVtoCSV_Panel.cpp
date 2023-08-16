@@ -19,15 +19,49 @@ void CSVtoCSV_Panel::SetupSpecificOutputSectionItems()
 {
 	m_OutputSettingsSizer3 = new wxBoxSizer(wxHORIZONTAL);
 
-	m_IncludeHeaderCheckBox = new wxCheckBox(this, wxID_ANY, "Exclude header", wxDefaultPosition, wxDefaultSize);
-	m_IncludeHeaderCheckBox->SetMinSize(FromDIP(wxSize(120, 22)));
-	m_IncludeHeaderCheckBox->SetOwnFont(MAIN_FONT_TEXT(11));
-	m_IncludeHeaderCheckBox->SetOwnBackgroundColour(m_Colours->BACKGROUND);
-	m_IncludeHeaderCheckBox->SetOwnForegroundColour(m_Colours->FOREGROUND);
-	m_IncludeHeaderCheckBox->SetToolTip("Excludes the header in generated csv data");
+	m_IncludeHeaderButton = new wxButton(this, wxID_ANY, "Exclude Header", wxDefaultPosition, wxDefaultSize);
+	m_IncludeHeaderButton->SetMinSize(FromDIP(wxSize(120, 22)));
+	m_IncludeHeaderButton->SetOwnFont(MAIN_FONT_TEXT(10));
+	m_IncludeHeaderButton->SetOwnBackgroundColour(m_Colours->PRIMARY);
+	m_IncludeHeaderButton->SetOwnForegroundColour(m_Colours->FOREGROUND);
+	m_IncludeHeaderButton->SetToolTip("Include or exclude double quotes in data");
 
-	m_IncludeHeaderCheckBox->Bind(wxEVT_CHECKBOX, [this](wxCommandEvent& event)
+	m_IncludeHeaderButton->Bind(wxEVT_BUTTON, [this](wxCommandEvent& event)
 		{
+			if (m_IncludeHeaderButton->GetLabel() == "Exclude Header")
+			{
+				m_IncludeHeaderButton->SetLabel("Include Header");
+			}
+			else
+			{
+				m_IncludeHeaderButton->SetLabel("Exclude Header");
+			}
+
+			if (m_CSVData != nullptr)
+			{
+				PopulateData();
+			}
+		}
+	);
+
+	m_QuotesButton = new wxButton(this, wxID_ANY, "Include Quotes", wxDefaultPosition, wxDefaultSize);
+	m_QuotesButton->SetMinSize(FromDIP(wxSize(120, 22)));
+	m_QuotesButton->SetOwnFont(MAIN_FONT_TEXT(10));
+	m_QuotesButton->SetOwnBackgroundColour(m_Colours->PRIMARY);
+	m_QuotesButton->SetOwnForegroundColour(m_Colours->FOREGROUND);
+	m_QuotesButton->SetToolTip("Include or exclude double quotes in data");
+
+	m_QuotesButton->Bind(wxEVT_BUTTON, [this](wxCommandEvent& event)
+		{
+			if (m_QuotesButton->GetLabel() == "Include Quotes")
+			{
+				m_QuotesButton->SetLabel("Exclude Quotes");
+			}
+			else
+			{
+				m_QuotesButton->SetLabel("Include Quotes");
+			}
+
 			if (m_CSVData != nullptr)
 			{
 				PopulateData();
@@ -60,7 +94,8 @@ void CSVtoCSV_Panel::SetupSpecificOutputSectionItems()
 		}
 	);
 
-	m_OutputSettingsSizer3->Add(m_IncludeHeaderCheckBox, 1, wxALL | wxEXPAND | wxCENTER, FromDIP(10));
+	m_OutputSettingsSizer3->Add(m_IncludeHeaderButton, 1, wxALL | wxEXPAND | wxCENTER, FromDIP(10));
+	m_OutputSettingsSizer3->Add(m_QuotesButton, 1, wxALL | wxEXPAND | wxCENTER, FromDIP(10));
 	m_OutputSettingsSizer3->Add(m_DelimiterComboBox, 1, wxALL | wxEXPAND | wxCENTER, FromDIP(10));
 
 	m_MainSizer->Add(m_OutputSettingsSizer3, 0, wxEXPAND | wxALL, FromDIP(0));
@@ -98,7 +133,8 @@ void CSVtoCSV_Panel::PopulateOutputDataTextBox()
 	{
 		mrt::CSVData<std::string>::OStrStream ss;
 
-		mrt::CSVData<std::string>::SaveCsvToStream(m_CSVData, &ss, GetDelimiterType(m_DelimiterComboBox->GetSelection()), !m_IncludeHeaderCheckBox->GetValue());
+		mrt::CSVData<std::string>::SaveCsvToStream(m_CSVData, &ss, GetDelimiterType(m_DelimiterComboBox->GetSelection()), 
+			(m_IncludeHeaderButton->GetLabel() == "Exclude Header" ? true : false), (m_QuotesButton->GetLabel() == "Include Quotes" ? false : true));
 
 		m_OutputDataTextBox->SetValue(ss.str());
 	}
@@ -135,7 +171,8 @@ void CSVtoCSV_Panel::LockOrUnlockItems(bool lock)
 	m_TransposeBtn->Enable(!lock);
 	m_DeleteBlanksBtn->Enable(!lock);
 	m_DelimiterComboBox->Enable(!lock);
-	m_IncludeHeaderCheckBox->Enable(!lock);
+	m_IncludeHeaderBtn->Enable(!lock);
+	m_QuotesButton->Enable(!lock);
 }
 
 char CSVtoCSV_Panel::GetDelimiterType(int selection)

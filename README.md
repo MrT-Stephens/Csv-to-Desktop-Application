@@ -49,6 +49,7 @@ item5,item6,item7,item8
 * Ability to copy the generated data to the clipboard or if you prefer you can download the generated data.
 
 ## Installation
+* The application is only the .exe and requires no external items to be installed.
 * To install the application, please download the [latest release]().
 ## Future Improvements
 * Currently only supports Windows, but in future hopping to support Mac OS, Linux, and maybe mobile.

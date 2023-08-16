@@ -220,7 +220,7 @@ mrt::MrT_CSVDataEdit_Dialog::MrT_CSVDataEdit_Dialog(wxWindow* parent, mrt::CSVDa
 		}
 	);
 
-	m_Timer.Bind(wxEVT_TIMER, [this, &csvData](wxTimerEvent& event)
+	m_Timer.Bind(wxEVT_TIMER, [this, csvData](wxTimerEvent& event)
 		{
 			m_Timer.Stop();
 
@@ -294,7 +294,7 @@ mrt::MrT_CSVDataEdit_Dialog::MrT_CSVDataEdit_Dialog(wxWindow* parent, mrt::CSVDa
 	m_ApplyButton->SetOwnBackgroundColour(colours->PRIMARY);
 	m_ApplyButton->SetOwnForegroundColour(colours->FOREGROUND);
 
-	m_ApplyButton->Bind(wxEVT_BUTTON, [this, &csvData](wxCommandEvent& event)
+	m_ApplyButton->Bind(wxEVT_BUTTON, [this, csvData](wxCommandEvent& event)
 		{
 			mrt::Basic_Str_Validator<std::string> validator(mrt::Basic_Str_Filter_Digits | mrt::Basic_Str_Filter_Empty);
 

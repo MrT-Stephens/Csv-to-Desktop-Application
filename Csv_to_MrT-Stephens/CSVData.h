@@ -56,7 +56,7 @@ namespace mrt
 
 		// Default Constructors
 		CSVData_Base(const _StrType& filePath, bool removeNonAscii = true);
-		CSVData_Base(std::vector<std::vector<_StrType>>&& data = {}, std::vector<_StrType>&& headerNames = {});
+		explicit CSVData_Base(std::vector<std::vector<_StrType>>&& data = {}, std::vector<_StrType>&& headerNames = {});
 
 		// Copy Constructors
 		CSVData_Base(const CSVData_Base& other) = delete;
@@ -119,7 +119,7 @@ namespace mrt
 	public:
 		// Default Constructors
 		CSVData(const _StrType& filePath);
-		CSVData(std::vector<std::vector<_StrType>>&& data = {}, std::vector<_StrType>&& headerNames = {});
+		explicit CSVData(std::vector<std::vector<_StrType>>&& data = {}, std::vector<_StrType>&& headerNames = {});
 
 		// Copy Constructors
 		CSVData(const CSVData& other) = delete;
@@ -395,7 +395,8 @@ template <class _StrType>
 mrt::CSVData<_StrType>::CSVData(const _StrType& fileDir) : CSVData_Base<_StrType>(fileDir) { }
 
 template <class _StrType>
-mrt::CSVData<_StrType>::CSVData(std::vector<std::vector<_StrType>>&& data, std::vector<_StrType>&& headerNames) : CSVData_Base<_StrType>(std::move(data), std::move(headerNames)) { }
+mrt::CSVData<_StrType>::CSVData(std::vector<std::vector<_StrType>>&& data, std::vector<_StrType>&& headerNames) : 
+	CSVData_Base<_StrType>(std::forward<std::vector<std::vector<_StrType>>>(data), std::forward<std::vector<_StrType>>(headerNames)) { }
 
 template <class _StrType>
 mrt::CSVData_UndoRedoState mrt::CSVData<_StrType>::Undo()

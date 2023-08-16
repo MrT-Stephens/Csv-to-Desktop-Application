@@ -208,7 +208,6 @@ mrt::CSVData_Error mrt::CSVData_Base<_StrType>::GetError() const { return m_Erro
 template <class _StrType>
 void mrt::CSVData_Base<_StrType>::CheckXYLengths(CSVData_Base<_StrType>* const csvData)
 {
-
 	size_t maxSize = std::max_element(csvData->GetTableData().begin(), csvData->GetTableData().end(), [](const std::vector<_StrType>& a, const std::vector<_StrType>& b)->bool
 		{
 			return (a.size() < b.size());

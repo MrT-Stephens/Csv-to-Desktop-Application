@@ -36,6 +36,8 @@ namespace mrt
 	class CSVData_Base
 	{
 	protected:
+		std::locale m_Locale;
+
 		// Main Items
 		std::vector<_StrType> m_HeaderNames;
 		std::vector<std::vector<_StrType>> m_Data;
@@ -97,7 +99,10 @@ namespace mrt
 		static CSVData_Error SaveCsv(const CSVData_Base<_StrType>* const csvData, const _StrType& fileDir, ValueType delimiter, bool includeHeader, bool addQuotes);
 		static void SaveCsvToStream(const CSVData_Base<_StrType>* const csvData, OStream* stream, ValueType delimiter, bool includeHeader, bool addQuotes);
 
-		static void ParseCsvLine(const _StrType& line, std::vector<_StrType>& rowValues);
+		static void ParseCsvLine(const _StrType& line, std::vector<_StrType>& rowValues, const std::locale& locale);
+
+		const std::locale& GetLocale() const;
+		void SetLocale(const std::locale& locale);
 	};
 
 	  /************************/
@@ -155,6 +160,8 @@ namespace mrt
 template <class _StrType>
 mrt::CSVData_Base<_StrType>::CSVData_Base(const _StrType& filePath)
 {
+	m_Locale = std::locale("");
+
 	m_Error = LoadCsv(this, filePath);
 }
 
@@ -162,6 +169,9 @@ template <class _StrType>
 mrt::CSVData_Base<_StrType>::CSVData_Base(std::vector<std::vector<_StrType>>&& data, std::vector<_StrType>&& headerNames) :
 	m_Data(std::forward<std::vector<std::vector<_StrType>>>(data)), m_HeaderNames(std::forward<std::vector<_StrType>>(headerNames))
 {
+	m_Locale = std::locale("");
+
+	CheckXYLengths(this);
 	CheckMaxColumnWidths(this);
 }
 
@@ -271,13 +281,13 @@ mrt::CSVData_Error mrt::CSVData_Base<_StrType>::LoadCsv(CSVData_Base<_StrType>* 
 	{
 		_StrType line;
 		std::getline(file, line);
-		ParseCsvLine(line, csvData->GetHeaderNames());
+		ParseCsvLine(line, csvData->GetHeaderNames(), csvData->GetLocale());
 
 		while (std::getline(file, line))
 		{
 			std::vector<_StrType> rowData;
 
-			ParseCsvLine(line, rowData);
+			ParseCsvLine(line, rowData, csvData->GetLocale());
 
 			csvData->GetTableData().emplace_back(rowData);
 
@@ -351,7 +361,7 @@ void mrt::CSVData_Base<_StrType>::SaveCsvToStream(const CSVData_Base<_StrType>* 
 }
 
 template <class _StrType>
-void mrt::CSVData_Base<_StrType>::ParseCsvLine(const _StrType& line, std::vector<_StrType>& rowValues)
+void mrt::CSVData_Base<_StrType>::ParseCsvLine(const _StrType& line, std::vector<_StrType>& rowValues, const std::locale& locale)
 {
 	enum class ParseState
 	{
@@ -366,7 +376,7 @@ void mrt::CSVData_Base<_StrType>::ParseCsvLine(const _StrType& line, std::vector
 
 	for (typename _StrType::value_type c : line)
 	{
-		if (!std::isprint(c)) { continue; }
+		if (!std::isprint(c, locale)) { continue; }
 
 		if ((c == '\"' || c == '\'') && !alreadyQuoted)
 		{
@@ -390,6 +400,12 @@ void mrt::CSVData_Base<_StrType>::ParseCsvLine(const _StrType& line, std::vector
 
 	if (!word.empty()) { rowValues.emplace_back(word); }
 }
+
+template <class _StrType>
+const std::locale& mrt::CSVData_Base<_StrType>::GetLocale() const { return m_Locale; }
+
+template <class _StrType>
+void mrt::CSVData_Base<_StrType>::SetLocale(const std::locale& locale) { m_Locale = locale; }
 
   /**************************/
  /* CSVData Implementation */
@@ -555,17 +571,15 @@ void mrt::CSVData<_StrType>::SortByColumn(CSVData_Base<_StrType>* const csvData,
 template <class _StrType>
 void mrt::CSVData<_StrType>::LowerUpperData(CSVData_Base<_StrType>* const csvData, bool includeHeader, bool lowercase)
 {
-	std::locale loc("");
-
 	if (includeHeader)
 	{
 		std::vector<_StrType>& headerNames = csvData->GetHeaderNames();
 
 		for (auto& rowVal : headerNames)
 		{
-			std::transform(rowVal.begin(), rowVal.end(), rowVal.begin(), [&lowercase, &loc](_StrType::value_type c)->_StrType::value_type
+			std::transform(rowVal.begin(), rowVal.end(), rowVal.begin(), [&lowercase, &csvData](_StrType::value_type c)->_StrType::value_type
 				{
-					return (lowercase) ? std::tolower(c, loc) : std::toupper(c, loc);
+					return (lowercase) ? std::tolower(c, csvData->GetLocale()) : std::toupper(c, csvData->GetLocale());
 				}
 			);
 		}
@@ -577,9 +591,9 @@ void mrt::CSVData<_StrType>::LowerUpperData(CSVData_Base<_StrType>* const csvDat
 	{
 		for (auto& rowVal : row)
 		{
-			std::transform(rowVal.begin(), rowVal.end(), rowVal.begin(), [&lowercase, &loc](_StrType::value_type c)->_StrType::value_type
+			std::transform(rowVal.begin(), rowVal.end(), rowVal.begin(), [&lowercase, &csvData](_StrType::value_type c)->_StrType::value_type
 				{
-					return (lowercase) ? std::tolower(c, loc) : std::toupper(c, loc);
+					return (lowercase) ? std::tolower(c, csvData->GetLocale()) : std::toupper(c, csvData->GetLocale());
 				}
 			);
 		}
@@ -589,15 +603,13 @@ void mrt::CSVData<_StrType>::LowerUpperData(CSVData_Base<_StrType>* const csvDat
 template <class _StrType>
 void mrt::CSVData<_StrType>::CapitalizeData(CSVData_Base<_StrType>* const csvData, bool includeHeader)
 {
-	std::locale loc("");
-
 	if (includeHeader)
 	{
 		std::vector<_StrType>& headerNames = csvData->GetHeaderNames();
 
 		for (auto& rowVal : headerNames)
 		{
-			rowVal[0] = std::toupper(rowVal[0], loc);
+			rowVal[0] = std::toupper(rowVal[0], csvData->GetLocale());
 		}
 	}
 
@@ -607,7 +619,7 @@ void mrt::CSVData<_StrType>::CapitalizeData(CSVData_Base<_StrType>* const csvDat
 	{
 		for (auto& rowVal : row)
 		{
-			rowVal[0] = std::toupper(rowVal[0], loc);
+			rowVal[0] = std::toupper(rowVal[0], csvData->GetLocale());
 		}
 	}
 }
@@ -615,15 +627,13 @@ void mrt::CSVData<_StrType>::CapitalizeData(CSVData_Base<_StrType>* const csvDat
 template <class _StrType>
 void mrt::CSVData<_StrType>::RemoveWhiteSpace(CSVData_Base<_StrType>* const csvData, bool includeHeader)
 {
-	std::locale loc("");
-
 	if (includeHeader)
 	{
 		std::vector<_StrType>& headerNames = csvData->GetHeaderNames();
 
 		for (auto& rowVal : headerNames)
 		{
-			rowVal.erase(std::remove_if(rowVal.begin(), rowVal.end(), [&loc](_StrType::value_type c)->bool { return (std::isspace(c, loc)) ? true : false;  }), rowVal.end());
+			rowVal.erase(std::remove_if(rowVal.begin(), rowVal.end(), [&csvData](_StrType::value_type c)->bool { return (std::isspace(c, csvData->GetLocale())) ? true : false;  }), rowVal.end());
 		}
 	}
 
@@ -633,7 +643,7 @@ void mrt::CSVData<_StrType>::RemoveWhiteSpace(CSVData_Base<_StrType>* const csvD
 	{
 		for (auto& rowVal : row)
 		{
-			rowVal.erase(std::remove_if(rowVal.begin(), rowVal.end(), [&loc](_StrType::value_type c)->bool { return (std::isspace(c, loc)) ? true : false;  }), rowVal.end());
+			rowVal.erase(std::remove_if(rowVal.begin(), rowVal.end(), [&csvData](_StrType::value_type c)->bool { return (std::isspace(c, csvData->GetLocale())) ? true : false;  }), rowVal.end());
 		}
 	}
 

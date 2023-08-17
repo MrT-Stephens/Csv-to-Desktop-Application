@@ -16,6 +16,8 @@ const std::string mrtApp::GITHUB_URL = "https://github.com/MrT-Stephens";
 
 bool MrT_App::OnInit()
 {
+    std::locale::global(std::locale("en_UK.UTF-8"));
+
 #if defined(MRT_DEBUG)
     AllocConsole();
 
@@ -23,6 +25,7 @@ bool MrT_App::OnInit()
     freopen("CONOUT$", "w", stderr);
 
     MRT_DEBUG_LOG_MSG(std::format("Debugging enabled on application ({})", mrtApp::APP_TITLE));
+    MRT_DEBUG_LOG_MSG(std::format("Locale set to: {}", std::locale().name()));
 #endif
 
     Main_Frame* mainFrame = new Main_Frame(mrtApp::APP_TITLE, wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE);

@@ -53,7 +53,7 @@ void CSVto_PanelBase::SetupDataInputSection()
 
 	// Create the open file button and format it
 	m_LoadData = new wxButton(this, wxID_ANY, "Open File", wxDefaultPosition, wxDefaultSize);
-	m_LoadData->SetMinSize(wxSize(FromDIP(120), wxDefaultSize.GetY()));
+	m_LoadData->SetMinSize(wxSize(FromDIP(120), m_LogoButton->GetMinSize().y));
 	m_LoadData->SetOwnFont(MAIN_FONT_TEXT(10));
 	m_LoadData->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_LoadData->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -125,7 +125,7 @@ void CSVto_PanelBase::SetupDataInputSection()
 
 	// Create the example file button and format it
 	m_ExampleData = new wxButton(this, wxID_ANY, "Preview Data", wxDefaultPosition, wxDefaultSize);
-	m_ExampleData->SetMinSize(FromDIP(wxSize(FromDIP(120), wxDefaultSize.GetY())));
+	m_ExampleData->SetMinSize(wxSize(FromDIP(120), m_LogoButton->GetMinSize().y));
 	m_ExampleData->SetOwnFont(MAIN_FONT_TEXT(10));
 	m_ExampleData->SetOwnBackgroundColour(m_Colours->PRIMARY);
 	m_ExampleData->SetOwnForegroundColour(m_Colours->FOREGROUND);
@@ -154,8 +154,8 @@ void CSVto_PanelBase::SetupDataInputSection()
 	// Add the buttons to the horizontal sizer
 	m_DataInBtnSizer->AddStretchSpacer(2);
 
-	m_DataInBtnSizer->Add(m_LoadData, 0, wxALL | wxEXPAND | wxCENTER, FromDIP(5));
-	m_DataInBtnSizer->Add(m_ExampleData, 0, wxALL | wxEXPAND | wxCENTER, FromDIP(5));
+	m_DataInBtnSizer->Add(m_LoadData, 0, wxALL | wxCENTER, FromDIP(5));
+	m_DataInBtnSizer->Add(m_ExampleData, 0, wxALL | wxCENTER, FromDIP(5));
 
 	m_MainSizer->Add(m_DataInBtnSizer, 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, FromDIP(5));
 

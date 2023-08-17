@@ -98,7 +98,7 @@ Main_Frame::~Main_Frame()
 {
     for (std::pair<CSVto_PanelBase*, std::string>& panel : m_Panels)
 	{
-		delete panel.first;
+        delete (panel.first);
 	}
 }
 

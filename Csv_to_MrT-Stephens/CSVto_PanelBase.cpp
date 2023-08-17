@@ -74,6 +74,19 @@ void CSVto_PanelBase::SetupDataInputSection()
 
 				if (m_CSVData->GetError() == mrt::CSVData_Error::NONE)
 				{
+					if (m_CSVData->GetColumnCount() > 1000 || m_CSVData->GetRowCount() > 1000)
+					{
+						mrt::MrT_UniDialog yesNoDialog(this, "Warning", std::format("The file that has been inputted has {} columns and {} rows. This may take a while to process in certain cases. Would you like to continue?",
+							m_CSVData->GetColumnCount(), m_CSVData->GetRowCount()), m_Colours, wxICON(wxICON_WARNING), mrt::MrT_UniDialogType_YES_NO, FromDIP(wxSize(400, 215)));
+
+						if (yesNoDialog.ShowModal() == wxID_NO)
+						{
+							delete (m_CSVData);
+							m_CSVData = nullptr;
+							return;
+						}
+					}
+
 					PopulateData();
 
 #if defined(MRT_DEBUG)
@@ -90,6 +103,8 @@ void CSVto_PanelBase::SetupDataInputSection()
 #if defined(MRT_DEBUG)
 					MRT_DEBUG_LOG_MSG(std::format(L"Failed to open file ({})", m_FileDir));
 #endif
+					delete (m_CSVData);
+					m_CSVData = nullptr;
 				}
 				else
 				{
@@ -101,6 +116,8 @@ void CSVto_PanelBase::SetupDataInputSection()
 #if defined(MRT_DEBUG)
 					MRT_DEBUG_LOG_MSG(std::format(L"Failed to input data from file ({})", m_FileDir));
 #endif
+					delete (m_CSVData);
+					m_CSVData = nullptr;
 				}
 			}
 		}
@@ -558,12 +575,12 @@ void CSVto_PanelBase::PopulateDataListView()
 	m_DataInputListView->InsertColumn(0, "Row Number", wxLIST_ALIGN_SNAP_TO_GRID, average_width);
 
 	{
-		std::wstring headerName;									// Using std::wstring to support the unicode arrows
+		std::wstring headerName;									
 
 		for (size_t i = 0; (i < m_CSVData->GetColumnCount()); ++i)
 		{															// Adds an arrow to the header name if the column is the current sort column
 			headerName = (m_CurrentSortColumn == i) ?
-				std::format(L"{} {}", (m_CurrentSortOrder == ORDER_ASCENDING ? L"\u2B9D" : L"\u2B9F"), mrt::StrToWstr(m_CSVData->GetHeaderNames()[i])) : mrt::StrToWstr(m_CSVData->GetHeaderNames()[i]);
+				std::format(L"{} {}", (m_CurrentSortOrder == ORDER_ASCENDING ? L"\u2B9D" : L"\u2B9F"), m_CSVData->GetHeaderNames()[i]) : m_CSVData->GetHeaderNames()[i];
 
 			m_DataInputListView->InsertColumn(i + 1, headerName, wxLIST_ALIGN_SNAP_TO_GRID, average_width);
 		}

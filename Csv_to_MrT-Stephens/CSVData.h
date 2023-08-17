@@ -94,8 +94,8 @@ namespace mrt
 		static void CheckMaxColumnWidths(CSVData_Base<_StrType>* const csvData);
 
 		static CSVData_Error LoadCsv(CSVData_Base<_StrType>* const csvData, const _StrType& fileDir, bool removeNonAscii);
-		static CSVData_Error SaveCsv(const CSVData_Base<_StrType>* const csvData, const _StrType& fileDir, ValueType delimiter, bool includeHeader);
-		static void SaveCsvToStream(const CSVData_Base<_StrType>* const csvData, OStream* stream, ValueType delimiter, bool includeHeader);
+		static CSVData_Error SaveCsv(const CSVData_Base<_StrType>* const csvData, const _StrType& fileDir, ValueType delimiter, bool includeHeader, bool addQuotes);
+		static void SaveCsvToStream(const CSVData_Base<_StrType>* const csvData, OStream* stream, ValueType delimiter, bool includeHeader, bool addQuotes);
 	};
 
 	  /************************/
@@ -331,7 +331,7 @@ mrt::CSVData_Error mrt::CSVData_Base<_StrType>::LoadCsv(CSVData_Base<_StrType>* 
 }
 
 template <class _StrType>
-mrt::CSVData_Error mrt::CSVData_Base<_StrType>::SaveCsv(const CSVData_Base<_StrType>* const csvData, const _StrType& fileDir, ValueType delimiter, bool includeHeader)
+mrt::CSVData_Error mrt::CSVData_Base<_StrType>::SaveCsv(const CSVData_Base<_StrType>* const csvData, const _StrType& fileDir, ValueType delimiter, bool includeHeader, bool addQuotes)
 {
 	OFstream file(std::filesystem::path(fileDir), std::ios::out);
 
@@ -347,7 +347,7 @@ mrt::CSVData_Error mrt::CSVData_Base<_StrType>::SaveCsv(const CSVData_Base<_StrT
 		// Write Header Names
 		for (size_t i = 0; i < csvData->GetColumnCount(); ++i)
 		{
-			file << headerNames[i] << ((i != csvData->GetColumnCount() - 1) ? delimiter : '\n');
+			file << (addQuotes ? (_StrType(1, '\"') + headerNames[i] + _StrType(1, '\"')) : headerNames[i]) << ((i != csvData->GetColumnCount() - 1) ? delimiter : '\n');
 		}
 	}
 
@@ -355,7 +355,7 @@ mrt::CSVData_Error mrt::CSVData_Base<_StrType>::SaveCsv(const CSVData_Base<_StrT
 	{
 		for (size_t i1 = 0; i1 < row.size(); ++i1)
 		{
-			file << row[i1] << ((i1 != row.size() - 1) ? delimiter : '\n');
+			file << (addQuotes ? (_StrType(1, '\"') + row[i1] + _StrType(1, '\"')) : row[i1]) << ((i1 != row.size() - 1) ? delimiter : '\n');
 		}
 	}
 
@@ -364,7 +364,7 @@ mrt::CSVData_Error mrt::CSVData_Base<_StrType>::SaveCsv(const CSVData_Base<_StrT
 }
 
 template <class _StrType>
-void mrt::CSVData_Base<_StrType>::SaveCsvToStream(const CSVData_Base<_StrType>* const csvData, OStream* stream, ValueType delimiter, bool includeHeader)
+void mrt::CSVData_Base<_StrType>::SaveCsvToStream(const CSVData_Base<_StrType>* const csvData, OStream* stream, ValueType delimiter, bool includeHeader, bool addQuotes)
 {
 	if (includeHeader)
 	{
@@ -373,7 +373,7 @@ void mrt::CSVData_Base<_StrType>::SaveCsvToStream(const CSVData_Base<_StrType>* 
 		// Write Header Names
 		for (size_t i = 0; i < csvData->GetColumnCount(); ++i)
 		{
-			*stream << headerNames[i] << ((i != csvData->GetColumnCount() - 1) ? delimiter : '\n');
+			*stream << (addQuotes ? (_StrType(1, '\"') + headerNames[i] + _StrType(1, '\"')) : headerNames[i]) << ((i != csvData->GetColumnCount() - 1) ? delimiter : '\n');
 		}
 	}
 
@@ -381,7 +381,7 @@ void mrt::CSVData_Base<_StrType>::SaveCsvToStream(const CSVData_Base<_StrType>* 
 	{
 		for (size_t i1 = 0; i1 < row.size(); ++i1)
 		{
-			*stream << row[i1] << ((i1 != row.size() - 1) ? delimiter : '\n');
+			*stream << (addQuotes ? (_StrType(1, '\"') + row[i1] + _StrType(1, '\"')) : row[i1]) << ((i1 != row.size() - 1) ? delimiter : '\n');
 		}
 	}
 }

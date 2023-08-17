@@ -32,5 +32,5 @@ public:
 	virtual void LockOrUnlockItems(bool lock) override;
 	virtual void OutputFile() override;
 
-	char GetDelimiterType(int selection);
+	wchar_t GetDelimiterType(int selection);
 };

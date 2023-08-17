@@ -175,7 +175,7 @@ void CSVtoCSV_Panel::LockOrUnlockItems(bool lock)
 	m_QuotesButton->Enable(!lock);
 }
 
-char CSVtoCSV_Panel::GetDelimiterType(int selection)
+wchar_t CSVtoCSV_Panel::GetDelimiterType(int selection)
 {
 	switch (selection)
 	{

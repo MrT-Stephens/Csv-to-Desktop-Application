@@ -47,9 +47,9 @@ void CSVtoPHP_Panel::PopulateOutputDataTextBox()
 #endif
 
 	{
-		mrt::PHP_Generator<std::string> phpGenerator(m_CSVData);
+		mrt::PHP_Generator<std::wstring> phpGenerator(m_CSVData);
 
-		mrt::PHP_Generator<std::string>::OStrStream ss;
+		mrt::PHP_Generator<std::wstring>::OStrStream ss;
 
 		phpGenerator.WriteToStream(&ss);
 

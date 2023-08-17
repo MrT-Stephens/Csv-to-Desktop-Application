@@ -70,14 +70,14 @@ void CSVto_PanelBase::SetupDataInputSection()
 
 				m_CurrentSortColumn = -1;
 				delete (m_CSVData);
-				m_CSVData = new mrt::CSVData<std::string>(m_FileDir);
+				m_CSVData = new mrt::CSVData<std::wstring>(m_FileDir);
 
 				if (m_CSVData->GetError() == mrt::CSVData_Error::NONE)
 				{
 					PopulateData();
 
 #if defined(MRT_DEBUG)
-					MRT_DEBUG_LOG_MSG(std::format("File inputted successfully ({})", m_FileDir));
+					MRT_DEBUG_LOG_MSG(std::format(L"File inputted successfully ({})", m_FileDir));
 #endif
 				}
 				else if (m_CSVData->GetError() == mrt::CSVData_Error::CANNOT_OPEN_FILE)
@@ -88,7 +88,7 @@ void CSVto_PanelBase::SetupDataInputSection()
 					errorDialog.ShowModal();
 
 #if defined(MRT_DEBUG)
-					MRT_DEBUG_LOG_MSG(std::format("Failed to open file ({})", m_FileDir));
+					MRT_DEBUG_LOG_MSG(std::format(L"Failed to open file ({})", m_FileDir));
 #endif
 				}
 				else
@@ -99,7 +99,7 @@ void CSVto_PanelBase::SetupDataInputSection()
 					errorDialog.ShowModal();
 
 #if defined(MRT_DEBUG)
-					MRT_DEBUG_LOG_MSG(std::format("Failed to input data from file ({})", m_FileDir));
+					MRT_DEBUG_LOG_MSG(std::format(L"Failed to input data from file ({})", m_FileDir));
 #endif
 				}
 			}
@@ -119,12 +119,12 @@ void CSVto_PanelBase::SetupDataInputSection()
 		{
 			m_CurrentSortColumn = -1;
 			delete (this->m_CSVData);
-			m_CSVData = new mrt::CSVData<std::string>({
-				{ "Matthew", "Mann", "21", "M", "P001" },
-				{ "James", "Williams", "27", "M", "P002" },
-				{ "Matt", "Lewis", "18", "M", "P003" },
-				{ "Sarah", "Vills", "22", "F", "P004" } },
-				{ "firstName", "lastName", "age", "gender", "personId" });
+			m_CSVData = new mrt::CSVData<std::wstring>({
+				{ L"Matthew", L"Mann", L"21", L"M", L"P001" },
+				{ L"James", L"Williams", L"27", L"M", L"P002" },
+				{ L"Matt", L"Lewis", L"18", L"M", L"P003" },
+				{ L"Sarah", L"Vills", L"22", L"F", L"P004" } },
+				{ L"firstName", L"lastName", L"age", L"gender", L"personId" });
 
 #if defined(MRT_DEBUG)
 			MRT_DEBUG_LOG_MSG("Preview file inputted successfully");
@@ -573,7 +573,7 @@ void CSVto_PanelBase::PopulateDataListView()
 	{
 		m_DataInputListView->InsertItem(i0, std::to_string(i0 + 1));
 
-		const std::vector<std::string> data = m_CSVData->GetRowData(i0);
+		const std::vector<std::wstring> data = m_CSVData->GetRowData(i0);
 
 		for (size_t i1 = 0; i1 < m_CSVData->GetColumnCount(); ++i1)
 		{

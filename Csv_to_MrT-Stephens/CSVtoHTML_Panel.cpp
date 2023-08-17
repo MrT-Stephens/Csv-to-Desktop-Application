@@ -73,9 +73,9 @@ void CSVtoHTML_Panel::PopulateOutputDataTextBox()
 #endif
 
 	{
-		mrt::HTML_Table<std::string> htmlTags(m_CSVData);
+		mrt::HTML_Table<std::wstring> htmlTags(m_CSVData);
 
-		mrt::HTML_Table<std::string>::OStrStream ss;
+		mrt::HTML_Table<std::wstring>::OStrStream ss;
 
 		htmlTags.WriteToStream(&ss, (m_TheadTbodyHtmlBtn->GetLabel() == "Include thread and tbody" ? false : true), !m_MinifyHtmlCheckBox->GetValue());
 

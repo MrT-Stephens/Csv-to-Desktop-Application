@@ -185,7 +185,7 @@ mrt::MrT_UniDialog::MrT_UniDialog(wxWindow* parent, const std::string& title, co
  /* MrT_CSVDataEdit_Dialog Implementation */
 /*****************************************/
 
-mrt::MrT_CSVDataEdit_Dialog::MrT_CSVDataEdit_Dialog(wxWindow* parent, mrt::CSVData<std::string>* const csvData, const mrtApp::AppColours* colours, const wxPoint& pos, const wxSize& size)
+mrt::MrT_CSVDataEdit_Dialog::MrT_CSVDataEdit_Dialog(wxWindow* parent, mrt::CSVData<std::wstring>* const csvData, const mrtApp::AppColours* colours, const wxPoint& pos, const wxSize& size)
 	: wxDialog(parent, wxID_ANY, "Edit Row Data", pos, size, (wxDEFAULT_DIALOG_STYLE & ~(wxSYSTEM_MENU)) | wxSTAY_ON_TOP)
 {
 	SetIcon(CSV_to_Logo);
@@ -224,9 +224,9 @@ mrt::MrT_CSVDataEdit_Dialog::MrT_CSVDataEdit_Dialog(wxWindow* parent, mrt::CSVDa
 		{
 			m_Timer.Stop();
 
-			mrt::Basic_Str_Validator<std::string> validator(mrt::Basic_Str_Filter_Digits | mrt::Basic_Str_Filter_Empty);
+			mrt::Basic_Str_Validator<std::wstring> validator(mrt::Basic_Str_Filter_Digits | mrt::Basic_Str_Filter_Empty);
 
-			std::string value = m_RowNumberTextCtrl->GetValue().ToStdString();
+			std::wstring value = m_RowNumberTextCtrl->GetValue().ToStdWstring();
 
 			if (validator.IsValid(value) && (std::stoull(value) >= 0) && (std::stoull(value) <= csvData->GetRowCount()))
 			{
@@ -236,7 +236,7 @@ mrt::MrT_CSVDataEdit_Dialog::MrT_CSVDataEdit_Dialog(wxWindow* parent, mrt::CSVDa
 				m_RowDataStaticText->SetLabel(std::format("Edit Row {}:", m_RowNumberTextCtrl->GetValue().ToStdString()));
 				m_PanelSizer->Layout();
 
-				const std::vector<std::string>& data = (std::stoull(value) == 0) ? csvData->GetHeaderNames() : csvData->GetRowData(std::stoull(value) - 1);
+				const std::vector<std::wstring>& data = (std::stoull(value) == 0) ? csvData->GetHeaderNames() : csvData->GetRowData(std::stoull(value) - 1);
 
 				for (size_t i = 0; i < csvData->GetColumnCount(); ++i)
 				{
@@ -269,8 +269,8 @@ mrt::MrT_CSVDataEdit_Dialog::MrT_CSVDataEdit_Dialog(wxWindow* parent, mrt::CSVDa
 	m_DataEditCtrls.resize(csvData->GetColumnCount());
 
 	{
-		std::string value = m_RowNumberTextCtrl->GetValue().ToStdString();
-		const std::vector<std::string>& data = (std::stoull(value) == 0) ? csvData->GetHeaderNames() : csvData->GetRowData(std::stoull(value) - 1);
+		std::wstring value = m_RowNumberTextCtrl->GetValue().ToStdWstring();
+		const std::vector<std::wstring>& data = (std::stoull(value) == 0) ? csvData->GetHeaderNames() : csvData->GetRowData(std::stoull(value) - 1);
 
 		for (size_t i = 0; i < csvData->GetColumnCount(); ++i)
 		{
@@ -296,13 +296,13 @@ mrt::MrT_CSVDataEdit_Dialog::MrT_CSVDataEdit_Dialog(wxWindow* parent, mrt::CSVDa
 
 	m_ApplyButton->Bind(wxEVT_BUTTON, [this, csvData](wxCommandEvent& event)
 		{
-			mrt::Basic_Str_Validator<std::string> validator(mrt::Basic_Str_Filter_Digits | mrt::Basic_Str_Filter_Empty);
+			mrt::Basic_Str_Validator<std::wstring> validator(mrt::Basic_Str_Filter_Digits | mrt::Basic_Str_Filter_Empty);
 
-			std::string value = m_RowNumberTextCtrl->GetValue().ToStdString();
+			std::wstring value = m_RowNumberTextCtrl->GetValue().ToStdWstring();
 
 			if (validator.IsValid(value) && (std::stoull(value) >= 0 && std::stoull(value) <= csvData->GetRowCount()))
 			{
-				std::vector<std::string>& data = (std::stoull(value) == 0) ? csvData->GetHeaderNames() : csvData->GetRowData(std::stoull(value) - 1);
+				std::vector<std::wstring>& data = (std::stoull(value) == 0) ? csvData->GetHeaderNames() : csvData->GetRowData(std::stoull(value) - 1);
 
 				for (size_t i = 0; i < csvData->GetColumnCount(); ++i)
 				{

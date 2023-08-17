@@ -178,22 +178,22 @@ void CSVtoXML_Panel::PopulateOutputDataTextBox()
 #endif
 
 	{
-		const std::vector<std::string>& header = m_CSVData->GetHeaderNames();
+		const std::vector<std::wstring>& header = m_CSVData->GetHeaderNames();
 
-		mrt::XML_Node<std::string> root(m_RootNameTextBox->GetValue().ToStdString());
+		mrt::XML_Node<std::wstring> root(m_RootNameTextBox->GetValue().ToStdWstring());
 
 		if (!m_XmlnsTextBox->IsEmpty() && !m_NameSpaceTextBox->IsEmpty())
 		{
-			root.EmplaceAttribute("xmlns", m_XmlnsTextBox->GetValue().ToStdString());
+			root.EmplaceAttribute(L"xmlns", m_XmlnsTextBox->GetValue().ToStdWstring());
 		}
 
 		for (size_t i0 = 0; i0 < m_CSVData->GetRowCount(); ++i0)
 		{
-			mrt::XML_Node<std::string> element(m_ElementNameTextBox->GetValue().ToStdString());
+			mrt::XML_Node<std::wstring> element(m_ElementNameTextBox->GetValue().ToStdWstring());
 
 			for (size_t i1 = 0; i1 < m_CSVData->GetColumnCount(); ++i1)
 			{
-				const std::vector<std::string>& row = m_CSVData->GetRowData(i0);
+				const std::vector<std::wstring>& row = m_CSVData->GetRowData(i0);
 
 				element.EmplaceChild(header[i1], row[i1]);
 			}
@@ -201,9 +201,9 @@ void CSVtoXML_Panel::PopulateOutputDataTextBox()
 			root.AddChild(element);
 		}
 
-		mrt::XML_Document<std::string> doc(root, "1.0", m_NameSpaceTextBox->GetValue().ToStdString(), !m_ExcludePrologCheckBox->GetValue(), !m_MinifyXmlCheckBox->GetValue());
+		mrt::XML_Document<std::wstring> doc(root, L"1.0", m_NameSpaceTextBox->GetValue().ToStdWstring(), !m_ExcludePrologCheckBox->GetValue(), !m_MinifyXmlCheckBox->GetValue());
 
-		mrt::XML_Document<std::string>::OStrStream ss;
+		mrt::XML_Document<std::wstring>::OStrStream ss;
 
 		doc.WriteDocumentToStream(&ss, doc);
 

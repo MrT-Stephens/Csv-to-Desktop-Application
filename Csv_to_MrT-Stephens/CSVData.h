@@ -55,7 +55,7 @@ namespace mrt
 		using IFstream = typename std::basic_ifstream<ValueType>;
 
 		// Default Constructors
-		CSVData_Base(const _StrType& filePath, bool removeNonAscii = true);
+		CSVData_Base(const _StrType& filePath);
 		explicit CSVData_Base(std::vector<std::vector<_StrType>>&& data = {}, std::vector<_StrType>&& headerNames = {});
 
 		// Copy Constructors
@@ -93,9 +93,11 @@ namespace mrt
 
 		static void CheckMaxColumnWidths(CSVData_Base<_StrType>* const csvData);
 
-		static CSVData_Error LoadCsv(CSVData_Base<_StrType>* const csvData, const _StrType& fileDir, bool removeNonAscii);
+		static CSVData_Error LoadCsv(CSVData_Base<_StrType>* const csvData, const _StrType& fileDir);
 		static CSVData_Error SaveCsv(const CSVData_Base<_StrType>* const csvData, const _StrType& fileDir, ValueType delimiter, bool includeHeader, bool addQuotes);
 		static void SaveCsvToStream(const CSVData_Base<_StrType>* const csvData, OStream* stream, ValueType delimiter, bool includeHeader, bool addQuotes);
+
+		static void ParseCsvLine(const _StrType& line, std::vector<_StrType>& rowValues);
 	};
 
 	  /************************/
@@ -151,9 +153,9 @@ namespace mrt
 /*******************************/
 
 template <class _StrType>
-mrt::CSVData_Base<_StrType>::CSVData_Base(const _StrType& filePath, bool removeNonAscii)
+mrt::CSVData_Base<_StrType>::CSVData_Base(const _StrType& filePath)
 {
-	m_Error = LoadCsv(this, filePath, removeNonAscii);
+	m_Error = LoadCsv(this, filePath);
 }
 
 template <class _StrType>
@@ -257,7 +259,7 @@ void mrt::CSVData_Base<_StrType>::CheckMaxColumnWidths(CSVData_Base<_StrType>* c
 }
 
 template <class _StrType>
-mrt::CSVData_Error mrt::CSVData_Base<_StrType>::LoadCsv(CSVData_Base<_StrType>* const csvData, const _StrType& fileDir, bool removeNonAscii)
+mrt::CSVData_Error mrt::CSVData_Base<_StrType>::LoadCsv(CSVData_Base<_StrType>* const csvData, const _StrType& fileDir)
 {
 	IFstream file(std::filesystem::path(fileDir), std::ios::in);
 
@@ -267,66 +269,28 @@ mrt::CSVData_Error mrt::CSVData_Base<_StrType>::LoadCsv(CSVData_Base<_StrType>* 
 	}
 
 	{
-		_StrType line, word;
-		StrStream ss;
-
-		// Get Header Names
+		_StrType line;
 		std::getline(file, line);
-		ss << line;
+		ParseCsvLine(line, csvData->GetHeaderNames());
 
-		std::vector<_StrType>& headerNames = csvData->GetHeaderNames();
-		std::vector<size_t>& maxColumnWidths = csvData->GetMaxColumnWidths();
-
-		while (std::getline(ss, word, typename _StrType::value_type(',')))
-		{
-			if (removeNonAscii)
-			{
-				word.erase(std::remove_if(word.begin(), word.end(), [](char c)->bool
-					{
-						return (static_cast<int>(c) < 0 || static_cast<int>(c) > 127) ? true : false;
-					}
-				), word.end());
-			}
-
-			headerNames.emplace_back(word);
-			maxColumnWidths.emplace_back(word.size());
-		}
-
-		// Get Data
 		while (std::getline(file, line))
 		{
-			ss.clear();
-			ss << line;
+			std::vector<_StrType> rowData;
 
-			std::vector<_StrType> row(headerNames.size());
+			ParseCsvLine(line, rowData);
 
-			for (size_t i = 0; i < headerNames.size(); ++i)
+			csvData->GetTableData().emplace_back(rowData);
+
+			if (file.fail())
 			{
-				std::getline(ss, word, typename _StrType::value_type(','));
-
-				if (removeNonAscii)
-				{
-					word.erase(std::remove_if(word.begin(), word.end(), [](char c)->bool
-						{
-							return (static_cast<int>(c) < 0 || static_cast<int>(c) > 127) ? true : false;
-						}
-					), word.end());
-				}
-
-				row[i] = word;
-
-				if (word.size() > maxColumnWidths[i])   // Check for max column string length
-				{
-					maxColumnWidths[i] = word.size();
-				}
+				return CSVData_Error::FAILED_TO_READ_FILE;
 			}
-
-			csvData->GetTableData().emplace_back(row);
 		}
 	}
 
 	file.close();
 	CheckXYLengths(csvData);   // Checks the row lengths to make sure they are all the same, otherwise will insert empty strings
+	CheckMaxColumnWidths(csvData); // Checks the max column widths. Used when printing tables.
 	return CSVData_Error::NONE;
 }
 
@@ -347,7 +311,7 @@ mrt::CSVData_Error mrt::CSVData_Base<_StrType>::SaveCsv(const CSVData_Base<_StrT
 		// Write Header Names
 		for (size_t i = 0; i < csvData->GetColumnCount(); ++i)
 		{
-			file << (addQuotes ? (_StrType(1, '\"') + headerNames[i] + _StrType(1, '\"')) : headerNames[i]) << ((i != csvData->GetColumnCount() - 1) ? delimiter : '\n');
+			file << (addQuotes ? (_StrType(1, '\"') + headerNames[i] + _StrType(1, '\"')) : headerNames[i]) << ((i != csvData->GetColumnCount() - 1) ? _StrType(1, delimiter) : _StrType(1, '\n'));
 		}
 	}
 
@@ -355,7 +319,7 @@ mrt::CSVData_Error mrt::CSVData_Base<_StrType>::SaveCsv(const CSVData_Base<_StrT
 	{
 		for (size_t i1 = 0; i1 < row.size(); ++i1)
 		{
-			file << (addQuotes ? (_StrType(1, '\"') + row[i1] + _StrType(1, '\"')) : row[i1]) << ((i1 != row.size() - 1) ? delimiter : '\n');
+			file << (addQuotes ? (_StrType(1, '\"') + row[i1] + _StrType(1, '\"')) : row[i1]) << ((i1 != row.size() - 1) ? _StrType(1, delimiter) : _StrType(1, '\n'));
 		}
 	}
 
@@ -373,7 +337,7 @@ void mrt::CSVData_Base<_StrType>::SaveCsvToStream(const CSVData_Base<_StrType>* 
 		// Write Header Names
 		for (size_t i = 0; i < csvData->GetColumnCount(); ++i)
 		{
-			*stream << (addQuotes ? (_StrType(1, '\"') + headerNames[i] + _StrType(1, '\"')) : headerNames[i]) << ((i != csvData->GetColumnCount() - 1) ? delimiter : '\n');
+			*stream << (addQuotes ? (_StrType(1, '\"') + headerNames[i] + _StrType(1, '\"')) : headerNames[i]) << ((i != csvData->GetColumnCount() - 1) ? _StrType(1, delimiter) : _StrType(1, '\n'));
 		}
 	}
 
@@ -381,9 +345,50 @@ void mrt::CSVData_Base<_StrType>::SaveCsvToStream(const CSVData_Base<_StrType>* 
 	{
 		for (size_t i1 = 0; i1 < row.size(); ++i1)
 		{
-			*stream << (addQuotes ? (_StrType(1, '\"') + row[i1] + _StrType(1, '\"')) : row[i1]) << ((i1 != row.size() - 1) ? delimiter : '\n');
+			*stream << (addQuotes ? (_StrType(1, '\"') + row[i1] + _StrType(1, '\"')) : row[i1]) << ((i1 != row.size() - 1) ? _StrType(1, delimiter) : _StrType(1, '\n'));
 		}
 	}
+}
+
+template <class _StrType>
+void mrt::CSVData_Base<_StrType>::ParseCsvLine(const _StrType& line, std::vector<_StrType>& rowValues)
+{
+	enum class ParseState
+	{
+		Unquoted = 0,
+		Quoted = 1,
+	};
+
+	bool alreadyQuoted = false;
+	ParseState state = ParseState::Unquoted;
+
+	_StrType word;
+
+	for (typename _StrType::value_type c : line)
+	{
+		if (!std::isprint(c)) { continue; }
+
+		if ((c == '\"' || c == '\'') && !alreadyQuoted)
+		{
+			alreadyQuoted = true;
+			state = ParseState::Quoted;
+			continue;
+		}
+
+		alreadyQuoted = false;
+		state = ParseState::Unquoted;
+
+		if (c != ',' && c != '\n' && c != '\r')
+		{
+			word += c;
+			continue;
+		}
+
+		rowValues.emplace_back(word);
+		word = _StrType();
+	}
+
+	if (!word.empty()) { rowValues.emplace_back(word); }
 }
 
   /**************************/
@@ -394,7 +399,7 @@ template <class _StrType>
 mrt::CSVData<_StrType>::CSVData(const _StrType& fileDir) : CSVData_Base<_StrType>(fileDir) { }
 
 template <class _StrType>
-mrt::CSVData<_StrType>::CSVData(std::vector<std::vector<_StrType>>&& data, std::vector<_StrType>&& headerNames) : 
+mrt::CSVData<_StrType>::CSVData(std::vector<std::vector<_StrType>>&& data, std::vector<_StrType>&& headerNames) :
 	CSVData_Base<_StrType>(std::forward<std::vector<std::vector<_StrType>>>(data), std::forward<std::vector<_StrType>>(headerNames)) { }
 
 template <class _StrType>

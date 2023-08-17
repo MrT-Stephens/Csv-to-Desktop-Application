@@ -131,9 +131,9 @@ void CSVtoCSV_Panel::PopulateOutputDataTextBox()
 #endif
 
 	{
-		mrt::CSVData<std::string>::OStrStream ss;
+		mrt::CSVData<std::wstring>::OStrStream ss;
 
-		mrt::CSVData<std::string>::SaveCsvToStream(m_CSVData, &ss, GetDelimiterType(m_DelimiterComboBox->GetSelection()), 
+		mrt::CSVData<std::wstring>::SaveCsvToStream(m_CSVData, &ss, GetDelimiterType(m_DelimiterComboBox->GetSelection()), 
 			(m_IncludeHeaderButton->GetLabel() == "Exclude Header" ? true : false), (m_QuotesButton->GetLabel() == "Include Quotes" ? false : true));
 
 		m_OutputDataTextBox->SetValue(ss.str());

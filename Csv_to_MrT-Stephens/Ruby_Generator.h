@@ -33,6 +33,8 @@ namespace mrt
 
 		// Member Functions
 		void WriteToStream(OStream* stream);
+
+		static _StrType GetValueString(size_t index, const _StrType& str);
 	};
 }
 
@@ -53,7 +55,7 @@ void mrt::Ruby_Generator<_StrType>::WriteToStream(OStream* stream)
 
 		for (size_t i = 0; i < headers.size(); ++i)
 		{
-			*stream << std::format("\"val{}\"=>\"{}\"", i, headers[i]) << (i == headers.size() - 1 ? "}\n" : ",");
+			*stream << std::format(L"\"val{}\"=>\"{}\"", i, headers[i]) << (i == headers.size() - 1 ? "}\n" : ",");
 		}
 	}
 
@@ -65,10 +67,18 @@ void mrt::Ruby_Generator<_StrType>::WriteToStream(OStream* stream)
 			*stream << "\t{";
 			for (size_t i1 = 0; i1 < row.size(); ++i1)
 			{
-				*stream << std::format("\"val{}\"=>\"{}\"", i1, row[i1]) << (i1 == row.size() - 1 ? "}\n" : ",");
+				*stream << std::format(L"\"val{}\"=>\"{}\"", i1, row[i1]) << (i1 == row.size() - 1 ? "}\n" : ",");
 			}
 		}
 	}
 
 	*stream << "];";
+}
+
+template <class _StrType>
+_StrType mrt::Ruby_Generator<_StrType>::GetValueString(size_t index, const _StrType& str)
+{
+	typename std::basic_ostringstream<typename _StrType::value_type> stream;
+	stream << "\"val" << index << "\"=>\"" << str << "\"";
+	return stream.str();
 }

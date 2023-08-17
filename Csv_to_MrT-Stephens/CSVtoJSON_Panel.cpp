@@ -121,9 +121,9 @@ void CSVtoJSON_Panel::PopulateOutputDataTextBox()
 #endif
 
 	{
-		mrt::JSON_Generator<std::string> jsonGenerator(m_CSVData);
+		mrt::JSON_Generator<std::wstring> jsonGenerator(m_CSVData);
 
-		mrt::JSON_Generator<std::string>::OStrStream ss;
+		mrt::JSON_Generator<std::wstring>::OStrStream ss;
 
 		jsonGenerator.GenerateJSON(&ss, m_JSONStylesComboBox->GetSelection(), m_ParsingJSONCheckBox->GetValue(), 
 			((m_WrapperByDataBtn->GetLabel() == "Include wrapper by 'data'") ? false : true), !m_MinifyJSONCheckBox->GetValue());

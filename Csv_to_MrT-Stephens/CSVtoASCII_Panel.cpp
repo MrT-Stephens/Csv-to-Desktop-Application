@@ -129,9 +129,9 @@ void CSVtoASCII_Panel::PopulateOutputDataTextBox()
 #endif
 
 	{
-		mrt::AsciiTableGenerator<std::string> asciiTableGenerator(m_CSVData);
+		mrt::AsciiTableGenerator<std::wstring> asciiTableGenerator(m_CSVData);
 
-		mrt::AsciiTableGenerator<std::string>::OStrStream ss;
+		mrt::AsciiTableGenerator<std::wstring>::OStrStream ss;
 
 		asciiTableGenerator.GenerateAsciiTable(&ss, m_AsciiTableStyle->GetSelection(), GetCommentCharacters(), m_ForceSeparators->GetValue(), m_TextAlignment->GetSelection());
 
@@ -174,24 +174,24 @@ void CSVtoASCII_Panel::LockOrUnlockItems(bool lock)
 	m_TextAlignment->Enable(!lock);
 }
 
-std::string CSVtoASCII_Panel::GetCommentCharacters()
+std::wstring CSVtoASCII_Panel::GetCommentCharacters()
 {
 	switch (m_CommentType->GetSelection())
 	{
 	case 0:
-		return "";
+		return L"";
 	case 1:
-		return "//  ";
+		return L"//  ";
 	case 2:
-		return "--  ";
+		return L"--  ";
 	case 3:
-		return "#  ";
+		return L"#  ";
 	case 4:
-		return "%  ";
+		return L"%  ";
 	case 5:
-		return ";  ";
+		return L";  ";
 	case 6:
-		return "*  ";
+		return L"*  ";
 	}
-	return "";
+	return L"";
 }

@@ -25,5 +25,5 @@ public:
 	virtual void SetupSpecificOutputSectionItems() override;
 	virtual void LockOrUnlockItems(bool lock) override;
 
-	std::string GenerateQuoteString(const std::string& innerString);
+	std::wstring GenerateQuoteString(const std::wstring& innerString);
 };

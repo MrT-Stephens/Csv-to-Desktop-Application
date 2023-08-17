@@ -75,6 +75,6 @@ namespace mrt
 
 		wxButton* m_ApplyButton, * m_CancelButton;
 	public:
-		MrT_CSVDataEdit_Dialog(wxWindow* parent, mrt::CSVData<std::string>* const csvData, const mrtApp::AppColours* colours, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize);
+		MrT_CSVDataEdit_Dialog(wxWindow* parent, mrt::CSVData<std::wstring>* const csvData, const mrtApp::AppColours* colours, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize);
 	};
 }

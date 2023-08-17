@@ -47,9 +47,9 @@ void CSVtoRuby_Panel::PopulateOutputDataTextBox()
 #endif
 
 	{
-		mrt::Ruby_Generator<std::string> rubyGenerator(m_CSVData);
+		mrt::Ruby_Generator<std::wstring> rubyGenerator(m_CSVData);
 
-		mrt::Ruby_Generator<std::string>::OStrStream ss;
+		mrt::Ruby_Generator<std::wstring>::OStrStream ss;
 
 		rubyGenerator.WriteToStream(&ss);
 

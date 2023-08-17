@@ -56,9 +56,9 @@ namespace mrt
 		// Member Functions
 		void GenerateAsciiTable(OStream* stream, int _tableStyle, const _StrType& _commentCharacters, bool _forceRowSeparation, int _whiteSpaceStyle);
 
-		_StrType GenerateDataLine(const std::vector<_StrType>& _rowVector, unsigned char _separationCharacter, int _whiteSpaceStyle) const;
+		_StrType GenerateDataLine(const std::vector<_StrType>& _rowVector, ValueType _separationCharacter, int _whiteSpaceStyle) const;
 
-		_StrType GenerateSpacerLine(unsigned char _dataSpaceCharacter, unsigned char _edgesCharacter) const;
+		_StrType GenerateSpacerLine(ValueType _dataSpaceCharacter, ValueType _edgesCharacter) const;
 	};
 
 	enum MarkdownTableGenerator_Styles
@@ -243,7 +243,7 @@ void mrt::AsciiTableGenerator<_StrType>::GenerateAsciiTable(OStream* stream, int
 }
 
 template <class _StrType>
-_StrType mrt::AsciiTableGenerator<_StrType>::GenerateDataLine(const std::vector<_StrType>& _rowVector, unsigned char _separationCharacter, int _whiteSpaceStyle) const
+_StrType mrt::AsciiTableGenerator<_StrType>::GenerateDataLine(const std::vector<_StrType>& _rowVector, ValueType _separationCharacter, int _whiteSpaceStyle) const
 {
 	OStrStream oss;
 
@@ -257,7 +257,7 @@ _StrType mrt::AsciiTableGenerator<_StrType>::GenerateDataLine(const std::vector<
 }
 
 template <class _StrType>
-_StrType mrt::AsciiTableGenerator<_StrType>::GenerateSpacerLine(unsigned char _dataSpaceCharacter, unsigned char _edgesCharacter) const
+_StrType mrt::AsciiTableGenerator<_StrType>::GenerateSpacerLine(ValueType _dataSpaceCharacter, ValueType _edgesCharacter) const
 {
 	OStrStream oss;
 

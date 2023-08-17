@@ -35,7 +35,7 @@ namespace mrtApp
 	{
 		const wxColour BACKGROUND{ 32, 32, 32 };
 		const wxColour FOREGROUND{ 255, 255, 255 };
-		const wxColour PRIMARY{ 52, 52, 52 };
+		const wxColour PRIMARY{ 42, 42, 42 };
 		const wxColour SECONDARY{ 28, 230, 224 };
 	};
 }

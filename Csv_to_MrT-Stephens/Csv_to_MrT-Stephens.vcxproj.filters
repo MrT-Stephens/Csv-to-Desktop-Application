@@ -132,4 +132,7 @@
   <ItemGroup>
     <Manifest Include="CSV to v0.1.0.exe.manifest" />
   </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resource.rc" />
+  </ItemGroup>
 </Project>

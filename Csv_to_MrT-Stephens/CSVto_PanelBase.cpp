@@ -27,9 +27,8 @@ void CSVto_PanelBase::SetupDataInputSection()
 		{
 			mrt::MrT_InfoDialog infoMessageBox(this, "Infomation", 
 				"Hello,\n\nThis software is continuously being developed for better performance, less bugs, more features, and better user experience."
-				"\n\nCsv to... is a free to use software and if you like it enough consider donating."
 				"\n\nIf you have got issues with the software or you just want to share you feedback, please contact me through GitHub.",
-				m_Colours, FromDIP(wxSize(400, 500)));
+				m_Colours, FromDIP(wxSize(400, 425)));
 
 			infoMessageBox.ShowModal();
 		}

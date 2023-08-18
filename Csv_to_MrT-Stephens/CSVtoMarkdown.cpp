@@ -140,6 +140,29 @@ void CSVtoMarkdown_Panel::PopulateOutputDataTextBox()
 	}
 }
 
+void CSVtoMarkdown_Panel::OutputFile()
+{
+	wxFileDialog saveFileDialog(this, "Download File", (wxStandardPaths::Get().GetDocumentsDir()), "", "Markdown (*.md)|*.md", wxFD_SAVE);
+
+	if (saveFileDialog.ShowModal() == wxID_OK)
+	{
+		OFStream file(saveFileDialog.GetPath().ToStdWstring());
+
+		if (!file.is_open())
+		{
+			mrt::MrT_UniDialog errorDialog(this, "Error", "Failed to save file!\nPlease try to re-save the file.",
+				m_Colours, wxICON(wxICON_ERROR), mrt::MrT_UniDialogType_OK, FromDIP(wxSize(400, 200)));
+
+			errorDialog.ShowModal();
+		}
+		else
+		{
+			file << m_OutputDataTextBox->GetValue().ToStdWstring();
+		}
+		file.close();
+	}
+}
+
 void CSVtoMarkdown_Panel::LockOrUnlockItems(bool lock)
 {
 	m_EditDataBtn->Enable(!lock);

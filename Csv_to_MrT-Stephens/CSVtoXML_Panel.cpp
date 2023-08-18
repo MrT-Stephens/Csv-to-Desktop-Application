@@ -154,7 +154,7 @@ void CSVtoXML_Panel::OutputFile()
 
 	if (saveFileDialog.ShowModal() == wxID_OK)
 	{
-		std::ofstream file(saveFileDialog.GetPath().ToStdString());
+		OFStream file(saveFileDialog.GetPath().ToStdWstring());
 
 		if (!file.is_open())
 		{
@@ -165,7 +165,7 @@ void CSVtoXML_Panel::OutputFile()
 		}
 		else
 		{
-			file << std::move(m_OutputDataTextBox->GetValue().ToStdString());
+			file << m_OutputDataTextBox->GetValue().ToStdWstring();
 		}
 		file.close();
 	}
@@ -178,9 +178,9 @@ void CSVtoXML_Panel::PopulateOutputDataTextBox()
 #endif
 
 	{
-		const std::vector<std::wstring>& header = m_CSVData->GetHeaderNames();
+		const std::vector<StrType>& header = m_CSVData->GetHeaderNames();
 
-		mrt::XML_Node<std::wstring> root(m_RootNameTextBox->GetValue().ToStdWstring());
+		mrt::XML_Node<StrType> root(m_RootNameTextBox->GetValue().ToStdWstring());
 
 		if (!m_XmlnsTextBox->IsEmpty() && !m_NameSpaceTextBox->IsEmpty())
 		{
@@ -189,11 +189,11 @@ void CSVtoXML_Panel::PopulateOutputDataTextBox()
 
 		for (size_t i0 = 0; i0 < m_CSVData->GetRowCount(); ++i0)
 		{
-			mrt::XML_Node<std::wstring> element(m_ElementNameTextBox->GetValue().ToStdWstring());
+			mrt::XML_Node<StrType> element(m_ElementNameTextBox->GetValue().ToStdWstring());
 
 			for (size_t i1 = 0; i1 < m_CSVData->GetColumnCount(); ++i1)
 			{
-				const std::vector<std::wstring>& row = m_CSVData->GetRowData(i0);
+				const std::vector<StrType>& row = m_CSVData->GetRowData(i0);
 
 				element.EmplaceChild(header[i1], row[i1]);
 			}
@@ -201,9 +201,9 @@ void CSVtoXML_Panel::PopulateOutputDataTextBox()
 			root.AddChild(element);
 		}
 
-		mrt::XML_Document<std::wstring> doc(root, L"1.0", m_NameSpaceTextBox->GetValue().ToStdWstring(), !m_ExcludePrologCheckBox->GetValue(), !m_MinifyXmlCheckBox->GetValue());
+		mrt::XML_Document<StrType> doc(root, L"1.0", m_NameSpaceTextBox->GetValue().ToStdWstring(), !m_ExcludePrologCheckBox->GetValue(), !m_MinifyXmlCheckBox->GetValue());
 
-		mrt::XML_Document<std::wstring>::OStrStream ss;
+		mrt::XML_Document<StrType>::OStrStream ss;
 
 		doc.WriteDocumentToStream(&ss, doc);
 

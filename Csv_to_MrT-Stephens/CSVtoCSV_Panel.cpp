@@ -107,7 +107,7 @@ void CSVtoCSV_Panel::OutputFile()
 
 	if (saveFileDialog.ShowModal() == wxID_OK)
 	{
-		std::ofstream file(saveFileDialog.GetPath().ToStdString());
+		OFStream file(saveFileDialog.GetPath().ToStdWstring());
 
 		if (!file.is_open())
 		{
@@ -118,7 +118,7 @@ void CSVtoCSV_Panel::OutputFile()
 		}
 		else
 		{
-			file << std::move(m_OutputDataTextBox->GetValue().ToStdString());
+			file << m_OutputDataTextBox->GetValue().ToStdWstring();
 		}
 		file.close();
 	}
@@ -131,9 +131,9 @@ void CSVtoCSV_Panel::PopulateOutputDataTextBox()
 #endif
 
 	{
-		mrt::CSVData<std::wstring>::OStrStream ss;
+		mrt::CSVData<StrType>::OStrStream ss;
 
-		mrt::CSVData<std::wstring>::SaveCsvToStream(m_CSVData, &ss, GetDelimiterType(m_DelimiterComboBox->GetSelection()), 
+		mrt::CSVData<StrType>::SaveCsvToStream(m_CSVData, &ss, GetDelimiterType(m_DelimiterComboBox->GetSelection()),
 			(m_IncludeHeaderButton->GetLabel() == "Exclude Header" ? true : false), (m_QuotesButton->GetLabel() == "Include Quotes" ? false : true));
 
 		m_OutputDataTextBox->SetValue(ss.str());
@@ -175,7 +175,7 @@ void CSVtoCSV_Panel::LockOrUnlockItems(bool lock)
 	m_QuotesButton->Enable(!lock);
 }
 
-wchar_t CSVtoCSV_Panel::GetDelimiterType(int selection)
+CSVtoCSV_Panel::ValueType CSVtoCSV_Panel::GetDelimiterType(int selection)
 {
 	switch (selection)
 	{

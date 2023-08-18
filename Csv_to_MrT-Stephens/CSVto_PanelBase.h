@@ -31,11 +31,21 @@ enum ListVeiwSortOrder
 
 class CSVto_PanelBase : public wxPanel
 {
+public:
+	// Type Aliases
+	using StrType = std::wstring;
+	using ValueType = StrType::value_type;
+	using OStrStream = std::basic_ostringstream<ValueType>;
+	using IStrStream = std::basic_istringstream<ValueType>;
+	using OFStream = std::basic_ofstream<ValueType>;
+	using IFStream = std::basic_ifstream<ValueType>;
+	using OStream = std::basic_ostream<ValueType>;
+	using IStream = std::basic_istream<ValueType>;
 protected: 
 	// Main Items
-	std::wstring m_FileDir;
+	StrType m_FileDir;
 	std::string m_PanelName;
-	mrt::CSVData<std::wstring>* m_CSVData = nullptr;
+	mrt::CSVData<StrType>* m_CSVData = nullptr;
 
 	wxBoxSizer* m_MainSizer;
 	const mrtApp::AppColours* m_Colours;

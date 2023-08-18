@@ -208,9 +208,9 @@ void CSVtoLaTex_Panel::PopulateOutputDataTextBox()
 #endif
 
 	{
-		mrt::LaTex_Table<std::wstring> table(m_CSVData, m_LabelTextBox->GetValue().ToStdWstring(), m_TableCaptionTextBox->GetValue().ToStdWstring(), !m_CaptionLocationComboBox->GetSelection());
+		mrt::LaTex_Table<StrType> table(m_CSVData, m_LabelTextBox->GetValue().ToStdWstring(), m_TableCaptionTextBox->GetValue().ToStdWstring(), !m_CaptionLocationComboBox->GetSelection());
 
-		mrt::LaTex_Table<std::wstring>::OStrStream ss;
+		mrt::LaTex_Table<StrType>::OStrStream ss;
 
 		table.WriteToStream(&ss, m_TableBorderComboBox->GetSelection(), m_TableAlignmentComboBox->GetSelection(), 
 			m_TextAligmentComboBox->GetSelection(), m_HereOrTopCheckBox->GetValue(), m_MinimalWorkingCheckBox->GetValue());

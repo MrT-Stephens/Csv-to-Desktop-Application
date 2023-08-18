@@ -70,7 +70,7 @@ void CSVto_PanelBase::SetupDataInputSection()
 
 				m_CurrentSortColumn = -1;
 				delete (m_CSVData);
-				m_CSVData = new mrt::CSVData<std::wstring>(m_FileDir);
+				m_CSVData = new mrt::CSVData<StrType>(m_FileDir);
 
 				if (m_CSVData->GetError() == mrt::CSVData_Error::NONE)
 				{
@@ -136,7 +136,7 @@ void CSVto_PanelBase::SetupDataInputSection()
 		{
 			m_CurrentSortColumn = -1;
 			delete (this->m_CSVData);
-			m_CSVData = new mrt::CSVData<std::wstring>({
+			m_CSVData = new mrt::CSVData<StrType>({
 				{ L"Matthew", L"Mann", L"21", L"M", L"P001" },
 				{ L"James", L"Williams", L"27", L"M", L"P002" },
 				{ L"Matt", L"Lewis", L"18", L"M", L"P003" },
@@ -496,7 +496,7 @@ void CSVto_PanelBase::SetupDataOutputSection()
 		{
 			if (m_CSVData != nullptr)
 			{
-				wxClipboard::Get()->SetData(new wxTextDataObject(std::move(m_OutputDataTextBox->GetValue())));
+				wxClipboard::Get()->SetData(new wxTextDataObject(m_OutputDataTextBox->GetValue()));
 			}
 		}
 	);
@@ -530,7 +530,7 @@ void CSVto_PanelBase::OutputFile()
 
 	if (saveFileDialog.ShowModal() == wxID_OK)
 	{
-		std::ofstream file(saveFileDialog.GetPath().ToStdString());
+		OFStream file(saveFileDialog.GetPath().ToStdWstring());
 
 		if (!file.is_open())
 		{
@@ -545,7 +545,7 @@ void CSVto_PanelBase::OutputFile()
 		}
 		else
 		{
-			file << std::move(m_OutputDataTextBox->GetValue().ToStdString());
+			file << m_OutputDataTextBox->GetValue().ToStdWstring();
 		}
 		file.close();
 	}
@@ -575,7 +575,7 @@ void CSVto_PanelBase::PopulateDataListView()
 	m_DataInputListView->InsertColumn(0, "Row Number", wxLIST_ALIGN_SNAP_TO_GRID, average_width);
 
 	{
-		std::wstring headerName;									
+		StrType headerName;									
 
 		for (size_t i = 0; (i < m_CSVData->GetColumnCount()); ++i)
 		{															// Adds an arrow to the header name if the column is the current sort column
@@ -590,7 +590,7 @@ void CSVto_PanelBase::PopulateDataListView()
 	{
 		m_DataInputListView->InsertItem(i0, std::to_string(i0 + 1));
 
-		const std::vector<std::wstring> data = m_CSVData->GetRowData(i0);
+		const std::vector<StrType> data = m_CSVData->GetRowData(i0);
 
 		for (size_t i1 = 0; i1 < m_CSVData->GetColumnCount(); ++i1)
 		{

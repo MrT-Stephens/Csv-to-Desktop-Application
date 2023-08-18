@@ -121,9 +121,9 @@ void CSVtoJSON_Panel::PopulateOutputDataTextBox()
 #endif
 
 	{
-		mrt::JSON_Generator<std::wstring> jsonGenerator(m_CSVData);
+		mrt::JSON_Generator<StrType> jsonGenerator(m_CSVData);
 
-		mrt::JSON_Generator<std::wstring>::OStrStream ss;
+		mrt::JSON_Generator<StrType>::OStrStream ss;
 
 		jsonGenerator.GenerateJSON(&ss, m_JSONStylesComboBox->GetSelection(), m_ParsingJSONCheckBox->GetValue(), 
 			((m_WrapperByDataBtn->GetLabel() == "Include wrapper by 'data'") ? false : true), !m_MinifyJSONCheckBox->GetValue());
@@ -155,7 +155,7 @@ void CSVtoJSON_Panel::OutputFile()
 
 	if (saveFileDialog.ShowModal() == wxID_OK)
 	{
-		std::ofstream file(saveFileDialog.GetPath().ToStdString());
+		OFStream file(saveFileDialog.GetPath().ToStdWstring());
 
 		if (!file.is_open())
 		{
@@ -166,7 +166,7 @@ void CSVtoJSON_Panel::OutputFile()
 		}
 		else
 		{
-			file << std::move(m_OutputDataTextBox->GetValue().ToStdString());
+			file << m_OutputDataTextBox->GetValue().ToStdWstring();
 		}
 		file.close();
 	}

@@ -129,9 +129,9 @@ void CSVtoASCII_Panel::PopulateOutputDataTextBox()
 #endif
 
 	{
-		mrt::AsciiTableGenerator<std::wstring> asciiTableGenerator(m_CSVData);
+		mrt::AsciiTableGenerator<StrType> asciiTableGenerator(m_CSVData);
 
-		mrt::AsciiTableGenerator<std::wstring>::OStrStream ss;
+		mrt::AsciiTableGenerator<StrType>::OStrStream ss;
 
 		asciiTableGenerator.GenerateAsciiTable(&ss, m_AsciiTableStyle->GetSelection(), GetCommentCharacters(), m_ForceSeparators->GetValue(), m_TextAlignment->GetSelection());
 
@@ -174,7 +174,7 @@ void CSVtoASCII_Panel::LockOrUnlockItems(bool lock)
 	m_TextAlignment->Enable(!lock);
 }
 
-std::wstring CSVtoASCII_Panel::GetCommentCharacters()
+CSVtoASCII_Panel::StrType CSVtoASCII_Panel::GetCommentCharacters()
 {
 	switch (m_CommentType->GetSelection())
 	{

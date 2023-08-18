@@ -113,9 +113,9 @@ void CSVtoMarkdown_Panel::PopulateOutputDataTextBox()
 #endif
 
 	{
-		mrt::MarkdownTableGenerator<std::wstring> markdownTableGenerator(m_CSVData);
+		mrt::MarkdownTableGenerator<StrType> markdownTableGenerator(m_CSVData);
 
-		mrt::MarkdownTableGenerator<std::wstring>::OStrStream ss;
+		mrt::MarkdownTableGenerator<StrType>::OStrStream ss;
 
 		markdownTableGenerator.GenerateMarkdownTable(&ss, m_TableStyle->GetSelection(), m_TextAlignment->GetSelection(), m_BoldFirstRow->GetValue(), m_BoldFirstCol->GetValue());
 

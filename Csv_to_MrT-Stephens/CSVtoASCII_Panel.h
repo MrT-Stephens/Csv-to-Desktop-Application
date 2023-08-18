@@ -25,5 +25,5 @@ public:
 	virtual void SetupSpecificOutputSectionItems() override;
 	virtual void LockOrUnlockItems(bool lock) override;
 
-	std::wstring GetCommentCharacters();
+	StrType GetCommentCharacters();
 };

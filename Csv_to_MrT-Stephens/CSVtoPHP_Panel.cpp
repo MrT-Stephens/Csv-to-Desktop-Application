@@ -23,7 +23,7 @@ void CSVtoPHP_Panel::OutputFile()
 
 	if (saveFileDialog.ShowModal() == wxID_OK)
 	{
-		std::ofstream file(saveFileDialog.GetPath().ToStdString());
+		OFStream file(saveFileDialog.GetPath().ToStdWstring());
 
 		if (!file.is_open())
 		{
@@ -34,7 +34,7 @@ void CSVtoPHP_Panel::OutputFile()
 		}
 		else
 		{
-			file << std::move(m_OutputDataTextBox->GetValue().ToStdString());
+			file << m_OutputDataTextBox->GetValue().ToStdWstring();
 		}
 		file.close();
 	}
@@ -47,9 +47,9 @@ void CSVtoPHP_Panel::PopulateOutputDataTextBox()
 #endif
 
 	{
-		mrt::PHP_Generator<std::wstring> phpGenerator(m_CSVData);
+		mrt::PHP_Generator<StrType> phpGenerator(m_CSVData);
 
-		mrt::PHP_Generator<std::wstring>::OStrStream ss;
+		mrt::PHP_Generator<StrType>::OStrStream ss;
 
 		phpGenerator.WriteToStream(&ss);
 

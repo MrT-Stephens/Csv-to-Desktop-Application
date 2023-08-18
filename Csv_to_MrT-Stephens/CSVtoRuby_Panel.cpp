@@ -23,7 +23,7 @@ void CSVtoRuby_Panel::OutputFile()
 
 	if (saveFileDialog.ShowModal() == wxID_OK)
 	{
-		std::ofstream file(saveFileDialog.GetPath().ToStdString());
+		OFStream file(saveFileDialog.GetPath().ToStdWstring());
 
 		if (!file.is_open())
 		{
@@ -34,7 +34,7 @@ void CSVtoRuby_Panel::OutputFile()
 		}
 		else
 		{
-			file << std::move(m_OutputDataTextBox->GetValue().ToStdString());
+			file << m_OutputDataTextBox->GetValue().ToStdWstring();
 		}
 		file.close();
 	}
@@ -47,9 +47,9 @@ void CSVtoRuby_Panel::PopulateOutputDataTextBox()
 #endif
 
 	{
-		mrt::Ruby_Generator<std::wstring> rubyGenerator(m_CSVData);
+		mrt::Ruby_Generator<StrType> rubyGenerator(m_CSVData);
 
-		mrt::Ruby_Generator<std::wstring>::OStrStream ss;
+		mrt::Ruby_Generator<StrType>::OStrStream ss;
 
 		rubyGenerator.WriteToStream(&ss);
 

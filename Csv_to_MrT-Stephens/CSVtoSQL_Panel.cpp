@@ -120,13 +120,13 @@ void CSVtoSQL_Panel::PopulateOutputDataTextBox()
 	auto start = std::chrono::high_resolution_clock::now();
 #endif
 
-	std::vector<std::wstring> headerNames{m_CSVData->GetHeaderNames()};		// Get the header names from the CSV data readey for the code generation.
+	std::vector<StrType> headerNames{m_CSVData->GetHeaderNames()};		// Get the header names from the CSV data readey for the code generation.
 
 	// Create table code generation.
 	if (m_GenerateTable->GetValue())										// If the generate table checkbox is checked.
 	{																		// Will generate the create table statement.
 
-		std::wstringstream createTableCodeSS;
+		OStrStream createTableCodeSS;
 
 		createTableCodeSS << "CREATE TABLE " << GenerateQuoteString(m_TableNameInput->GetValue().ToStdWstring()) << " (\n";
 
@@ -135,17 +135,17 @@ void CSVtoSQL_Panel::PopulateOutputDataTextBox()
 			createTableCodeSS << "\t" << GenerateQuoteString(headerNames[i]) << " VARCHAR(" << mrt::RoundToNearest10<size_t>(m_CSVData->GetMaxColumnWidth(i)) << ") NOT NULL" << ((i == m_CSVData->GetColumnCount() - 1) ? "\n);\n\n" : ",\n");
 		}
 
-		m_OutputDataTextBox->AppendText(std::forward<std::wstring>(createTableCodeSS.str()));
+		m_OutputDataTextBox->AppendText(std::forward<StrType>(createTableCodeSS.str()));
 	}
 
 	{
 		bool firstLoopCheck1 = true, firstLoopCheck2 = true;				// Used to check if we are on the first loop of the code generation.
-		std::wstringstream insertIntoCodeSS;
+		OStrStream insertIntoCodeSS;
 
 		// Insert into table code generation.
 		for (size_t i0 = 0; i0 < m_CSVData->GetRowCount(); ++i0)
 		{
-			std::wstringstream rowDataConcatenation;
+			OStrStream rowDataConcatenation;
 
 			rowDataConcatenation << '(';
 
@@ -160,7 +160,7 @@ void CSVtoSQL_Panel::PopulateOutputDataTextBox()
 				}
 			}
 
-			std::vector<std::wstring> rowData{m_CSVData->GetRowData(i0)};	// Get the row data ready for concatenation.
+			std::vector<StrType> rowData{m_CSVData->GetRowData(i0)};	// Get the row data ready for concatenation.
 
 			for (size_t i = 0; i < m_CSVData->GetColumnCount(); ++i)		// Generate the second part of the code. E.g. VALUES ('value1', 'value2', 'value3', ...)
 			{
@@ -178,7 +178,7 @@ void CSVtoSQL_Panel::PopulateOutputDataTextBox()
 			}
 		}
 
-		m_OutputDataTextBox->AppendText(std::forward<std::wstring>(insertIntoCodeSS.str()));
+		m_OutputDataTextBox->AppendText(std::forward<StrType>(insertIntoCodeSS.str()));
 	}
 
 #if defined(MRT_DEBUG)
@@ -199,9 +199,9 @@ void CSVtoSQL_Panel::PopulateOutputDataTextBox()
 	}
 }
 
-std::wstring CSVtoSQL_Panel::GenerateQuoteString(const std::wstring& innerString)
+CSVtoSQL_Panel::StrType CSVtoSQL_Panel::GenerateQuoteString(const StrType& innerString)
 {
-	std::wstringstream outString;
+	OStrStream outString;
 
 	switch (m_QuoteTypeSelect->GetSelection())
 	{
@@ -219,7 +219,7 @@ std::wstring CSVtoSQL_Panel::GenerateQuoteString(const std::wstring& innerString
 		break;
 	}
 
-	return std::forward<std::wstring>(outString.str());
+	return std::forward<StrType>(outString.str());
 }
 
 void CSVtoSQL_Panel::LockOrUnlockItems(bool lock)

@@ -26,15 +26,13 @@ namespace mrtApp
 {
 	extern const std::string APP_NAME;
 	extern const std::string APP_VERSION;
-
 	extern const std::string APP_TITLE;
-
 	extern const std::string GITHUB_URL;
 
 	struct AppColours
 	{
 		const wxColour BACKGROUND{ 32, 32, 32 };
-		const wxColour FOREGROUND{ 255, 255, 255 };
+		const wxColour FOREGROUND{ 225, 225, 225 };
 		const wxColour PRIMARY{ 42, 42, 42 };
 		const wxColour SECONDARY{ 28, 230, 224 };
 	};

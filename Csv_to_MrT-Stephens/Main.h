@@ -33,9 +33,7 @@ class Main_Frame : public wxFrame
 {
 private:
     wxNotebook* m_Notebook;
-
     const mrtApp::AppColours m_Colours;
-
     std::vector<std::pair<CSVto_PanelBase*, std::string>> m_Panels;
 public:
     // Constructor & Destructor

@@ -140,12 +140,12 @@ void mrt::AsciiTableGenerator<_StrType>::GenerateAsciiTable(OStream* stream, int
 				<< GenerateDataLine(columnNames, '|', _whiteSpaceStyle) << "\n" << _commentCharacters << GenerateSpacerLine('-', '+') << "\n";
 			break;
 		case Ascii_Table_Dots:
-			*stream << _commentCharacters << GenerateSpacerLine('·', '·') << "\n" << _commentCharacters
-				<< GenerateDataLine(columnNames, ':', _whiteSpaceStyle) << "\n" << _commentCharacters << GenerateSpacerLine('·', '·') << "\n";
+			*stream << _commentCharacters << GenerateSpacerLine('.', '.') << "\n" << _commentCharacters
+				<< GenerateDataLine(columnNames, ':', _whiteSpaceStyle) << "\n" << _commentCharacters << GenerateSpacerLine('.', '.') << "\n";
 			break;
 		case Ascii_Table_Dots_Curved:
-			*stream << _commentCharacters << GenerateSpacerLine('·', '.') << "\n" << _commentCharacters
-				<< GenerateDataLine(columnNames, ':', _whiteSpaceStyle) << "\n" << _commentCharacters << GenerateSpacerLine('·', '·') << "\n";
+			*stream << _commentCharacters << GenerateSpacerLine(8226, '.') << "\n" << _commentCharacters
+				<< GenerateDataLine(columnNames, ':', _whiteSpaceStyle) << "\n" << _commentCharacters << GenerateSpacerLine(8226, 8226) << "\n";
 			break;
 		case Ascii_Table_Compact:
 			*stream << _commentCharacters << GenerateDataLine(columnNames, ' ', _whiteSpaceStyle) << "\n" << _commentCharacters << GenerateSpacerLine('-', '-') << "\n";
@@ -160,11 +160,11 @@ void mrt::AsciiTableGenerator<_StrType>::GenerateAsciiTable(OStream* stream, int
 			break;
 		case Ascii_Table_Wavy:
 			*stream << _commentCharacters << GenerateSpacerLine('~', '+') << "\n" << _commentCharacters
-				<< GenerateDataLine(columnNames, '¦', _whiteSpaceStyle) << "\n" << _commentCharacters << GenerateSpacerLine('~', '+') << "\n";
+				<< GenerateDataLine(columnNames, '|', _whiteSpaceStyle) << "\n" << _commentCharacters << GenerateSpacerLine('~', '+') << "\n";
 			break;
 		case ExtendedAscii_Table_MySQL:
-			*stream << _commentCharacters << GenerateSpacerLine('-', '+') << "\n" << _commentCharacters
-				<< GenerateDataLine(columnNames, '¦', _whiteSpaceStyle) << "\n" << _commentCharacters << GenerateSpacerLine('-', '+') << "\n";
+			*stream << _commentCharacters << GenerateSpacerLine(9552, '+') << "\n" << _commentCharacters
+				<< GenerateDataLine(columnNames, 9553, _whiteSpaceStyle) << "\n" << _commentCharacters << GenerateSpacerLine(9552, '+') << "\n";
 			break;
 		}
 	}
@@ -187,7 +187,7 @@ void mrt::AsciiTableGenerator<_StrType>::GenerateAsciiTable(OStream* stream, int
 
 			if (_forceRowSeparation || (i == m_CSVData->GetRowCount() - 1))
 			{
-				*stream << _commentCharacters << GenerateSpacerLine('·', '·') << "\n";
+				*stream << _commentCharacters << GenerateSpacerLine('.', '.') << "\n";
 			}
 			break;
 		case Ascii_Table_Dots_Curved:
@@ -195,7 +195,7 @@ void mrt::AsciiTableGenerator<_StrType>::GenerateAsciiTable(OStream* stream, int
 
 			if (_forceRowSeparation || (i == m_CSVData->GetRowCount() - 1))
 			{
-				*stream << _commentCharacters << GenerateSpacerLine('·', '·') << "\n";
+				*stream << _commentCharacters << GenerateSpacerLine(8226, 8226) << "\n";
 			}
 			break;
 		case Ascii_Table_Compact:
@@ -223,7 +223,7 @@ void mrt::AsciiTableGenerator<_StrType>::GenerateAsciiTable(OStream* stream, int
 			}
 			break;
 		case Ascii_Table_Wavy:
-			*stream << _commentCharacters << GenerateDataLine(m_CSVData->GetRowData(i), '¦', _whiteSpaceStyle) << "\n";
+			*stream << _commentCharacters << GenerateDataLine(m_CSVData->GetRowData(i), '|', _whiteSpaceStyle) << "\n";
 
 			if (_forceRowSeparation || (i == m_CSVData->GetRowCount() - 1))
 			{
@@ -231,11 +231,11 @@ void mrt::AsciiTableGenerator<_StrType>::GenerateAsciiTable(OStream* stream, int
 			}
 			break;
 		case ExtendedAscii_Table_MySQL:
-			*stream << _commentCharacters << GenerateDataLine(m_CSVData->GetRowData(i), '¦', _whiteSpaceStyle) << "\n";
+			*stream << _commentCharacters << GenerateDataLine(m_CSVData->GetRowData(i), 9553, _whiteSpaceStyle) << "\n";
 
 			if (_forceRowSeparation || (i == m_CSVData->GetRowCount() - 1))
 			{
-				*stream << _commentCharacters << GenerateSpacerLine('-', '+') << "\n";
+				*stream << _commentCharacters << GenerateSpacerLine(9552, '+') << "\n";
 			}
 			break;
 		}

@@ -317,6 +317,8 @@ mrt::CSVData_Error mrt::CSVData_Base<_StrType>::LoadCsv(CSVData_Base<_StrType>* 
 
 	file.close();
 	CheckXYLengths(csvData);									// Checks the row lengths to make sure they are all the same, otherwise will insert empty strings.
+																// If the row lengths are not the same, it will cause errors within the application.
+
 	CheckMaxColumnWidths(csvData);								// Checks the max column widths. Used when printing tables.
 	return CSVData_Error::NONE;
 }
@@ -344,6 +346,7 @@ mrt::CSVData_Error mrt::CSVData_Base<_StrType>::SaveCsv(const CSVData_Base<_StrT
 
 	for (const std::vector<_StrType>& row : csvData->GetTableData())
 	{
+		// Write Row Data
 		for (size_t i1 = 0; i1 < row.size(); ++i1)
 		{
 			file << (addQuotes ? (_StrType(1, '\"') + row[i1] + _StrType(1, '\"')) : row[i1]) << ((i1 != row.size() - 1) ? _StrType(1, delimiter) : _StrType(1, '\n'));
@@ -370,6 +373,7 @@ void mrt::CSVData_Base<_StrType>::SaveCsvToStream(const CSVData_Base<_StrType>* 
 
 	for (const std::vector<_StrType>& row : csvData->GetTableData())
 	{
+		// Write Row Data
 		for (size_t i1 = 0; i1 < row.size(); ++i1)
 		{
 			*stream << (addQuotes ? (_StrType(1, '\"') + row[i1] + _StrType(1, '\"')) : row[i1]) << ((i1 != row.size() - 1) ? _StrType(1, delimiter) : _StrType(1, '\n'));
@@ -388,15 +392,12 @@ void mrt::CSVData_Base<_StrType>::ParseCsvLine(const _StrType& line, std::vector
 		if ((c == '\"' || c == '\'') && !inQuotes)
 		{
 			inQuotes = true;
-			continue;
 		}
 		else if ((c == '\"' || c == '\'') && inQuotes)
 		{
 			inQuotes = false;
-			continue;
 		}
-
-		if (c == ',' && !inQuotes)
+		else if (c == ',' && !inQuotes)
 		{
 			row.push_back(cell);
 			cell = _StrType();

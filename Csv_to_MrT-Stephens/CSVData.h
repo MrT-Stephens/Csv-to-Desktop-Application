@@ -90,6 +90,9 @@ namespace mrt
 
 		CSVData_Error GetError() const;
 
+		const std::locale& GetLocale() const;
+		void SetLocale(const std::locale& locale);
+
 		// Static Member Functions
 		static void CheckXYLengths(CSVData_Base<_StrType>* const csvData);
 
@@ -99,15 +102,12 @@ namespace mrt
 		static CSVData_Error SaveCsv(const CSVData_Base<_StrType>* const csvData, const _StrType& fileDir, ValueType delimiter, bool includeHeader, bool addQuotes);
 		static void SaveCsvToStream(const CSVData_Base<_StrType>* const csvData, OStream* stream, ValueType delimiter, bool includeHeader, bool addQuotes);
 
-		static void ParseCsvLine(const _StrType& line, std::vector<_StrType>& rowValues, const std::locale& locale);
-
-		const std::locale& GetLocale() const;
-		void SetLocale(const std::locale& locale);
+		static void ParseCsvLine(const _StrType& line, std::vector<_StrType>& row);
 	};
 
-	  /************************/
-     /* CSVData Deceleration */
-    /************************/
+	  /***********************/
+     /* CSVData Declaration */
+    /***********************/
 
 	template <class _StrType>
 	class CSVData : public CSVData_Base<_StrType>
@@ -151,6 +151,13 @@ namespace mrt
 
 		static void TransposeData(CSVData_Base<_StrType>* const csvData);
 	};
+
+	  /************************************/
+	 /* MrT Global Functions Declaration */
+	/************************************/
+
+	template <class _StrType>
+	static void CheckForBOM(_StrType* const fileString);
 }
 
   /*******************************/
@@ -218,6 +225,12 @@ template <class _StrType>
 mrt::CSVData_Error mrt::CSVData_Base<_StrType>::GetError() const { return m_Error; }
 
 template <class _StrType>
+const std::locale& mrt::CSVData_Base<_StrType>::GetLocale() const { return m_Locale; }
+
+template <class _StrType>
+void mrt::CSVData_Base<_StrType>::SetLocale(const std::locale& locale) { m_Locale = locale; }
+
+template <class _StrType>
 void mrt::CSVData_Base<_StrType>::CheckXYLengths(CSVData_Base<_StrType>* const csvData)
 {
 	size_t maxSize = std::max_element(csvData->GetTableData().begin(), csvData->GetTableData().end(), [](const std::vector<_StrType>& a, const std::vector<_StrType>& b)->bool
@@ -280,27 +293,31 @@ mrt::CSVData_Error mrt::CSVData_Base<_StrType>::LoadCsv(CSVData_Base<_StrType>* 
 
 	{
 		_StrType line;
-		std::getline(file, line);
-		ParseCsvLine(line, csvData->GetHeaderNames(), csvData->GetLocale());
+		bool firstLoop = true;
 
 		while (std::getline(file, line))
 		{
-			std::vector<_StrType> rowData;
-
-			ParseCsvLine(line, rowData, csvData->GetLocale());
-
-			csvData->GetTableData().emplace_back(rowData);
-
-			if (file.fail())
+			if (firstLoop)
 			{
-				return CSVData_Error::FAILED_TO_READ_FILE;
+				firstLoop = false;
+				CheckForBOM<_StrType>(&line);					// Check for BOM and remove it if it exists
+				ParseCsvLine(line, csvData->GetHeaderNames());  // Parse the header names
 			}
+			else
+			{
+				std::vector<_StrType> row;
+
+				ParseCsvLine(line, row);						// Parse the row data
+				csvData->GetTableData().push_back(row);			// Add the row data to the table data
+			}
+
+			if (file.fail()) { return CSVData_Error::FAILED_TO_READ_FILE; }
 		}
 	}
 
 	file.close();
-	CheckXYLengths(csvData);   // Checks the row lengths to make sure they are all the same, otherwise will insert empty strings
-	CheckMaxColumnWidths(csvData); // Checks the max column widths. Used when printing tables.
+	CheckXYLengths(csvData);									// Checks the row lengths to make sure they are all the same, otherwise will insert empty strings.
+	CheckMaxColumnWidths(csvData);								// Checks the max column widths. Used when printing tables.
 	return CSVData_Error::NONE;
 }
 
@@ -361,51 +378,37 @@ void mrt::CSVData_Base<_StrType>::SaveCsvToStream(const CSVData_Base<_StrType>* 
 }
 
 template <class _StrType>
-void mrt::CSVData_Base<_StrType>::ParseCsvLine(const _StrType& line, std::vector<_StrType>& rowValues, const std::locale& locale)
+void mrt::CSVData_Base<_StrType>::ParseCsvLine(const _StrType& line, std::vector<_StrType>& row)
 {
-	enum class ParseState
+	_StrType cell;
+	bool inQuotes = false;
+
+	for (const typename _StrType::value_type& c : line)
 	{
-		Unquoted = 0,
-		Quoted = 1,
-	};
-
-	bool alreadyQuoted = false;
-	ParseState state = ParseState::Unquoted;
-
-	_StrType word;
-
-	for (typename _StrType::value_type c : line)
-	{
-		if (!std::isprint(c, locale)) { continue; }
-
-		if ((c == '\"' || c == '\'') && !alreadyQuoted)
+		if ((c == '\"' || c == '\'') && !inQuotes)
 		{
-			alreadyQuoted = true;
-			state = ParseState::Quoted;
+			inQuotes = true;
+			continue;
+		}
+		else if ((c == '\"' || c == '\'') && inQuotes)
+		{
+			inQuotes = false;
 			continue;
 		}
 
-		alreadyQuoted = false;
-		state = ParseState::Unquoted;
-
-		if (c != ',' && c != '\n' && c != '\r')
+		if (c == ',' && !inQuotes)
 		{
-			word += c;
-			continue;
+			row.push_back(cell);
+			cell = _StrType();
 		}
-
-		rowValues.emplace_back(word);
-		word = _StrType();
+		else
+		{
+			cell += c;
+		}
 	}
 
-	if (!word.empty()) { rowValues.emplace_back(word); }
+	if (!cell.empty()) { row.push_back(cell); }
 }
-
-template <class _StrType>
-const std::locale& mrt::CSVData_Base<_StrType>::GetLocale() const { return m_Locale; }
-
-template <class _StrType>
-void mrt::CSVData_Base<_StrType>::SetLocale(const std::locale& locale) { m_Locale = locale; }
 
   /**************************/
  /* CSVData Implementation */
@@ -678,4 +681,83 @@ void mrt::CSVData<_StrType>::TransposeData(CSVData_Base<_StrType>* const csvData
 	}
 
 	csvData->CheckMaxColumnWidths(csvData);
+}
+
+  /***************************************/
+ /* MrT Global Functions Implementation */
+/***************************************/
+
+template <>
+void mrt::CheckForBOM<std::string>(std::string* const fileString)
+{
+	if ("\xEF\xBB\xBF" == fileString->substr(0, 3))   // UTF-8 Byte order mark.
+	{
+		fileString->erase(0, 3);
+	}
+	else if ("\xFE\xFF" == fileString->substr(0, 2))   // UTF-16 big-endian Byte order mark.
+	{
+		fileString->erase(0, 2);
+	}
+	else if ("\xFF\xFE" == fileString->substr(0, 2))   // UTF-16 little-endian Byte order mark.
+	{
+		fileString->erase(0, 2);
+	}
+	else if ("\x00\x00\xFE\xFF" == fileString->substr(0, 4))   // UTF-32 big-endian Byte order mark.
+	{
+		fileString->erase(0, 4);
+	}
+	else if ("\xFF\xFE\x00\x00" == fileString->substr(0, 4))   // UTF-32 little-endian Byte order mark.
+	{
+		fileString->erase(0, 4);
+	}
+}
+
+template <>
+void mrt::CheckForBOM<std::wstring>(std::wstring* const fileString)
+{
+	if (L"\xEF\xBB\xBF" == fileString->substr(0, 3))   // UTF-8 Byte order mark.
+	{
+		fileString->erase(0, 3);
+	}
+	else if (L"\xFE\xFF" == fileString->substr(0, 2))   // UTF-16 big-endian Byte order mark.
+	{
+		fileString->erase(0, 2);
+	}
+	else if (L"\xFF\xFE" == fileString->substr(0, 2))   // UTF-16 little-endian Byte order mark.
+	{
+		fileString->erase(0, 2);
+	}
+	else if (L"\x00\x00\xFE\xFF" == fileString->substr(0, 4))   // UTF-32 big-endian Byte order mark.
+	{
+		fileString->erase(0, 4);
+	}
+	else if (L"\xFF\xFE\x00\x00" == fileString->substr(0, 4))   // UTF-32 little-endian Byte order mark.
+	{
+		fileString->erase(0, 4);
+	}
+}
+
+template <>
+void mrt::CheckForBOM<std::u8string>(std::u8string* const fileString)
+{
+	if (u8"\xEF\xBB\xBF" == fileString->substr(0, 3))   // UTF-8 Byte order mark.
+	{
+		fileString->erase(0, 3);
+	}
+	else if (u8"\xFE\xFF" == fileString->substr(0, 2))   // UTF-16 big-endian Byte order mark.
+	{
+		fileString->erase(0, 2);
+	}
+	else if (u8"\xFF\xFE" == fileString->substr(0, 2))   // UTF-16 little-endian Byte order mark.
+	{
+		fileString->erase(0, 2);
+	}
+	else if (u8"\x00\x00\xFE\xFF" == fileString->substr(0, 4))   // UTF-32 big-endian Byte order mark.
+	{
+		fileString->erase(0, 4);
+	}
+	else if (u8"\xFF\xFE\x00\x00" == fileString->substr(0, 4))   // UTF-32 little-endian Byte order mark.
+	{
+		fileString->erase(0, 4);
+	}
 }

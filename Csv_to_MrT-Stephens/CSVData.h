@@ -389,11 +389,11 @@ void mrt::CSVData_Base<_StrType>::ParseCsvLine(const _StrType& line, std::vector
 
 	for (const typename _StrType::value_type& c : line)
 	{
-		if ((c == '\"' || c == '\'') && !inQuotes)
+		if (c == '\"' && !inQuotes)
 		{
 			inQuotes = true;
 		}
-		else if ((c == '\"' || c == '\'') && inQuotes)
+		else if (c == '\"' && inQuotes)
 		{
 			inQuotes = false;
 		}

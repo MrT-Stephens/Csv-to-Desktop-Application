@@ -24,7 +24,7 @@
     <ProjectGuid>{14fb5bd2-ece0-42c7-bd94-df26f6053563}</ProjectGuid>
     <RootNamespace>SQL_MrT_Stephens</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>Csv to v0.1.0</ProjectName>
+    <ProjectName>Csv to v0.2.0</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

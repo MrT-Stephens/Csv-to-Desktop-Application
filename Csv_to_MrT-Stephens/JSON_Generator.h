@@ -59,7 +59,7 @@ void mrt::JSON_Generator<_StrType>::GenerateJSON(OStream* stream, int jsonStyle,
 {
 	if (jsonStyle == JSONLines_Objects || jsonStyle == JSONLines_Arrays)   // JSON Lines objects and arrays generators.
 	{
-		mrt::Basic_Str_Validator<_StrType> validator(mrt::Basic_Str_Filter_Numeric);
+		mrt::Basic_Str_Validator<_StrType> validator(mrt::Basic_Str_Filter_Numeric | mrt::Basic_Str_Filter_Empty);
 
 		const std::vector<_StrType>& headers = m_CSVData->GetHeaderNames();
 
@@ -115,7 +115,7 @@ void mrt::JSON_Generator<_StrType>::GenerateJSON(OStream* stream, int jsonStyle,
 		}
 
 		{
-			mrt::Basic_Str_Validator<_StrType> validator(mrt::Basic_Str_Filter_Numeric);
+			mrt::Basic_Str_Validator<_StrType> validator(mrt::Basic_Str_Filter_Numeric | mrt::Basic_Str_Filter_Empty);
 
 			const std::vector<_StrType>& headers = m_CSVData->GetHeaderNames();
 

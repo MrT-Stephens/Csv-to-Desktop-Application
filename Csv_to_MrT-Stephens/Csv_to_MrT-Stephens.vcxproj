@@ -216,6 +216,7 @@
     <ClCompile Include="CSVtoASCII_Panel.cpp" />
     <ClCompile Include="CSVtoMarkdown.cpp" />
     <ClCompile Include="CSVtoSQL_Panel.cpp" />
+    <ClCompile Include="CSVtoYAML.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="CSVto_PanelBase.cpp" />
     <ClCompile Include="MrT_wxDialogs.cpp" />
@@ -229,6 +230,7 @@
     <ClInclude Include="CSVtoMultiline_Panel.h" />
     <ClInclude Include="CSVtoPHP_Panel.h" />
     <ClInclude Include="CSVtoRuby_Panel.h" />
+    <ClInclude Include="CSVtoYAML_Panel.h" />
     <ClInclude Include="HTML_Table.h" />
     <ClInclude Include="JSON_Generator.h" />
     <ClInclude Include="LaTex_Table.h" />
@@ -244,6 +246,7 @@
     <ClInclude Include="Main.h" />
     <ClInclude Include="CSVto_PanelBase.h" />
     <ClInclude Include="XML.h" />
+    <ClInclude Include="YAML_Generator.h" />
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="CSV to v0.1.0.exe.manifest" />

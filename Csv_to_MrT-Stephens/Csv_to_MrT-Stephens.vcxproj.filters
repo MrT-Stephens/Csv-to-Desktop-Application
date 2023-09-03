@@ -49,6 +49,9 @@
     <ClCompile Include="CSVtoMultiline_Panel.cpp">
       <Filter>Resource Files\Panel Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="CSVtoYAML.cpp">
+      <Filter>Resource Files\Panel Resource Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ascii_Table_Generators.h">
@@ -116,6 +119,12 @@
     </ClInclude>
     <ClInclude Include="CSVtoMultiline_Panel.h">
       <Filter>Header Files\Panel Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CSVtoYAML_Panel.h">
+      <Filter>Header Files\Panel Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="YAML_Generator.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

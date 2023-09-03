@@ -14,6 +14,7 @@
 #include "CSVtoJSON_Panel.h"
 #include "CSVtoPHP_Panel.h"
 #include "CSVtoRuby_Panel.h"
+#include "CSVtoMultiline_Panel.h"
 
   /***********************/
  /* MrT_App Declaration */

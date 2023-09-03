@@ -171,7 +171,7 @@ void CSVtoCSV_Panel::LockOrUnlockItems(bool lock)
 	m_TransposeBtn->Enable(!lock);
 	m_DeleteBlanksBtn->Enable(!lock);
 	m_DelimiterComboBox->Enable(!lock);
-	m_IncludeHeaderBtn->Enable(!lock);
+	m_IncludeHeaderButton->Enable(!lock);
 	m_QuotesButton->Enable(!lock);
 }
 

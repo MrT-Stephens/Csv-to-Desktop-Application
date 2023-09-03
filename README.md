@@ -26,6 +26,12 @@ column1,column2,column3,column4
 item1,item2,item3,item4
 item5,item6,item7,item8
 ```
+* The CSV files can include quote strings as shown below:
+```csv
+column1,"column2",column3,column4
+item1,"item2, item2",item3,"item4"
+item5,item6,item7,item8
+```
 * Converts the CSV data to:
    - CSV with different delimiters.
    - SQL insert statements.
@@ -37,6 +43,8 @@ item5,item6,item7,item8
    - JSON objects, arrays, etc.
    - PHP arrays.
    - Ruby arrays.
+   - Multi-line data.
+   - YAML.
    - Many more in the future!
 * Ability to change the format of the inserted data (click the advanced view button):
    - Uppercase all the data.

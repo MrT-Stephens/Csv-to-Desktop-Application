@@ -26,12 +26,15 @@ column1,column2,column3,column4
 item1,item2,item3,item4
 item5,item6,item7,item8
 ```
-* The CSV files can include quote strings as shown below:
+* The CSV files can include double-quoted strings as shown below:
 ```csv
 column1,"column2",column3,column4
 item1,"item2, item2",item3,"item4"
 item5,item6,item7,item8
 ```
+> **Note**
+> Every double quote MUST have an ending double quote, currently doesn't support double quotes within double quotes.
+
 * Converts the CSV data to:
    - CSV with different delimiters.
    - SQL insert statements.

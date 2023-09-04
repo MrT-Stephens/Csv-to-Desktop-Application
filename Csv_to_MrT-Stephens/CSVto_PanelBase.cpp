@@ -218,7 +218,7 @@ void CSVto_PanelBase::SetupOutputSettingsSection()
 		{
 			if (m_CSVData != nullptr)
 			{
-				mrt::MrT_CSVDataEdit_Dialog editDialog(this, m_CSVData, m_Colours, wxDefaultPosition, FromDIP(wxSize(400, 400)));
+				mrt::MrT_CSVDataEdit_Dialog editDialog(this, m_CSVData, m_Colours, wxDefaultPosition, FromDIP(wxSize(450, 400)));
 
 				if (editDialog.ShowModal() == wxID_APPLY)
 				{

@@ -114,7 +114,7 @@ namespace mrt
 	{
 	protected:
 		// Undo & Redo Items
-		static const size_t m_MaxUndoRedo = 5;
+		static const size_t m_MaxUndoRedo = 10;   // Max number of undo/redo states that can be stored in one CSVData object.
 
 		std::array<std::vector<std::vector<_StrType>>, m_MaxUndoRedo> m_UndoData;
 		std::array<std::vector<std::vector<_StrType>>, m_MaxUndoRedo> m_RedoData;

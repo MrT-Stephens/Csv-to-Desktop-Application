@@ -62,6 +62,7 @@ item5,item6,item7,item8
 ## Installation
 * The application is only the .exe and requires no external items to be installed.
 * To install the application, please download the [latest release](https://github.com/MrT-Stephens/Csv_to-Desktop_Application/releases).
+
 ## Future Improvements
 * Currently only supports Windows, but in future hopping to support Mac OS, Linux, and maybe mobile.
 * Add the ability to generate random data within the application.

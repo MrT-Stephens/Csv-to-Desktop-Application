@@ -387,24 +387,24 @@ void mrt::CSVData_Base<_StrType>::ParseCsvLine(const _StrType& line, std::vector
 	_StrType cell;
 	bool inQuotes = false;
 
-	for (const typename _StrType::value_type& c : line)
+	for (size_t i = 0; i < line.size(); ++i)
 	{
-		if (c == '\"' && !inQuotes)
+		if (line[i] == '\"' && !inQuotes)
 		{
 			inQuotes = true;
 		}
-		else if (c == '\"' && inQuotes)
+		else if (line[i] == '\"' && inQuotes)
 		{
 			inQuotes = false;
 		}
-		else if (c == ',' && !inQuotes)
+		else if (line[i] == ',' && !inQuotes)
 		{
 			row.push_back(cell);
 			cell = _StrType();
 		}
 		else
 		{
-			cell += c;
+			cell += line[i];
 		}
 	}
 

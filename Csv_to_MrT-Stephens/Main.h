@@ -17,6 +17,7 @@
 #include "CSVtoMultiline_Panel.h"
 #include "CSVtoYAML_Panel.h"
 #include "CSVtoBBCode_Panel.h"
+#include "CSVtoXLSX_Panel.h"
 
   /***********************/
  /* MrT_App Declaration */

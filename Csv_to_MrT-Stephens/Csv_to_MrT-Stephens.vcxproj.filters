@@ -55,6 +55,9 @@
     <ClCompile Include="CSVtoBBCode_Panel.cpp">
       <Filter>Resource Files\Panel Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="CSVtoXLSX_Panel.cpp">
+      <Filter>Resource Files\Panel Resource Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ascii_Table_Generators.h">
@@ -137,6 +140,9 @@
     </ClInclude>
     <ClInclude Include="Adv_Str_Validator.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CSVtoXLSX_Panel.h">
+      <Filter>Header Files\Panel Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

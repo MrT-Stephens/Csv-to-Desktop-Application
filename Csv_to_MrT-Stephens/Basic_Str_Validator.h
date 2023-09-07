@@ -28,7 +28,7 @@ namespace mrt
 		using _ValueType = typename _StrType::value_type;
 
 		// Constructors
-		explicit Basic_Str_Validator(long filters, const _StrType& includeList = _StrType(), const _StrType& excludeList = _StrType());
+		explicit Basic_Str_Validator(long filters = Basic_Str_Filter_None, const _StrType& includeList = _StrType(), const _StrType& excludeList = _StrType());
 
 		// Copy & Assignment
 		Basic_Str_Validator(const Basic_Str_Validator& _other) = delete;
@@ -48,9 +48,9 @@ namespace mrt
 
 		[[nodiscard]] _StrType GetExcludeList() const;
 
-		[[nodiscard]] bool IsValid(const _StrType& str) const;
+		virtual [[nodiscard]] bool IsValid(const _StrType& str) const;
 
-		[[nodiscard]] bool IsValidChar(const _ValueType& c) const;
+		virtual [[nodiscard]] bool IsValidChar(const _ValueType& c) const;
 
 		[[nodiscard]] bool IsIncluded(const _ValueType& c) const;
 

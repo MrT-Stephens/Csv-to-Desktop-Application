@@ -6,7 +6,7 @@
 #include <wx/statline.h>
 
 #include "CSVData.h"
-#include "Str_Validator.h"
+#include "Basic_Str_Validator.h"
 #include "UtilityItems.h"
 
 namespace mrt

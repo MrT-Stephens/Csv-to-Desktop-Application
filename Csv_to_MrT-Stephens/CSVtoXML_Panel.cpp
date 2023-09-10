@@ -201,11 +201,11 @@ void CSVtoXML_Panel::PopulateOutputDataTextBox()
 			root.AddChild(element);
 		}
 
-		mrt::XML_Document<StrType> doc(root, L"1.0", m_NameSpaceTextBox->GetValue().ToStdWstring(), !m_ExcludePrologCheckBox->GetValue(), !m_MinifyXmlCheckBox->GetValue());
+		mrt::XML_Document<StrType> doc(root, L"1.0");
 
 		mrt::XML_Document<StrType>::OStrStream ss;
 
-		doc.WriteDocumentToStream(&ss, doc);
+		doc.WriteDocumentToStream(&ss, doc, !m_ExcludePrologCheckBox->GetValue(), !m_MinifyXmlCheckBox->GetValue());
 
 		m_OutputDataTextBox->SetValue(ss.str());
 	}

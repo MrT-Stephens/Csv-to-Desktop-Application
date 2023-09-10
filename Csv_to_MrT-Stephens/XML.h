@@ -1,7 +1,6 @@
 #pragma once
 
-// Reading from file does not work with namespaces at the moment. Will fix later.
-
+#include <deque>
 #include <format>
 #include <string>
 #include <vector>
@@ -30,6 +29,10 @@ namespace mrt
 	template <class _StrType>
 	class XML_Node
 	{
+	public:
+		// Type Aliases
+		using ValueType = typename _StrType::value_type;
+		using SizeType = typename _StrType::size_type;
 	private:
 		_StrType m_Name;
 		_StrType m_Value;
@@ -46,17 +49,11 @@ namespace mrt
 		XML_Node& operator=(const XML_Node& other);
 
 		// Member Functions
-		_StrType GetName();
+		void SetName(_StrType name);
 		const _StrType& GetName() const;
 
-		_StrType GetValue();
+		void SetValue(_StrType value);
 		const _StrType& GetValue() const;
-
-		std::vector<XML_Attribute<_StrType>>::iterator FindAttr(const _StrType& attrName);
-		std::vector<XML_Attribute<_StrType>>::const_iterator FindAttr(const _StrType& attrName) const;
-
-		std::vector<XML_Node<_StrType>>::iterator FindChild(const _StrType& childName);
-		std::vector<XML_Node<_StrType>>::const_iterator FindChild(const _StrType& childName) const;
 
 		XML_Attribute<_StrType>& AddAttribute(const _StrType& name, const _StrType& value);
 		template <class... Args> XML_Attribute<_StrType>& EmplaceAttribute(Args&&... args);
@@ -64,11 +61,14 @@ namespace mrt
 		XML_Node<_StrType>& AddChild(const XML_Node& child);
 		template <class... Args> XML_Node<_StrType>& EmplaceChild(Args&&... args);
 
-		XML_Attribute<_StrType>& GetAttribute(const _StrType& name);
-		const XML_Attribute<_StrType>& GetAttribute(const _StrType& name) const;
+		XML_Attribute<_StrType>& GetAttribute(SizeType index);
+		const XML_Attribute<_StrType>& GetAttribute(SizeType index) const;
 
-		XML_Node<_StrType>& GetChild(const _StrType& name);
-		const XML_Node<_StrType>& GetChild(const _StrType& name) const;
+		XML_Node<_StrType>& GetChild(SizeType index);
+		const XML_Node<_StrType>& GetChild(SizeType index) const;
+
+		SizeType GetChildCount() const;
+		SizeType GetAttributeCount() const;
 
 		std::vector<XML_Attribute<_StrType>>& GetAllAttributes();
 		const std::vector<XML_Attribute<_StrType>>& GetAllAttributes() const;
@@ -81,8 +81,7 @@ namespace mrt
 	{
 		SUCCESS = 0,
 		FAILED_TO_OPEN = 1,
-		INCORRECT_PROLOG = 2,
-		FILE_EMPTY = 3
+		FILE_EMPTY = 2
 	};
 
 	  /****************************/
@@ -94,13 +93,11 @@ namespace mrt
 	{
 	private:
 		_StrType m_Version;
-		_StrType m_Namespace;
 		XML_Node<_StrType> m_Root;
-		bool m_AddProlog;
-		bool m_NewLines;
 	public:
 		// Type Aliases
 		using ValueType = typename _StrType::value_type;
+		using SizeType = typename _StrType::size_type;
 		using IStream = typename std::basic_istream<ValueType>;
 		using OStream = typename std::basic_ostream<ValueType>;
 		using OStrStream = typename std::basic_ostringstream<ValueType>;
@@ -109,8 +106,9 @@ namespace mrt
 		using IFstream = typename std::basic_ifstream<ValueType>;
 
 		// Constructors
-		XML_Document(const _StrType& version, const _StrType& nameSpace = _StrType(), bool addProlog = true, bool newLines = true);
-		XML_Document(const XML_Node<_StrType>& root, const _StrType& version, const _StrType& nameSpace = _StrType(), bool addProlog = true, bool newLines = true);
+		XML_Document();
+		XML_Document(const _StrType& version);
+		XML_Document(const XML_Node<_StrType>& root, const _StrType& version);
 
 		// Copiers & Assignments
 		XML_Document(const XML_Document<_StrType>& other);
@@ -124,31 +122,18 @@ namespace mrt
 		_StrType& GetVersion();
 		const _StrType& GetVersion() const;
 
-		_StrType& GetNamespace();
-		const _StrType& GetNamespace() const;
-
-		bool GetAddProlog() const;
-
-		void SetAddProlog(bool addProlog = true);
-
-		bool GetNewLines() const;
-
-		void SetNewLines(bool newLines = true);
-
 		// Functions made for reading and writing to files. USE THESE IF OUTPUTTING OR INPUTTING TO FILE.
 		static XML_Document_FileError ReadDocument(const _StrType& path, XML_Document& document);
 
-		static XML_Document_FileError WriteDocument(const _StrType& path, const XML_Document& document);
+		static XML_Document_FileError WriteDocument(const _StrType& path, const XML_Document& document, bool addProlog = true, bool newLines = true);
 
-		// Recursive called functions to read or writes nodes to input or ouput streams.
-		static void WriteChildrenNodes(OStream* fs, const XML_Node<_StrType>& node, const _StrType& nameSpace, bool newLines, size_t tabs = 1);
-
-		static void ReadChildrenNodes(_StrType* fs, XML_Node<_StrType>& node, const _StrType& nameSpace);
+		// Recursive called functions to write nodes to ouput streams.
+		static void WriteChildrenNodes(OStream* fs, const XML_Node<_StrType>& node, bool newLines, size_t tabs = 1);
 
 		// Universal read and write functions. USE THESE IF OUTPUTTING OR INPUTTING TO STRING STREAM, COUT, etc.
 		static void ReadDocumentFromStream(IStream* fs, XML_Document& document);
 
-		static void WriteDocumentToStream(OStream* fs, const XML_Document& document);
+		static void WriteDocumentToStream(OStream* fs, const XML_Document& document, bool addProlog = true, bool newLines = true);
 	};
 
 	  /************************/
@@ -159,10 +144,10 @@ namespace mrt
 	static _StrType getXMLprolog(const _StrType& version);
 
 	template <class _StrType>
-	static _StrType getStartNode(const XML_Node<_StrType>& node, const _StrType& nameSpace);
+	static _StrType getStartNode(const XML_Node<_StrType>& node);
 
 	template <class _StrType>
-	static _StrType getEndNode(const XML_Node<_StrType>& node, const _StrType& nameSpace);
+	static _StrType getEndNode(const XML_Node<_StrType>& node);
 
 	template <class _StrType>
 	static _StrType getTabs(size_t amount);
@@ -173,8 +158,102 @@ namespace mrt
 	template <class _CastType, class _InType>
 	static _CastType string_cast(const _InType& str);
 
-	template <class _StrType>
-	static XML_Node<_StrType> ReadNode(const _StrType& line);
+	namespace mrtInternal
+	{
+		enum class XML_Token_Type
+		{
+			TAG_START = 0,
+			TAG_END = 1,
+			TAG_SELF_END = 2,
+			VALUE = 3,
+			END_OF_STRING = 4
+		};
+
+		  /*************************/
+	     /* XML_Token Declaration */
+	    /*************************/
+
+		template <class _StrType>
+		struct XML_Token
+		{
+			XML_Token_Type m_Type;
+			_StrType m_Data;
+		};
+
+		  /*****************************/
+	     /* XML_Tokenizer Declaration */
+	    /*****************************/
+
+		template <class _StrType>
+		class XML_Tokenizer
+		{
+		public:
+			// Type Aliases
+			using SizeType = typename _StrType::size_type;
+			using ValueType = typename _StrType::value_type;
+			using IStream = typename std::basic_istream<typename _StrType::value_type>;
+		private:
+			// Member Variables
+			_StrType m_InputData;
+			SizeType m_Index;
+		public:
+			// Constructors
+			XML_Tokenizer();
+			XML_Tokenizer(IStream* inputStream);
+			XML_Tokenizer(const _StrType& inputData);
+			XML_Tokenizer(_StrType::const_iterator begin, _StrType::const_iterator end);
+
+			// Copiers & Assignments
+			XML_Tokenizer(const XML_Tokenizer& other) = delete;
+			XML_Tokenizer(XML_Tokenizer&& other) noexcept = delete;
+			XML_Tokenizer& operator=(const XML_Tokenizer& other) = delete;
+
+			// Member Functions
+			void SetInputData(const _StrType& inputData);
+
+			XML_Token<_StrType> Next();
+
+			bool HasNext() const;
+		};
+
+		  /*********************************/
+	     /* XML_Tokens_Parser Declaration */
+	    /*********************************/
+
+		template <class _StrType>
+		class XML_Tokenizer_Parser
+		{
+		public:
+			// Type Aliases
+			using ValueType = typename _StrType::value_type;
+			using SizeType = typename _StrType::size_type;
+			using IStream = typename std::basic_istream<typename _StrType::value_type>;
+		private:
+			// Member Variables
+			_StrType m_InputData;
+			XML_Node<_StrType>* m_Root;
+			std::deque<_StrType> m_CurrentEndTags;
+			std::deque<XML_Node<_StrType>*> m_CurrentNodes;
+		public:
+			// Constructors
+			XML_Tokenizer_Parser(XML_Node<_StrType>* const root, IStream* inputStream);
+			XML_Tokenizer_Parser(XML_Node<_StrType>* const root, const _StrType& inputString);
+			XML_Tokenizer_Parser(XML_Node<_StrType>* const root, _StrType::const_iterator begin, _StrType::const_iterator end);
+
+			// Copiers & Assignments
+			XML_Tokenizer_Parser(const XML_Tokenizer_Parser& other) = delete;
+			XML_Tokenizer_Parser(XML_Tokenizer_Parser&& other) noexcept = delete;
+			XML_Tokenizer_Parser& operator=(const XML_Tokenizer_Parser& other) = delete;
+
+			// Member Functions
+			void Parse();
+
+			// Static Functions
+			static XML_Node<_StrType> ReadNode(const _StrType& line);
+
+			static void ReadAttributes(const _StrType& line, XML_Node<_StrType>* const node);
+		};
+	}
 }
 
   /***************************/
@@ -209,40 +288,22 @@ mrt::XML_Node<_StrType>& mrt::XML_Node<_StrType>::operator=(const XML_Node& othe
 }
 
 template <class _StrType>
-_StrType mrt::XML_Node<_StrType>::GetName() { return m_Name; }
+void mrt::XML_Node<_StrType>::SetName(_StrType name) { m_Name = name; }
 
 template <class _StrType>
 const _StrType& mrt::XML_Node<_StrType>::GetName() const { return m_Name; }
 
 template <class _StrType>
-_StrType mrt::XML_Node<_StrType>::GetValue() { return m_Value; }
+void mrt::XML_Node<_StrType>::SetValue(_StrType value) { m_Value = value; }
 
 template <class _StrType>
 const _StrType& mrt::XML_Node<_StrType>::GetValue() const { return m_Value; }
 
 template <class _StrType>
-std::vector<mrt::XML_Attribute<_StrType>>::iterator mrt::XML_Node<_StrType>::FindAttr(const _StrType& attrName)
-{
-	return std::find_if(m_Attributes.begin(), m_Attributes.end(), [&attrName](const XML_Attribute<_StrType>& attr) { return attr.m_Name == attrName; });
-}
+mrt::XML_Node<_StrType>::SizeType mrt::XML_Node<_StrType>::GetChildCount() const { return m_Children.size(); }
 
 template <class _StrType>
-std::vector<mrt::XML_Attribute<_StrType>>::const_iterator mrt::XML_Node<_StrType>::FindAttr(const _StrType& attrName) const
-{
-	return std::find_if(m_Attributes.cbegin(), m_Attributes.cend(), [&attrName](const XML_Attribute<_StrType>& attr) { return attr.m_Name == attrName; });
-}
-
-template <class _StrType>
-std::vector<mrt::XML_Node<_StrType>>::iterator mrt::XML_Node<_StrType>::FindChild(const _StrType& childName)
-{
-	return std::find_if(m_Children.begin(), m_Children.end(), [&childName](const XML_Node<_StrType>& child) { return child.GetName() == childName; });
-}
-
-template <class _StrType>
-std::vector<mrt::XML_Node<_StrType>>::const_iterator mrt::XML_Node<_StrType>::FindChild(const _StrType& childName) const
-{
-	return std::find_if(m_Children.cbegin(), m_Children.cend(), [&childName](const XML_Node<_StrType>& child) { return child.GetName() == childName; });
-}
+mrt::XML_Node<_StrType>::SizeType mrt::XML_Node<_StrType>::GetAttributeCount() const { return m_Attributes.size(); }
 
 template <class _StrType>
 mrt::XML_Attribute<_StrType>& mrt::XML_Node<_StrType>::AddAttribute(const _StrType& name, const _StrType& value)
@@ -277,35 +338,55 @@ mrt::XML_Node<_StrType>& mrt::XML_Node<_StrType>::EmplaceChild(Args&&... args)
 }
 
 template <class _StrType>
-mrt::XML_Attribute<_StrType>& mrt::XML_Node<_StrType>::GetAttribute(const _StrType& name)
+mrt::XML_Attribute<_StrType>& mrt::XML_Node<_StrType>::GetAttribute(SizeType index)
 {
-	typename std::vector<XML_Attribute<_StrType>>::iterator it = FindAttr(name);
-
-	return (it != m_Attributes.end()) ? *it : XML_Attribute<_StrType>();
+	if (index >= m_Attributes.size())
+	{
+		throw std::out_of_range("Index out of range.");
+	}
+	else
+	{
+		return m_Attributes[index];
+	}
 }
 
 template <class _StrType>
-const mrt::XML_Attribute<_StrType>& mrt::XML_Node<_StrType>::GetAttribute(const _StrType& name) const
+const mrt::XML_Attribute<_StrType>& mrt::XML_Node<_StrType>::GetAttribute(SizeType index) const
 {
-	typename std::vector<XML_Attribute<_StrType>>::const_iterator it = FindAttr(name);
-
-	return (it != m_Attributes.cend()) ? *it : XML_Attribute<_StrType>();
+	if (index >= m_Attributes.size())
+	{
+		throw std::out_of_range("Index out of range.");
+	}
+	else
+	{
+		return m_Attributes[index];
+	}
 }
 
 template <class _StrType>
-mrt::XML_Node<_StrType>& mrt::XML_Node<_StrType>::GetChild(const _StrType& name)
+mrt::XML_Node<_StrType>& mrt::XML_Node<_StrType>::GetChild(SizeType index)
 {
-	typename std::vector<XML_Node<_StrType>>::iterator it = FindChild(name);
-
-	return (it != m_Children.end()) ? *it : XML_Node<_StrType>();
+	if (index >= m_Children.size())
+	{
+		throw std::out_of_range("Index out of range.");
+	}
+	else
+	{
+		return m_Children[index];
+	}
 }
 
 template <class _StrType>
-const mrt::XML_Node<_StrType>& mrt::XML_Node<_StrType>::GetChild(const _StrType& name) const
+const mrt::XML_Node<_StrType>& mrt::XML_Node<_StrType>::GetChild(SizeType index) const
 {
-	typename std::vector<XML_Node<_StrType>>::const_iterator it = FindChild(name);
-
-	return (it != m_Children.cend()) ? *it : XML_Node<_StrType>();
+	if (index >= m_Children.size())
+	{
+		throw std::out_of_range("Index out of range.");
+	}
+	else
+	{
+		return m_Children[index];
+	}
 }
 
 template <class _StrType>
@@ -325,30 +406,30 @@ const std::vector<mrt::XML_Node<_StrType>>& mrt::XML_Node<_StrType>::GetAllChild
 /*******************************/
 
 template <class _StrType>
-mrt::XML_Document<_StrType>::XML_Document(const _StrType& version, const _StrType& nameSpace, bool addProlog, bool newLines) :
-	m_Version(version), m_Namespace(nameSpace), m_AddProlog(addProlog), m_NewLines(newLines) { }
+mrt::XML_Document<_StrType>::XML_Document() : m_Version(mrt::string_cast<_StrType>("1.0")) { }
 
 template <class _StrType>
-mrt::XML_Document<_StrType>::XML_Document(const XML_Node<_StrType>& root, const _StrType& version, const _StrType& nameSpace, bool addProlog, bool newLines) :
-	m_Root(root), m_Version(version), m_Namespace(nameSpace), m_AddProlog(addProlog), m_NewLines(newLines) { }
+mrt::XML_Document<_StrType>::XML_Document(const _StrType& version) :
+	m_Version(version) { }
+
+template <class _StrType>
+mrt::XML_Document<_StrType>::XML_Document(const XML_Node<_StrType>& root, const _StrType& version) :
+	m_Root(root), m_Version(version) { }
 
 template <class _StrType>
 mrt::XML_Document<_StrType>::XML_Document(const XML_Document& other) :
-	m_Root(other.m_Root), m_Namespace(other.m_Namespace), m_AddProlog(other.m_AddProlog), m_NewLines(other.m_NewLines) { }
+	m_Version(other.m_Version), m_Root(other.m_Root) { }
 
 template <class _StrType>
 mrt::XML_Document<_StrType>::XML_Document(XML_Document<_StrType>&& other) noexcept :
-	m_Root(std::forward<XML_Node<_StrType>>(other.m_Root)),
-	m_Namespace(std::forward<_StrType>(other.m_Namespace)),
-	m_AddProlog(other.m_AddProlog), m_NewLines(other.m_NewLines) { }
+	m_Version(std::forward<_StrType>(other.m_Version)),
+	m_Root(std::forward<XML_Node<_StrType>>(other.m_Root)) { }
 
 template <class _StrType>
 mrt::XML_Document<_StrType>& mrt::XML_Document<_StrType>::operator=(const XML_Document& other)
 {
+	m_Version = other.m_Version;
 	m_Root = other.m_Root;
-	m_Namespace = other.m_Namespace;
-	m_AddProlog = other.m_AddProlog;
-	m_NewLines = other.m_NewLines;
 
 	return *this;
 }
@@ -366,24 +447,6 @@ template <class _StrType>
 const _StrType& mrt::XML_Document<_StrType>::GetVersion() const { return m_Version; }
 
 template <class _StrType>
-_StrType& mrt::XML_Document<_StrType>::GetNamespace() { return m_Namespace; }
-
-template <class _StrType>
-const _StrType& mrt::XML_Document<_StrType>::GetNamespace() const { return m_Namespace; }
-
-template <class _StrType>
-bool mrt::XML_Document<_StrType>::GetAddProlog() const { return m_AddProlog; }
-
-template <class _StrType>
-void mrt::XML_Document<_StrType>::SetAddProlog(bool addProlog) { m_AddProlog = addProlog; }
-
-template <class _StrType>
-bool mrt::XML_Document<_StrType>::GetNewLines() const { return m_NewLines; }
-
-template <class _StrType>
-void mrt::XML_Document<_StrType>::SetNewLines(bool newLines) { m_NewLines = newLines; }
-
-template <class _StrType>
 mrt::XML_Document_FileError mrt::XML_Document<_StrType>::ReadDocument(const _StrType& path, XML_Document& document)
 {
 	IFstream fs(std::filesystem::path(path), std::ios::in);
@@ -393,40 +456,36 @@ mrt::XML_Document_FileError mrt::XML_Document<_StrType>::ReadDocument(const _Str
 		return XML_Document_FileError::FAILED_TO_OPEN;
 	}
 
-	_StrType fileContent{ std::istreambuf_iterator<typename _StrType::value_type>(fs), std::istreambuf_iterator<typename _StrType::value_type>() };
-
 	{
-		if (fileContent.empty())
+		_StrType inputString((std::istreambuf_iterator<ValueType>(fs)), std::istreambuf_iterator<ValueType>());
+
+		inputString.erase(std::remove_if(inputString.begin(), inputString.end(), [](ValueType c) { return c == '\n'; }), inputString.end());
+
+		if (inputString.empty())
 		{
-			fs.close();
 			return XML_Document_FileError::FILE_EMPTY;
 		}
-		else if (fileContent.find(getXMLprolog<_StrType>(document.GetVersion())) == _StrType::npos)
+
+		SizeType pos = inputString.find(mrt::string_cast<_StrType>("?>"));
+
+		if (pos != _StrType::npos)
 		{
-			fs.close();
-			return XML_Document_FileError::INCORRECT_PROLOG;
+			pos += 2;
+
+			inputString = inputString.substr(pos);
 		}
 
-		fileContent.erase(std::remove_if(fileContent.begin(), fileContent.end(), [](auto c) { return (c == '\n') || (c == '\t'); }), fileContent.end());
+		mrtInternal::XML_Tokenizer_Parser<_StrType> parser(&document.GetRoot(), inputString.cbegin(), inputString.cend());
 
-		fileContent.erase(0, getXMLprolog<_StrType>(document.GetVersion()).size());
-
-		_StrType rootData = fileContent.substr(0, fileContent.find('>') + 1);
-
-		document.m_Root = ReadNode<_StrType>(rootData);
-
-		fileContent.erase(0, rootData.size());
-		fileContent.erase(fileContent.size() - getEndNode<_StrType>(document.GetRoot(), document.GetNamespace()).size(), fileContent.size() - 1);
+		parser.Parse();
 	}
-
-	ReadChildrenNodes(&fileContent, document.GetRoot(), document.GetNamespace());
 
 	fs.close();
 	return XML_Document_FileError::SUCCESS;
 }
 
 template <class _StrType>
-mrt::XML_Document_FileError mrt::XML_Document<_StrType>::WriteDocument(const _StrType& path, const XML_Document& document)
+mrt::XML_Document_FileError mrt::XML_Document<_StrType>::WriteDocument(const _StrType& path, const XML_Document& document, bool addProlog, bool newLines)
 {
 	OFstream fs(std::filesystem::path(path), std::ios::out);
 
@@ -435,89 +494,77 @@ mrt::XML_Document_FileError mrt::XML_Document<_StrType>::WriteDocument(const _St
 		return XML_Document_FileError::FAILED_TO_OPEN;
 	}
 
-	if (document.GetAddProlog())
+	if (addProlog)
 	{
-		fs << getXMLprolog<_StrType>(document.GetVersion()) << getNewLine<_StrType>(document.GetNewLines());
+		fs << getXMLprolog<_StrType>(document.GetVersion()) << getNewLine<_StrType>(newLines);
 	}
 
-	fs << getStartNode(document.GetRoot(), document.GetNamespace()) << getNewLine<_StrType>(document.GetNewLines());
+	fs << getStartNode(document.GetRoot()) << getNewLine<_StrType>(newLines);
 
-	WriteChildrenNodes(&fs, document.GetRoot(), document.GetNamespace(), document.GetNewLines());
+	WriteChildrenNodes(&fs, document.GetRoot(), newLines);
 
-	fs << getEndNode(document.GetRoot(), document.GetNamespace()) << getNewLine<_StrType>(document.GetNewLines());
+	fs << getEndNode(document.GetRoot()) << getNewLine<_StrType>(newLines);
 
 	fs.close();
 	return XML_Document_FileError::SUCCESS;
 }
 
 template <class _StrType>
-void mrt::XML_Document<_StrType>::ReadChildrenNodes(_StrType* data, XML_Node<_StrType>& node, const _StrType& nameSpace)
-{
-	while (!data->empty())
-	{
-		typename _StrType::size_type childPos1 = data->find('>', data->find('>') + 1);
-		typename _StrType::size_type childPos2 = data->find('/');
-
-		if (childPos2 < childPos1)
-		{
-			node.AddChild(ReadNode<_StrType>(data->substr(0, childPos1 + 1)));
-			data->erase(0, childPos1 + 1);
-		}
-		else
-		{
-			_StrType childEndTag = data->substr(0, data->find('>') + 1);
-			childEndTag.insert(1, _StrType(1, '/'));
-
-			typename _StrType::size_type childPos3 = data->find(childEndTag);
-
-			_StrType newData = data->substr(data->find('>') + 1, (childPos3 - childEndTag.size()) + 1);
-
-			data->erase(0, childPos3 + childEndTag.size());
-
-			ReadChildrenNodes(&newData, node.AddChild(data->substr(1, data->find('>') - 1)), nameSpace);
-		}
-	}
-}
-
-template <class _StrType>
-void mrt::XML_Document<_StrType>::WriteChildrenNodes(OStream* fs, const XML_Node<_StrType>& node, const _StrType& nameSpace, bool newLines, size_t tabs)
+void mrt::XML_Document<_StrType>::WriteChildrenNodes(OStream* fs, const XML_Node<_StrType>& node, bool newLines, size_t tabs)
 {
 	for (const XML_Node<_StrType>& child : node.GetAllChildren())
 	{
-		if (child.GetAllChildren().size() > 0)
+		if (child.GetChildCount() > 0)
 		{
-			*fs << (newLines ? getTabs<_StrType>(tabs) : _StrType()) << getStartNode<_StrType>(child, nameSpace) << getNewLine<_StrType>(newLines);
+			*fs << (newLines ? getTabs<_StrType>(tabs) : _StrType()) << getStartNode<_StrType>(child) << getNewLine<_StrType>(newLines);
 
-			WriteChildrenNodes(fs, child, nameSpace, newLines, tabs + 1);
+			WriteChildrenNodes(fs, child, newLines, tabs + 1);
 
-			*fs << (newLines ? getTabs<_StrType>(tabs) : _StrType()) << getEndNode<_StrType>(child, nameSpace) << getNewLine<_StrType>(newLines);
+			*fs << (newLines ? getTabs<_StrType>(tabs) : _StrType()) << getEndNode<_StrType>(child) << getNewLine<_StrType>(newLines);
 		}
 		else
 		{
-			*fs << (newLines ? getTabs<_StrType>(tabs) : _StrType()) << getStartNode<_StrType>(child, nameSpace) << child.GetValue() << getEndNode(child, nameSpace) << getNewLine<_StrType>(newLines);
+			*fs << (newLines ? getTabs<_StrType>(tabs) : _StrType()) << getStartNode<_StrType>(child) << child.GetValue() << getEndNode(child) << getNewLine<_StrType>(newLines);
 		}
 	}
 }
 
 template <class _StrType>
-void mrt::XML_Document<_StrType>::ReadDocumentFromStream(IStream* fs, XML_Document& document)
+void mrt::XML_Document<_StrType>::ReadDocumentFromStream(IStream* inStream, XML_Document& document)
 {
+	_StrType inputString((std::istreambuf_iterator<ValueType>(*inStream)), std::istreambuf_iterator<ValueType>());
 
+	inputString.erase(std::remove_if(inputString.begin(), inputString.end(), [](ValueType c) { return c == '\n'; }), inputString.end());
+
+	if (inputString.empty()) return;
+
+	SizeType pos = inputString.find(mrt::string_cast<_StrType>("?>"));
+
+	if (pos != _StrType::npos)
+	{
+		pos += 2;
+
+		inputString = inputString.substr(pos);
+	}
+
+	mrtInternal::XML_Tokenizer_Parser<_StrType> parser(&document.GetRoot(), inputString.cbegin(), inputString.cend());
+
+	parser.Parse();
 }
 
 template <class _StrType>
-void mrt::XML_Document<_StrType>::WriteDocumentToStream(OStream* fs, const XML_Document& document)
+void mrt::XML_Document<_StrType>::WriteDocumentToStream(OStream* fs, const XML_Document& document, bool addProlog, bool newLines)
 {
-	if (document.GetAddProlog())
+	if (addProlog)
 	{
-		*fs << getXMLprolog<_StrType>(document.GetVersion()) << getNewLine<_StrType>(document.GetNewLines());
+		*fs << getXMLprolog<_StrType>(document.GetVersion()) << getNewLine<_StrType>(newLines);
 	}
 
-	*fs << getStartNode(document.GetRoot(), document.GetNamespace()) << getNewLine<_StrType>(document.GetNewLines());
+	*fs << getStartNode(document.GetRoot()) << getNewLine<_StrType>(newLines);
 
-	WriteChildrenNodes(fs, document.GetRoot(), document.GetNamespace(), document.GetNewLines());
+	WriteChildrenNodes(fs, document.GetRoot(), newLines);
 
-	*fs << getEndNode(document.GetRoot(), document.GetNamespace()) << getNewLine<_StrType>(document.GetNewLines());
+	*fs << getEndNode(document.GetRoot()) << getNewLine<_StrType>(newLines);
 }
 
   /***************************************/
@@ -543,22 +590,15 @@ std::u8string mrt::getXMLprolog(const std::u8string& version)
 }
 
 template <class _StrType>
-_StrType mrt::getStartNode(const XML_Node<_StrType>& node, const _StrType& nameSpace)
+_StrType mrt::getStartNode(const XML_Node<_StrType>& node)
 {
 	typename XML_Document<_StrType>::OStrStream ss;
 
-	ss << "<" << ((!nameSpace.empty()) ? nameSpace + string_cast<_StrType>(":") : nameSpace) << node.GetName();
+	ss << "<" << node.GetName();
 
 	for (const XML_Attribute<_StrType>& attribute : node.GetAllAttributes())
 	{
-		if (!nameSpace.empty() && attribute.m_Name == string_cast<_StrType>("xmlns"))
-		{
-			ss << " xmlns:" << nameSpace << "=\"" << attribute.m_Value << "\"";
-		}
-		else
-		{
-			ss << " " << attribute.m_Name << "=\"" << attribute.m_Value << "\"";
-		}
+		ss << " " << attribute.m_Name << "=\"" << attribute.m_Value << "\"";
 	}
 
 	ss << ">";
@@ -567,21 +607,21 @@ _StrType mrt::getStartNode(const XML_Node<_StrType>& node, const _StrType& nameS
 }
 
 template <>
-std::string mrt::getEndNode(const XML_Node<std::string>& node, const std::string& nameSpace)
+std::string mrt::getEndNode(const XML_Node<std::string>& node)
 {
-	return (nameSpace.empty()) ? std::format("</{}>", node.GetName()) : std::format("</{}:{}>", nameSpace, node.GetName());
+	return std::format("</{}>", node.GetName());
 }
 
 template <>
-std::wstring mrt::getEndNode(const XML_Node<std::wstring>& node, const std::wstring& nameSpace)
+std::wstring mrt::getEndNode(const XML_Node<std::wstring>& node)
 {
-	return (nameSpace.empty()) ? std::format(L"</{}>", node.GetName()) : std::format(L"</{}:{}>", nameSpace, node.GetName());
+	return std::format(L"</{}>", node.GetName());
 }
 
 template <>
-std::u8string mrt::getEndNode(const XML_Node<std::u8string>& node, const std::u8string& nameSpace)
+std::u8string mrt::getEndNode(const XML_Node<std::u8string>& node)
 {
-	return (nameSpace.empty()) ? u8"</" + node.GetName() + u8">" : u8"</" + nameSpace + u8":" + node.GetName() + u8">";
+	return u8"</" + node.GetName() + u8">";
 }
 
 template <class _StrType>
@@ -616,32 +656,217 @@ _CastType mrt::string_cast(const _InType& str)
 	return ss.str();
 }
 
+  /********************************/
+ /* XML_Tokenizer Implementation */
+/********************************/
+
 template <class _StrType>
-mrt::XML_Node<_StrType> mrt::ReadNode(const _StrType& line)
+mrt::mrtInternal::XML_Tokenizer<_StrType>::XML_Tokenizer() : m_InputData(), m_Index(0) { }
+
+template <class _StrType>
+mrt::mrtInternal::XML_Tokenizer<_StrType>::XML_Tokenizer(IStream* inputStream)
+	: m_InputData((std::istreambuf_iterator<ValueType>(*inputStream)), std::istreambuf_iterator<ValueType>()), m_Index(0) { }
+
+template <class _StrType>
+mrt::mrtInternal::XML_Tokenizer<_StrType>::XML_Tokenizer(const _StrType& inputData) : m_InputData(inputData), m_Index(0) { }
+
+template <class _StrType>
+mrt::mrtInternal::XML_Tokenizer<_StrType>::XML_Tokenizer(_StrType::const_iterator begin, _StrType::const_iterator end) : m_InputData(begin, end), m_Index(0) { }
+
+template <class _StrType>
+void mrt::mrtInternal::XML_Tokenizer<_StrType>::SetInputData(const _StrType& inputData) { m_InputData = inputData; m_Index = 0; }
+
+template <class _StrType>
+mrt::mrtInternal::XML_Token<_StrType> mrt::mrtInternal::XML_Tokenizer<_StrType>::Next()
 {
-	_StrType name, value;
-
-	name = line.substr(line.find('<') + 1, line.find_first_of(string_cast<_StrType>("> ")) - 1);
-	value = line.substr(line.find('>') + 1, line.find('<', line.find('>')) - line.find('>') - 1);
-
-	XML_Node<_StrType> node(name, value);
-
-	if (line.find(' ') != _StrType::npos)
+	if (m_Index >= m_InputData.size())
 	{
-		typename std::basic_istringstream<typename _StrType::value_type> ss(line.substr(line.find(' ') + 1, line.find('>')));
+		return { XML_Token_Type::END_OF_STRING, _StrType() };
+	}
 
-		_StrType temp;
-		while (ss >> temp)
+	if (m_InputData[m_Index] == '<')
+	{
+		if (m_Index + 1 < m_InputData.size() && m_InputData[m_Index + 1] == '/')
 		{
-			_StrType attrName, attrValue;
+			_StrType data;
 
-			attrName = temp.substr(0, temp.find('='));
+			while (m_Index < m_InputData.size() && m_InputData[m_Index] != '>')
+			{
+				data += m_InputData[m_Index];
+				m_Index++;
+			}
 
-			attrValue = temp.substr(temp.find('=') + 2, temp.find('"', temp.find('=') + 2) - temp.find('=') - 2);
+			data += m_InputData[m_Index];
+			m_Index++;
 
-			node.EmplaceAttribute(attrName, attrValue);
+			return { XML_Token_Type::TAG_END, data };
+		}
+		else
+		{
+			_StrType data;
+
+			while (m_Index < m_InputData.size() && m_InputData[m_Index] != '>')
+			{
+				data += m_InputData[m_Index];
+				m_Index++;
+			}
+
+			data += m_InputData[m_Index];
+
+			if (data[data.size() - 1] == '>' && data[data.size() - 2] == '/')
+			{
+				m_Index++;
+				return { XML_Token_Type::TAG_SELF_END, data };
+			}
+			else
+			{
+				m_Index++;
+				return { XML_Token_Type::TAG_START, data };
+			}
+		}
+	}
+	else
+	{
+		_StrType data;
+
+		while (m_Index < m_InputData.size() && m_InputData[m_Index] != '<')
+		{
+			data += m_InputData[m_Index];
+			m_Index++;
+		}
+
+		return { XML_Token_Type::VALUE, data };
+	}
+}
+
+template <class _StrType>
+bool mrt::mrtInternal::XML_Tokenizer<_StrType>::HasNext() const { return (m_Index < m_InputData.size()) ? true : false; }
+
+  /************************************/
+ /* XML_Tokens_Parser Implementation */
+/************************************/
+
+template <class _StrType>
+mrt::mrtInternal::XML_Tokenizer_Parser<_StrType>::XML_Tokenizer_Parser(XML_Node<_StrType>* const root, IStream* inputStream)
+	: m_Root(root), m_InputData((std::istreambuf_iterator<ValueType>(*inputStream)), std::istreambuf_iterator<ValueType>()) { }
+
+template <class _StrType>
+mrt::mrtInternal::XML_Tokenizer_Parser<_StrType>::XML_Tokenizer_Parser(XML_Node<_StrType>* const root, const _StrType& inputString)
+	: m_Root(root), m_InputData(inputString) { }
+
+template <class _StrType>
+mrt::mrtInternal::XML_Tokenizer_Parser<_StrType>::XML_Tokenizer_Parser(XML_Node<_StrType>* const root, _StrType::const_iterator begin, _StrType::const_iterator end)
+	: m_Root(root), m_InputData(begin, end) { }
+
+template <class _StrType>
+void mrt::mrtInternal::XML_Tokenizer_Parser<_StrType>::Parse()
+{
+	XML_Tokenizer<_StrType> tokenizer(m_InputData.cbegin(), m_InputData.cend());
+
+	*m_Root = ReadNode(tokenizer.Next().m_Data);
+
+	m_CurrentEndTags.push_back(getEndNode<_StrType>(*m_Root));
+
+	m_CurrentNodes.push_back(m_Root);
+
+	while (tokenizer.HasNext())
+	{
+		XML_Token<_StrType> token = tokenizer.Next();
+
+		switch (token.m_Type)
+		{
+		case XML_Token_Type::TAG_START:
+		{
+			m_CurrentNodes.push_back(&m_CurrentNodes.back()->AddChild(ReadNode(token.m_Data)));
+
+			m_CurrentEndTags.push_back(getEndNode<_StrType>(*m_CurrentNodes.back()));
+
+			break;
+		}
+		case XML_Token_Type::TAG_END:
+		{
+			if (token.m_Data == m_CurrentEndTags.back())
+			{
+				m_CurrentEndTags.pop_back();
+				m_CurrentNodes.pop_back();
+			}
+			else
+			{
+				throw std::runtime_error("Invalid XML file (Missing an end tag).");
+			}
+
+			break;
+		}
+		case XML_Token_Type::TAG_SELF_END:
+		{
+			m_CurrentNodes.back()->AddChild(ReadNode(token.m_Data));
+
+			break;
+		}
+		case XML_Token_Type::VALUE:
+		{
+			m_CurrentNodes.back()->SetValue(token.m_Data);
+
+			break;
+		}
+		}
+	}
+}
+
+template <class _StrType>
+mrt::XML_Node<_StrType> mrt::mrtInternal::XML_Tokenizer_Parser<_StrType>::ReadNode(const _StrType& line)   //Reads the start node and returns a node with the name, attributes and value.
+{
+	XML_Node<_StrType> node;
+
+	if (line.find(mrt::string_cast<_StrType>("/>")) != _StrType::npos)
+	{
+		typename _StrType::size_type pos = line.find(' ');
+
+		if (pos != _StrType::npos)
+		{
+			node.SetName(line.substr(1, pos - 1));
+
+			ReadAttributes(line.substr(pos + 1, line.find('>') - (pos + 1) - 1), &node);
+		}
+		else
+		{
+			node.SetName(line.substr(1, line.size() - 3));
+		}
+	}
+	else
+	{
+		typename _StrType::size_type pos = line.find(' ');
+
+		if (pos != _StrType::npos)
+		{
+			node.SetName(line.substr(1, pos - 1));
+
+			ReadAttributes(line.substr(pos + 1, line.size() - (pos + 2)), &node);
+		}
+		else
+		{
+			node.SetName(line.substr(1, line.size() - 2));
 		}
 	}
 
 	return node;
+}
+
+template <class _StrType>
+void mrt::mrtInternal::XML_Tokenizer_Parser<_StrType>::ReadAttributes(const _StrType& line, XML_Node<_StrType>* const node)
+{
+	_StrType name, value, attrData;
+
+	typename std::basic_istringstream<typename _StrType::value_type> is(line);
+
+	while (is >> attrData)
+	{
+		if (attrData.find('=') != _StrType::npos)
+		{
+			name = attrData.substr(0, attrData.find('='));
+			value = attrData.substr(attrData.find('=') + 2, attrData.size() - (attrData.find('=') + 2) - 1);
+
+			node->EmplaceAttribute(name, value);
+		}
+	}
 }

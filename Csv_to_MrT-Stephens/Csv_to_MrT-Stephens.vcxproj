@@ -251,6 +251,7 @@
     <ClInclude Include="CSVtoSQL_Panel.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="CSVto_PanelBase.h" />
+    <ClInclude Include="XLSX.h" />
     <ClInclude Include="XML.h" />
     <ClInclude Include="YAML_Generator.h" />
   </ItemGroup>

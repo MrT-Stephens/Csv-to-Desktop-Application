@@ -219,6 +219,7 @@
     <ClCompile Include="CSVtoMarkdown.cpp" />
     <ClCompile Include="CSVtoSQL_Panel.cpp" />
     <ClCompile Include="CSVtoYAML.cpp" />
+    <ClCompile Include="external\zip.c" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="CSVto_PanelBase.cpp" />
     <ClCompile Include="MrT_wxDialogs.cpp" />
@@ -237,6 +238,8 @@
     <ClInclude Include="CSVtoRuby_Panel.h" />
     <ClInclude Include="CSVtoXLSX_Panel.h" />
     <ClInclude Include="CSVtoYAML_Panel.h" />
+    <ClInclude Include="external\miniz.h" />
+    <ClInclude Include="external\zip.h" />
     <ClInclude Include="HTML_Table.h" />
     <ClInclude Include="JSON_Generator.h" />
     <ClInclude Include="LaTex_Table.h" />

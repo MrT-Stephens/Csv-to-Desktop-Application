@@ -75,7 +75,35 @@ void CSVtoXLSX_Panel::PopulateOutputDataTextBox()
 #endif
 
 	{
-		
+		m_XLSX_Generator = new mrt::XLSX_Generator<StrType>(L"C:\\Users\\MrTst\\Documents\\C++ Dev\\Csv-to-Application\\Csv_to_MrT-Stephens\\resources\\Workbook.xlsx");
+
+		{
+			const std::vector<StrType>& header = m_CSVData->GetHeaderNames();
+
+			mrt::XLSX_DataRow<StrType> xlsxRow;
+			for (const StrType& cell : header)
+			{
+				xlsxRow.AddCell({ cell });
+			}
+			m_XLSX_Generator->AddRow(xlsxRow);
+		}
+
+		for (size_t i0 = 0; i0 < m_CSVData->GetRowCount(); ++i0)
+		{
+			mrt::XLSX_DataRow<StrType> xlsxRow;
+			const std::vector<StrType>& row = m_CSVData->GetRowData(i0);
+
+			for (size_t i1 = 0; i1 < row.size(); ++i1)
+			{
+				xlsxRow.AddCell({ row[i1] });
+			}
+
+			m_XLSX_Generator->AddRow(xlsxRow);
+		}
+
+		m_XLSX_Generator->Generate();
+
+		m_OutputDataTextBox->SetValue("Please download file to veiw the generated data :)");
 	}
 
 #if defined(MRT_DEBUG)
@@ -102,20 +130,22 @@ void CSVtoXLSX_Panel::OutputFile()
 
 	if (saveFileDialog.ShowModal() == wxID_OK)
 	{
-		OFStream file(saveFileDialog.GetPath().ToStdWstring());
+		mrt::XLSX_Errors error = m_XLSX_Generator->Save(saveFileDialog.GetPath().ToStdWstring());
 
-		if (!file.is_open())
+		if (error == mrt::XLSX_Errors::FAILED_TO_SAVE_FILE)
 		{
 			mrt::MrT_UniDialog errorDialog(this, "Error", "Failed to save file!\nPlease try to re-save the file.",
 				m_Colours, wxICON(wxICON_ERROR), mrt::MrT_UniDialogType_OK, FromDIP(wxSize(400, 200)));
 
 			errorDialog.ShowModal();
 		}
-		else
+		else if (error == mrt::XLSX_Errors::FAILED_TO_OPEN_EMPTY_FILE)
 		{
+			mrt::MrT_UniDialog errorDialog(this, "Error", "Failed to open 'Workbook.xlsx' file!\nPlease make sure the 'resourses' folder is with the '.exe'.",
+				m_Colours, wxICON(wxICON_ERROR), mrt::MrT_UniDialogType_OK, FromDIP(wxSize(400, 200)));
 
+			errorDialog.ShowModal();
 		}
-		file.close();
 	}
 }
 

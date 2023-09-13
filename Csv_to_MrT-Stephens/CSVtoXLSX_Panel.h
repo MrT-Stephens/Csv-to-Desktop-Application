@@ -1,5 +1,6 @@
 #pragma once
 
+#include "XLSX_Generator.h"
 #include "CSVto_PanelBase.h"
 
   /*******************************/
@@ -13,6 +14,8 @@ private:
 	wxBoxSizer* m_OutputSettingsSizer3;
 	wxTextCtrl* m_SheetNameTextCtrl;
 	wxCheckBox* m_IncludeHeaderCheckBox;
+
+	mrt::XLSX_Generator<StrType>* m_XLSX_Generator = nullptr;
 public:
 	CSVtoXLSX_Panel(wxWindow* _parent, const std::string& _name, const mrtApp::AppColours* _colours);
 

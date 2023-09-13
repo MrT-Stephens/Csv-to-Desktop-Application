@@ -144,7 +144,7 @@
     <ClInclude Include="CSVtoXLSX_Panel.h">
       <Filter>Header Files\Panel Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="XLSX.h">
+    <ClInclude Include="XLSX_Generator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

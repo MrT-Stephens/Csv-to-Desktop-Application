@@ -142,11 +142,11 @@ void CSVtoMarkdown_Panel::PopulateOutputDataTextBox()
 
 void CSVtoMarkdown_Panel::OutputFile()
 {
-	wxFileDialog saveFileDialog(this, "Download File", (wxStandardPaths::Get().GetDocumentsDir()), "", "Markdown (*.md)|*.md", wxFD_SAVE);
+	StrType fileDir = GetOutputFileDirectory("Markdown (*.md)|*.md");
 
-	if (saveFileDialog.ShowModal() == wxID_OK)
+	if (fileDir != StrType())
 	{
-		OFStream file(saveFileDialog.GetPath().ToStdWstring());
+		OFStream file(fileDir);
 
 		if (!file.is_open())
 		{

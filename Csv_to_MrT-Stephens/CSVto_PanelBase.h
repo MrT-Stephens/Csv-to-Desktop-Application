@@ -88,4 +88,6 @@ public:
 
 	void PopulateData();
 	bool isThreadsRunning();
+
+	StrType GetOutputFileDirectory(const std::string& wildcard);
 };

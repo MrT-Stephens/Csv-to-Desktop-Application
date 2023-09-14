@@ -151,11 +151,11 @@ void CSVtoJSON_Panel::PopulateOutputDataTextBox()
 
 void CSVtoJSON_Panel::OutputFile()
 {
-	wxFileDialog saveFileDialog(this, "Download File", (wxStandardPaths::Get().GetDocumentsDir()), "", "JavaScript Object Notation (*.json)|*.json", wxFD_SAVE);
+	StrType fileDir = GetOutputFileDirectory("JavaScript Object Notation (*.json)|*.json");
 
-	if (saveFileDialog.ShowModal() == wxID_OK)
+	if (fileDir != StrType())
 	{
-		OFStream file(saveFileDialog.GetPath().ToStdWstring());
+		OFStream file(fileDir);
 
 		if (!file.is_open())
 		{

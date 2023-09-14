@@ -64,11 +64,11 @@ void CSVtoYAML_Panel::SetupSpecificOutputSectionItems()
 
 void CSVtoYAML_Panel::OutputFile()
 {
-	wxFileDialog saveFileDialog(this, "Download File", (wxStandardPaths::Get().GetDocumentsDir()), "", "YAML (*.yaml)|*.yaml", wxFD_SAVE);
+	StrType fileDir = GetOutputFileDirectory("YAML (*.yaml)|*.yaml");
 
-	if (saveFileDialog.ShowModal() == wxID_OK)
+	if (fileDir != StrType())
 	{
-		OFStream file(saveFileDialog.GetPath().ToStdWstring());
+		OFStream file(fileDir);
 
 		if (!file.is_open())
 		{

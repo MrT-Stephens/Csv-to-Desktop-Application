@@ -150,11 +150,11 @@ void CSVtoXML_Panel::SetupSpecificOutputSectionItems()
 
 void CSVtoXML_Panel::OutputFile()
 {
-	wxFileDialog saveFileDialog(this, "Download File", (wxStandardPaths::Get().GetDocumentsDir()), "", "Extensible Markup Language (*.xml)|*.xml", wxFD_SAVE);
+	StrType fileDir = GetOutputFileDirectory("Extensible Markup Language (*.xml)|*.xml");
 
-	if (saveFileDialog.ShowModal() == wxID_OK)
+	if (fileDir != StrType())
 	{
-		OFStream file(saveFileDialog.GetPath().ToStdWstring());
+		OFStream file(fileDir);
 
 		if (!file.is_open())
 		{
@@ -180,22 +180,22 @@ void CSVtoXML_Panel::PopulateOutputDataTextBox()
 	{
 		const std::vector<StrType>& header = m_CSVData->GetHeaderNames();
 
-		mrt::XML_Node<StrType> root(m_RootNameTextBox->GetValue().ToStdWstring());
+		mrt::XML_Node<StrType> root(GetNamespaceStr(m_NameSpaceTextBox->GetValue().ToStdWstring(), m_RootNameTextBox->GetValue().ToStdWstring()));
 
 		if (!m_XmlnsTextBox->IsEmpty() && !m_NameSpaceTextBox->IsEmpty())
 		{
-			root.EmplaceAttribute(L"xmlns", m_XmlnsTextBox->GetValue().ToStdWstring());
+			root.EmplaceAttribute(std::format(L"xmlns:{}", m_NameSpaceTextBox->GetValue().ToStdWstring()), m_XmlnsTextBox->GetValue().ToStdWstring());
 		}
 
 		for (size_t i0 = 0; i0 < m_CSVData->GetRowCount(); ++i0)
 		{
-			mrt::XML_Node<StrType> element(m_ElementNameTextBox->GetValue().ToStdWstring());
+			mrt::XML_Node<StrType> element(GetNamespaceStr(m_NameSpaceTextBox->GetValue().ToStdWstring(), m_ElementNameTextBox->GetValue().ToStdWstring()));
 
 			for (size_t i1 = 0; i1 < m_CSVData->GetColumnCount(); ++i1)
 			{
 				const std::vector<StrType>& row = m_CSVData->GetRowData(i0);
 
-				element.EmplaceChild(header[i1], row[i1]);
+				element.EmplaceChild(GetNamespaceStr(m_NameSpaceTextBox->GetValue().ToStdWstring(), header[i1]), row[i1]);
 			}
 
 			root.AddChild(element);
@@ -245,4 +245,16 @@ void CSVtoXML_Panel::LockOrUnlockItems(bool lock)
 	m_ElementNameTextBox->Enable(!lock);
 	m_MinifyXmlCheckBox->Enable(!lock);
 	m_ExcludePrologCheckBox->Enable(!lock);
+}
+
+CSVtoXML_Panel::StrType CSVtoXML_Panel::GetNamespaceStr(const StrType& nameSpace, const StrType& data)
+{
+	if (nameSpace.empty())
+	{
+		return data;
+	}
+	else
+	{
+		return nameSpace + L":" + data;
+	}
 }

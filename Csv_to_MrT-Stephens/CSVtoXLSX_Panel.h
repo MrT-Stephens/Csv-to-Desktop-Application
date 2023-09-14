@@ -23,4 +23,6 @@ public:
 	virtual void SetupSpecificOutputSectionItems() override;
 	virtual void LockOrUnlockItems(bool lock) override;
 	virtual void OutputFile() override;
+
+	~CSVtoXLSX_Panel();
 };

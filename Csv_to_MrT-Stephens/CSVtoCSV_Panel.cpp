@@ -103,11 +103,11 @@ void CSVtoCSV_Panel::SetupSpecificOutputSectionItems()
 
 void CSVtoCSV_Panel::OutputFile()
 {
-	wxFileDialog saveFileDialog(this, "Download File", (wxStandardPaths::Get().GetDocumentsDir()), "", "Comma-Separated Values (*.csv)|*.csv", wxFD_SAVE);
+	StrType fileDir = GetOutputFileDirectory("Comma-Separated Values (*.csv)|*.csv");
 
-	if (saveFileDialog.ShowModal() == wxID_OK)
+	if (fileDir != StrType())
 	{
-		OFStream file(saveFileDialog.GetPath().ToStdWstring());
+		OFStream file(fileDir);
 
 		if (!file.is_open())
 		{

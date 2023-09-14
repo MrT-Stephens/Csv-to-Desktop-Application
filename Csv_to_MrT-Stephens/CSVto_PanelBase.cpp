@@ -525,11 +525,11 @@ void CSVto_PanelBase::SetupDataOutputSection()
 
 void CSVto_PanelBase::OutputFile()
 {
-	wxFileDialog saveFileDialog(this, "Download File", (wxStandardPaths::Get().GetDocumentsDir()), "", "Text files (*.txt)|*.txt", wxFD_SAVE);
+	StrType fileDir = GetOutputFileDirectory("Text files (*.txt)|*.txt");
 
-	if (saveFileDialog.ShowModal() == wxID_OK)
+	if (fileDir != StrType())
 	{
-		OFStream file(saveFileDialog.GetPath().ToStdWstring());
+		OFStream file(fileDir);
 
 		if (!file.is_open())
 		{
@@ -537,10 +537,6 @@ void CSVto_PanelBase::OutputFile()
 				m_Colours, wxICON(wxICON_ERROR), mrt::MrT_UniDialogType_OK, FromDIP(wxSize(400, 200)));
 
 			errorDialog.ShowModal();
-
-#if defined(MRT_DEBUG)
-			MRT_DEBUG_LOG_MSG(std::format("Failed to save file at path ({})", saveFileDialog.GetPath().ToStdString()));
-#endif
 		}
 		else
 		{
@@ -668,4 +664,29 @@ bool CSVto_PanelBase::isThreadsRunning()
 	std::lock_guard<std::mutex> lock(m_OutputDataMutex);
 
 	return (m_ListViewThreadRunning || m_TextBoxThreadRunning) ? true : false;
+}
+
+CSVto_PanelBase::StrType CSVto_PanelBase::GetOutputFileDirectory(const std::string& wildcard)
+{
+	wxFileDialog saveFileDialog(this, "Download File", (wxStandardPaths::Get().GetDocumentsDir()), "", wildcard, wxFD_SAVE);
+
+	if (saveFileDialog.ShowModal() == wxID_OK)
+	{
+		StrType path = saveFileDialog.GetPath().ToStdWstring();
+
+		if (std::filesystem::exists(path))
+		{
+			mrt::MrT_UniDialog yesNoDialog(this, "Warning", "The file that you are trying to save to already exists. Would you like to overwrite it?",
+				m_Colours, wxICON(wxICON_WARNING), mrt::MrT_UniDialogType_YES_NO, FromDIP(wxSize(400, 215)));
+
+			if (yesNoDialog.ShowModal() == wxID_NO)
+			{
+				return StrType();
+			}
+		}
+
+		return path;
+	}
+
+	return StrType();
 }

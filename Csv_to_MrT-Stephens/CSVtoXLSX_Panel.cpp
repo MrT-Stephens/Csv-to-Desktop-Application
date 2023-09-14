@@ -126,11 +126,11 @@ void CSVtoXLSX_Panel::PopulateOutputDataTextBox()
 
 void CSVtoXLSX_Panel::OutputFile()
 {
-	wxFileDialog saveFileDialog(this, "Download File", (wxStandardPaths::Get().GetDocumentsDir()), "", "XLSX (*.xlsx)|*.xlsx", wxFD_SAVE);
+	StrType fileDir = GetOutputFileDirectory("XLSX (*.xlsx)|*.xlsx");
 
-	if (saveFileDialog.ShowModal() == wxID_OK)
+	if (fileDir != StrType())
 	{
-		mrt::XLSX_Errors error = m_XLSX_Generator->Save(saveFileDialog.GetPath().ToStdWstring());
+		mrt::XLSX_Errors error = m_XLSX_Generator->Save(fileDir);
 
 		if (error == mrt::XLSX_Errors::FAILED_TO_SAVE_FILE)
 		{
@@ -164,4 +164,9 @@ void CSVtoXLSX_Panel::LockOrUnlockItems(bool lock)
 	m_DeleteBlanksBtn->Enable(!lock);
 	m_IncludeHeaderCheckBox->Enable(!lock);
 	m_SheetNameTextCtrl->Enable(!lock);
+}
+
+CSVtoXLSX_Panel::~CSVtoXLSX_Panel()
+{
+	delete (m_XLSX_Generator);
 }

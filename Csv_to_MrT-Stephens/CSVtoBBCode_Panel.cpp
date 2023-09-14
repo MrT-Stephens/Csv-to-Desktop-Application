@@ -76,11 +76,11 @@ void CSVtoBBCode_Panel::PopulateOutputDataTextBox()
 
 void CSVtoBBCode_Panel::OutputFile()
 {
-	wxFileDialog saveFileDialog(this, "Download File", (wxStandardPaths::Get().GetDocumentsDir()), "", "BBCode (*.bbcode)|*.bbcode", wxFD_SAVE);
+	StrType fileDir = GetOutputFileDirectory("BBCode (*.bbcode)|*.bbcode");
 
-	if (saveFileDialog.ShowModal() == wxID_OK)
+	if (fileDir != StrType())
 	{
-		OFStream file(saveFileDialog.GetPath().ToStdWstring());
+		OFStream file(fileDir);
 
 		if (!file.is_open())
 		{

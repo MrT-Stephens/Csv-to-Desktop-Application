@@ -19,11 +19,11 @@ void CSVtoPHP_Panel::SetupSpecificOutputSectionItems() { }
 
 void CSVtoPHP_Panel::OutputFile()
 {
-	wxFileDialog saveFileDialog(this, "Download File", (wxStandardPaths::Get().GetDocumentsDir()), "", "PHP (*.php)|*.php", wxFD_SAVE);
+	StrType fileDir = GetOutputFileDirectory("PHP (*.php)|*.php");
 
-	if (saveFileDialog.ShowModal() == wxID_OK)
+	if (fileDir != StrType())
 	{
-		OFStream file(saveFileDialog.GetPath().ToStdWstring());
+		OFStream file(fileDir);
 
 		if (!file.is_open())
 		{

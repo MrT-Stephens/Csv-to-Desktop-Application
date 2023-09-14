@@ -19,11 +19,11 @@ void CSVtoRuby_Panel::SetupSpecificOutputSectionItems() { }
 
 void CSVtoRuby_Panel::OutputFile()
 {
-	wxFileDialog saveFileDialog(this, "Download File", (wxStandardPaths::Get().GetDocumentsDir()), "", "Ruby (*.ruby)|*.ruby", wxFD_SAVE);
+	StrType fileDir = GetOutputFileDirectory("Ruby (*.ruby)|*.ruby");
 
-	if (saveFileDialog.ShowModal() == wxID_OK)
+	if (fileDir != StrType())
 	{
-		OFStream file(saveFileDialog.GetPath().ToStdWstring());
+		OFStream file(fileDir);
 
 		if (!file.is_open())
 		{

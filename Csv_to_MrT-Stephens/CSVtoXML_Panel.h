@@ -21,4 +21,6 @@ public:
 	virtual void SetupSpecificOutputSectionItems() override;
 	virtual void LockOrUnlockItems(bool lock) override;
 	virtual void OutputFile() override;
+
+	StrType GetNamespaceStr(const StrType& nameSpace, const StrType& data);
 };

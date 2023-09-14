@@ -226,7 +226,6 @@
     <ClCompile Include="MrT_wxDialogs.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Adv_Str_Validator.h" />
     <ClInclude Include="BBCode_Generator.h" />
     <ClInclude Include="CSVtoBBCode_Panel.h" />
     <ClInclude Include="CSVtoCSV_Panel.h" />

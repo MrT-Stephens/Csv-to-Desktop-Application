@@ -105,6 +105,19 @@ void CSVto_PanelBase::SetupDataInputSection()
 					delete (m_CSVData);
 					m_CSVData = nullptr;
 				}
+				else if (m_CSVData->GetError() == mrt::CSVData_Error::FILE_IS_EMPTY)
+				{
+					mrt::MrT_UniDialog errorDialog(this, "Error", "File is empty.\nPlease try a different file.",
+						m_Colours, wxICON(wxICON_ERROR), mrt::MrT_UniDialogType_OK, FromDIP(wxSize(400, 200)));
+
+					errorDialog.ShowModal();
+
+#if defined(MRT_DEBUG)
+					MRT_DEBUG_LOG_MSG(std::format(L"Failed to input data. File is empty ({})", m_FileDir));
+#endif
+					delete (m_CSVData);
+					m_CSVData = nullptr;
+				}
 				else
 				{
 					mrt::MrT_UniDialog errorDialog(this, "Error", "Failed to input data from file.\nPlease try to re-open the file.",

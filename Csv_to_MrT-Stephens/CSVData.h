@@ -17,7 +17,8 @@ namespace mrt
 		NONE = 0,
 		CANNOT_OPEN_FILE = 1,
 		FAILED_TO_READ_FILE = 2,
-		FAILED_TO_WRITE_FILE = 3
+		FAILED_TO_WRITE_FILE = 3,
+		FILE_IS_EMPTY = 4
 	};
 
 	enum class CSVData_UndoRedoState
@@ -102,7 +103,7 @@ namespace mrt
 		static CSVData_Error SaveCsv(const CSVData_Base<_StrType>* const csvData, const _StrType& fileDir, ValueType delimiter, bool includeHeader, bool addQuotes);
 		static void SaveCsvToStream(const CSVData_Base<_StrType>* const csvData, OStream* stream, ValueType delimiter, bool includeHeader, bool addQuotes);
 
-		static void ParseCsvLine(const _StrType& line, std::vector<_StrType>& row);
+		static void ParseCsvLine(char delimiterType, const _StrType& line, std::vector<_StrType>& row);
 	};
 
 	  /***********************/
@@ -114,13 +115,13 @@ namespace mrt
 	{
 	protected:
 		// Undo & Redo Items
-		static const size_t m_MaxUndoRedo = 10;   // Max number of undo/redo states that can be stored in one CSVData object.
+		static const size_t m_MaxUndoRedoStates = 10;   // Max number of undo/redo states that can be stored in one CSVData object.
 
-		std::array<std::vector<std::vector<_StrType>>, m_MaxUndoRedo> m_UndoData;
-		std::array<std::vector<std::vector<_StrType>>, m_MaxUndoRedo> m_RedoData;
+		std::array<std::vector<std::vector<_StrType>>, m_MaxUndoRedoStates> m_UndoData;
+		std::array<std::vector<std::vector<_StrType>>, m_MaxUndoRedoStates> m_RedoData;
 
-		std::array<std::vector<_StrType>, m_MaxUndoRedo> m_UndoHeaderNames;
-		std::array<std::vector<_StrType>, m_MaxUndoRedo> m_RedoHeaderNames;
+		std::array<std::vector<_StrType>, m_MaxUndoRedoStates> m_UndoHeaderNames;
+		std::array<std::vector<_StrType>, m_MaxUndoRedoStates> m_RedoHeaderNames;
 
 		size_t m_UndoIndex = 0, m_RedoIndex = 0;
 	public:
@@ -157,7 +158,7 @@ namespace mrt
 	/************************************/
 
 	template <class _StrType>
-	static void CheckForBOM(_StrType* const fileString);
+	static inline void CheckForBOM(_StrType* const fileString);
 }
 
   /*******************************/
@@ -290,6 +291,11 @@ mrt::CSVData_Error mrt::CSVData_Base<_StrType>::LoadCsv(CSVData_Base<_StrType>* 
 	{
 		return CSVData_Error::CANNOT_OPEN_FILE;
 	}
+	else if (file.peek() == IFstream::traits_type::eof())
+	{
+		file.close();
+		return CSVData_Error::FILE_IS_EMPTY;
+	}
 
 	{
 		_StrType line;
@@ -300,26 +306,29 @@ mrt::CSVData_Error mrt::CSVData_Base<_StrType>::LoadCsv(CSVData_Base<_StrType>* 
 			if (firstLoop)
 			{
 				firstLoop = false;
-				CheckForBOM<_StrType>(&line);					// Check for BOM and remove it if it exists
-				ParseCsvLine(line, csvData->GetHeaderNames());  // Parse the header names
+				CheckForBOM<_StrType>(&line);						// Check for BOM and remove it if it exists
+				ParseCsvLine(',', line, csvData->GetHeaderNames()); // Parse the header names
 			}
 			else
 			{
 				std::vector<_StrType> row;
 
-				ParseCsvLine(line, row);						// Parse the row data
-				csvData->GetTableData().push_back(row);			// Add the row data to the table data
+				ParseCsvLine(',', line, row);						// Parse the row data
+				csvData->GetTableData().push_back(row);				// Add the row data to the table data
 			}
 
-			if (file.fail()) { return CSVData_Error::FAILED_TO_READ_FILE; }
+			if (file.fail()) 
+			{ 
+				return CSVData_Error::FAILED_TO_READ_FILE; 
+			}
 		}
 	}
 
 	file.close();
-	CheckXYLengths(csvData);									// Checks the row lengths to make sure they are all the same, otherwise will insert empty strings.
-																// If the row lengths are not the same, it will cause errors within the application.
+	CheckXYLengths(csvData);										// Checks the row lengths to make sure they are all the same, otherwise will insert empty strings.
+																	// If the row lengths are not the same, it will cause errors within the application.
 
-	CheckMaxColumnWidths(csvData);								// Checks the max column widths. Used when printing tables.
+	CheckMaxColumnWidths(csvData);									// Checks the max column widths. Used when printing tables.
 	return CSVData_Error::NONE;
 }
 
@@ -335,18 +344,20 @@ mrt::CSVData_Error mrt::CSVData_Base<_StrType>::SaveCsv(const CSVData_Base<_StrT
 
 	if (includeHeader)
 	{
+		// Write Header Names
 		const std::vector<_StrType>& headerNames = csvData->GetHeaderNames();
 
-		// Write Header Names
 		for (size_t i = 0; i < csvData->GetColumnCount(); ++i)
 		{
 			file << (addQuotes ? (_StrType(1, '\"') + headerNames[i] + _StrType(1, '\"')) : headerNames[i]) << ((i != csvData->GetColumnCount() - 1) ? _StrType(1, delimiter) : _StrType(1, '\n'));
 		}
 	}
 
-	for (const std::vector<_StrType>& row : csvData->GetTableData())
+	for (size_t i0 = 0; i0 < csvData->GetRowCount(); ++i0)
 	{
 		// Write Row Data
+		const std::vector<_StrType>& row = csvData->GetRowData(i0);
+
 		for (size_t i1 = 0; i1 < row.size(); ++i1)
 		{
 			file << (addQuotes ? (_StrType(1, '\"') + row[i1] + _StrType(1, '\"')) : row[i1]) << ((i1 != row.size() - 1) ? _StrType(1, delimiter) : _StrType(1, '\n'));
@@ -362,18 +373,20 @@ void mrt::CSVData_Base<_StrType>::SaveCsvToStream(const CSVData_Base<_StrType>* 
 {
 	if (includeHeader)
 	{
+		// Write Header Names
 		const std::vector<_StrType>& headerNames = csvData->GetHeaderNames();
 
-		// Write Header Names
 		for (size_t i = 0; i < csvData->GetColumnCount(); ++i)
 		{
 			*stream << (addQuotes ? (_StrType(1, '\"') + headerNames[i] + _StrType(1, '\"')) : headerNames[i]) << ((i != csvData->GetColumnCount() - 1) ? _StrType(1, delimiter) : _StrType(1, '\n'));
 		}
 	}
 
-	for (const std::vector<_StrType>& row : csvData->GetTableData())
+	for (size_t i0 = 0; i0 < csvData->GetRowCount(); ++i0)
 	{
 		// Write Row Data
+		const std::vector<_StrType>& row = csvData->GetRowData(i0);
+
 		for (size_t i1 = 0; i1 < row.size(); ++i1)
 		{
 			*stream << (addQuotes ? (_StrType(1, '\"') + row[i1] + _StrType(1, '\"')) : row[i1]) << ((i1 != row.size() - 1) ? _StrType(1, delimiter) : _StrType(1, '\n'));
@@ -382,7 +395,7 @@ void mrt::CSVData_Base<_StrType>::SaveCsvToStream(const CSVData_Base<_StrType>* 
 }
 
 template <class _StrType>
-void mrt::CSVData_Base<_StrType>::ParseCsvLine(const _StrType& line, std::vector<_StrType>& row)
+void mrt::CSVData_Base<_StrType>::ParseCsvLine(char delimiterType, const _StrType& line, std::vector<_StrType>& row)
 {
 	_StrType cell;
 	bool inQuotes = false;
@@ -395,7 +408,14 @@ void mrt::CSVData_Base<_StrType>::ParseCsvLine(const _StrType& line, std::vector
 		}
 		else if (line[i] == '\"' && inQuotes)
 		{
-			inQuotes = false;
+			if (i + 1 < line.size() && line[i + 1] != ',')
+			{
+				cell += '\"';
+			}
+			else
+			{
+				inQuotes = false;
+			}
 		}
 		else if (line[i] == ',' && !inQuotes)
 		{
@@ -432,7 +452,7 @@ mrt::CSVData_UndoRedoState mrt::CSVData<_StrType>::Undo()
 			return CSVData_UndoRedoState::CANT_UNDO;
 		}
 
-		if (m_RedoIndex < m_MaxUndoRedo)
+		if (m_RedoIndex < m_MaxUndoRedoStates)
 		{
 			m_RedoData[m_RedoIndex].swap(this->m_Data);
 			m_RedoHeaderNames[m_RedoIndex].swap(this->m_HeaderNames);
@@ -440,9 +460,9 @@ mrt::CSVData_UndoRedoState mrt::CSVData<_StrType>::Undo()
 		}
 		else
 		{
-			m_RedoIndex = m_MaxUndoRedo - 1;
+			m_RedoIndex = m_MaxUndoRedoStates - 1;
 
-			for (size_t i = 1; i < m_MaxUndoRedo; ++i)
+			for (size_t i = 1; i < m_MaxUndoRedoStates; ++i)
 			{
 				m_RedoData[i - 1].swap(m_RedoData[i]);
 				m_RedoHeaderNames[i - 1].swap(m_RedoHeaderNames[i]);
@@ -477,7 +497,7 @@ mrt::CSVData_UndoRedoState mrt::CSVData<_StrType>::Redo()
 			return CSVData_UndoRedoState::CANT_REDO;
 		}
 
-		if (m_UndoIndex < m_MaxUndoRedo)
+		if (m_UndoIndex < m_MaxUndoRedoStates)
 		{
 			m_UndoData[m_UndoIndex].swap(this->m_Data);
 			m_UndoHeaderNames[m_UndoIndex].swap(this->m_HeaderNames);
@@ -485,9 +505,9 @@ mrt::CSVData_UndoRedoState mrt::CSVData<_StrType>::Redo()
 		}
 		else
 		{
-			m_UndoIndex = m_MaxUndoRedo - 1;
+			m_UndoIndex = m_MaxUndoRedoStates - 1;
 
-			for (size_t i = 1; i < m_MaxUndoRedo; ++i)
+			for (size_t i = 1; i < m_MaxUndoRedoStates; ++i)
 			{
 				m_UndoData[i - 1].swap(m_UndoData[i]);
 				m_UndoHeaderNames[i - 1].swap(m_UndoHeaderNames[i]);
@@ -515,7 +535,7 @@ mrt::CSVData_UndoRedoState mrt::CSVData<_StrType>::Redo()
 template <class _StrType>
 void mrt::CSVData<_StrType>::CreateUndo()
 {
-	if (m_UndoIndex < m_MaxUndoRedo)
+	if (m_UndoIndex < m_MaxUndoRedoStates)
 	{
 		m_UndoData[m_UndoIndex] = this->m_Data;
 		m_UndoHeaderNames[m_UndoIndex] = this->m_HeaderNames;
@@ -523,9 +543,9 @@ void mrt::CSVData<_StrType>::CreateUndo()
 	}
 	else
 	{
-		m_UndoIndex = m_MaxUndoRedo - 1;
+		m_UndoIndex = m_MaxUndoRedoStates - 1;
 
-		for (size_t i = 1; i < m_MaxUndoRedo; ++i)
+		for (size_t i = 1; i < m_MaxUndoRedoStates; ++i)
 		{
 			m_UndoData[i - 1].swap(m_UndoData[i]);
 			m_UndoHeaderNames[i - 1].swap(m_UndoHeaderNames[i]);
@@ -541,7 +561,7 @@ void mrt::CSVData<_StrType>::CreateUndo()
 template <class _StrType>
 void mrt::CSVData<_StrType>::ClearUndoRedo()
 {
-	for (size_t i = 0; i < m_MaxUndoRedo; ++i)
+	for (size_t i = 0; i < m_MaxUndoRedoStates; ++i)
 	{
 		m_UndoData[i].clear();
 		std::vector<std::vector<_StrType>>().swap(m_UndoData[i]);
@@ -589,10 +609,10 @@ void mrt::CSVData<_StrType>::LowerUpperData(CSVData_Base<_StrType>* const csvDat
 		}
 	}
 
-	std::vector<std::vector<_StrType>>& data = csvData->GetTableData();
-
-	for (auto& row : data)
+	for (size_t i0 = 0; i0 < csvData->GetRowCount(); ++i0)
 	{
+		std::vector<_StrType>& row = csvData->GetRowData(i0);
+
 		for (auto& rowVal : row)
 		{
 			std::transform(rowVal.begin(), rowVal.end(), rowVal.begin(), [&lowercase, &csvData](_StrType::value_type c)->_StrType::value_type
@@ -619,8 +639,10 @@ void mrt::CSVData<_StrType>::CapitalizeData(CSVData_Base<_StrType>* const csvDat
 
 	std::vector<std::vector<_StrType>>& data = csvData->GetTableData();
 
-	for (auto& row : data)
+	for (size_t i0 = 0; i0 < csvData->GetRowCount(); ++i0)
 	{
+		std::vector<_StrType>& row = csvData->GetRowData(i0);
+
 		for (auto& rowVal : row)
 		{
 			rowVal[0] = std::toupper(rowVal[0], csvData->GetLocale());
@@ -643,8 +665,10 @@ void mrt::CSVData<_StrType>::RemoveWhiteSpace(CSVData_Base<_StrType>* const csvD
 
 	std::vector<std::vector<_StrType>>& data = csvData->GetTableData();
 
-	for (auto& row : data)
+	for (size_t i0 = 0; i0 < csvData->GetRowCount(); ++i0)
 	{
+		std::vector<_StrType>& row = csvData->GetRowData(i0);
+
 		for (auto& rowVal : row)
 		{
 			rowVal.erase(std::remove_if(rowVal.begin(), rowVal.end(), [&csvData](_StrType::value_type c)->bool { return (std::isspace(c, csvData->GetLocale())) ? true : false;  }), rowVal.end());
@@ -689,7 +713,7 @@ void mrt::CSVData<_StrType>::TransposeData(CSVData_Base<_StrType>* const csvData
 /***************************************/
 
 template <>
-void mrt::CheckForBOM<std::string>(std::string* const fileString)
+inline void mrt::CheckForBOM<std::string>(std::string* const fileString)
 {
 	if ("\xEF\xBB\xBF" == fileString->substr(0, 3))   // UTF-8 Byte order mark.
 	{
@@ -714,7 +738,7 @@ void mrt::CheckForBOM<std::string>(std::string* const fileString)
 }
 
 template <>
-void mrt::CheckForBOM<std::wstring>(std::wstring* const fileString)
+inline void mrt::CheckForBOM<std::wstring>(std::wstring* const fileString)
 {
 	if (L"\xEF\xBB\xBF" == fileString->substr(0, 3))   // UTF-8 Byte order mark.
 	{
@@ -739,7 +763,7 @@ void mrt::CheckForBOM<std::wstring>(std::wstring* const fileString)
 }
 
 template <>
-void mrt::CheckForBOM<std::u8string>(std::u8string* const fileString)
+inline void mrt::CheckForBOM<std::u8string>(std::u8string* const fileString)
 {
 	if (u8"\xEF\xBB\xBF" == fileString->substr(0, 3))   // UTF-8 Byte order mark.
 	{

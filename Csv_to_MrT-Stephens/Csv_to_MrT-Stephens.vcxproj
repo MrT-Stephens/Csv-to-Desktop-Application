@@ -74,25 +74,25 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SoultionDir)bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SoultionDir)bin\intermediates\$(Platform)\$(Configuration)\</IntDir>
-    <LibraryPath>$(USERPROFILE)\Documents\wxWidgets-3.2.2.1\lib\vc_lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(USERPROFILE)\Documents\Csv to Dependencies\libxlsxwriter_x86-windows\lib\xlsxwriter.lib;$(USERPROFILE)\Documents\Csv to Dependencies\wxWidgets-3.2.2.1\lib\vc_lib;$(LibraryPath)</LibraryPath>
     <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SoultionDir)bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SoultionDir)bin\intermediates\$(Platform)\$(Configuration)\</IntDir>
-    <LibraryPath>$(USERPROFILE)\Documents\wxWidgets-3.2.2.1\lib\vc_lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(USERPROFILE)\Documents\Csv to Dependencies\libxlsxwriter_x86-windows\lib\xlsxwriter.lib;$(USERPROFILE)\Documents\Csv to Dependencies\wxWidgets-3.2.2.1\lib\vc_lib;$(LibraryPath)</LibraryPath>
     <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SoultionDir)bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SoultionDir)bin\intermediates\$(Platform)\$(Configuration)\</IntDir>
-    <LibraryPath>$(USERPROFILE)\Documents\wxWidgets-3.2.2.1\lib\vc_x64_lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(USERPROFILE)\Documents\Csv to Dependencies\libxlsxwriter_x64-windows\lib\xlsxwriter.lib;$(USERPROFILE)\Documents\Csv to Dependencies\wxWidgets-3.2.2.1\lib\vc_x64_lib;$(LibraryPath)</LibraryPath>
     <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SoultionDir)bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SoultionDir)bin\intermediates\$(Platform)\$(Configuration)\</IntDir>
-    <LibraryPath>$(USERPROFILE)\Documents\wxWidgets-3.2.2.1\lib\vc_x64_lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(USERPROFILE)\Documents\Csv to Dependencies\libxlsxwriter_x64-windows\lib\xlsxwriter.lib;$(USERPROFILE)\Documents\Csv to Dependencies\wxWidgets-3.2.2.1\lib\vc_x64_lib;$(LibraryPath)</LibraryPath>
     <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -101,7 +101,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalIncludeDirectories>$(USERPROFILE)\Documents\wxWidgets-3.2.2.1\include\msvc;$(USERPROFILE)\Documents\wxWidgets-3.2.2.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(USERPROFILE)\Documents\Csv to Dependencies\libxlsxwriter_x86-windows\include;$(USERPROFILE)\Documents\Csv to Dependencies\wxWidgets-3.2.2.1\include\msvc;$(USERPROFILE)\Documents\Csv to Dependencies\wxWidgets-3.2.2.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;MRT_DEBUG</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -128,7 +128,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalIncludeDirectories>$(USERPROFILE)\Documents\wxWidgets-3.2.2.1\include\msvc;$(USERPROFILE)\Documents\wxWidgets-3.2.2.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(USERPROFILE)\Documents\Csv to Dependencies\libxlsxwriter_x86-windows\include;$(USERPROFILE)\Documents\Csv to Dependencies\wxWidgets-3.2.2.1\include\msvc;$(USERPROFILE)\Documents\Csv to Dependencies\wxWidgets-3.2.2.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <Optimization>MaxSpeed</Optimization>
     </ClCompile>
@@ -156,7 +156,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalIncludeDirectories>$(USERPROFILE)\Documents\wxWidgets-3.2.2.1\include\msvc;$(USERPROFILE)\Documents\wxWidgets-3.2.2.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(USERPROFILE)\Documents\Csv to Dependencies\libxlsxwriter_x64-windows\include;$(USERPROFILE)\Documents\Csv to Dependencies\wxWidgets-3.2.2.1\include\msvc;$(USERPROFILE)\Documents\Csv to Dependencies\wxWidgets-3.2.2.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;MRT_DEBUG</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -182,7 +182,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalIncludeDirectories>$(USERPROFILE)\Documents\wxWidgets-3.2.2.1\include\msvc;$(USERPROFILE)\Documents\wxWidgets-3.2.2.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(USERPROFILE)\Documents\Csv to Dependencies\libxlsxwriter_x64-windows\include;$(USERPROFILE)\Documents\Csv to Dependencies\wxWidgets-3.2.2.1\include\msvc;$(USERPROFILE)\Documents\Csv to Dependencies\wxWidgets-3.2.2.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <Optimization>MaxSpeed</Optimization>
     </ClCompile>
@@ -219,7 +219,6 @@
     <ClCompile Include="CSVtoMarkdown.cpp" />
     <ClCompile Include="CSVtoSQL_Panel.cpp" />
     <ClCompile Include="CSVtoYAML.cpp" />
-    <ClCompile Include="external\zip.c" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="CSVto_PanelBase.cpp" />
     <ClCompile Include="MrT_wxDialogs.cpp" />
@@ -237,8 +236,6 @@
     <ClInclude Include="CSVtoRuby_Panel.h" />
     <ClInclude Include="CSVtoXLSX_Panel.h" />
     <ClInclude Include="CSVtoYAML_Panel.h" />
-    <ClInclude Include="external\miniz.h" />
-    <ClInclude Include="external\zip.h" />
     <ClInclude Include="HTML_Table.h" />
     <ClInclude Include="JSON_Generator.h" />
     <ClInclude Include="LaTex_Table.h" />
@@ -247,13 +244,13 @@
     <ClInclude Include="PHP_Generator.h" />
     <ClInclude Include="Ruby_Generator.h" />
     <ClInclude Include="Basic_Str_Validator.h" />
+    <ClInclude Include="UTF8_Encoder.h" />
     <ClInclude Include="UtilityItems.h" />
     <ClInclude Include="CSVData.h" />
     <ClInclude Include="CSVtoASCII_Panel.h" />
     <ClInclude Include="CSVtoSQL_Panel.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="CSVto_PanelBase.h" />
-    <ClInclude Include="XLSX_Generator.h" />
     <ClInclude Include="XML.h" />
     <ClInclude Include="YAML_Generator.h" />
   </ItemGroup>

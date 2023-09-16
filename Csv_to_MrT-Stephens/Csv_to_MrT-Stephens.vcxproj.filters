@@ -58,9 +58,6 @@
     <ClCompile Include="CSVtoXLSX_Panel.cpp">
       <Filter>Resource Files\Panel Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="external\zip.c">
-      <Filter>External Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ascii_Table_Generators.h">
@@ -144,14 +141,8 @@
     <ClInclude Include="CSVtoXLSX_Panel.h">
       <Filter>Header Files\Panel Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="XLSX_Generator.h">
+    <ClInclude Include="UTF8_Encoder.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="external\miniz.h">
-      <Filter>External Files</Filter>
-    </ClInclude>
-    <ClInclude Include="external\zip.h">
-      <Filter>External Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -169,9 +160,6 @@
     </Filter>
     <Filter Include="Resource Files\Panel Resource Files">
       <UniqueIdentifier>{4876a59a-6a3c-49f7-8551-5713ea76ef33}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="External Files">
-      <UniqueIdentifier>{1a88610e-0bb4-4f93-b1fd-f5dd087cbfe6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -575,7 +575,7 @@ void CSVto_PanelBase::PopulateDataListView()
 		for (size_t i = 0; (i < m_CSVData->GetColumnCount()); ++i)
 		{															// Adds an arrow to the header name if the column is the current sort column
 			headerName = (m_CurrentSortColumn == i) ?
-				std::format(L"{} {}", (m_CurrentSortOrder == ORDER_ASCENDING ? L"\u2B9D" : L"\u2B9F"), m_CSVData->GetHeaderNames()[i]) : m_CSVData->GetHeaderNames()[i];
+				std::format(L"{} {}", (m_CurrentSortOrder == ORDER_ASCENDING ? L"\U0001F881" : L"\U0001F883"), m_CSVData->GetHeaderNames()[i]) : m_CSVData->GetHeaderNames()[i];
 
 			m_DataInputListView->InsertColumn(i + 1, headerName, wxLIST_ALIGN_SNAP_TO_GRID, average_width);
 		}

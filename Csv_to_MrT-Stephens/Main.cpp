@@ -26,6 +26,7 @@ bool MrT_App::OnInit()
 
     MRT_DEBUG_LOG_MSG(std::format("Debugging enabled on application ({})", mrtApp::APP_TITLE));
     MRT_DEBUG_LOG_MSG(std::format("Locale set to: {}", std::locale().name()));
+    MRT_DEBUG_LOG_MSG(std::format("XLSXWriter version: {}", lxw_version()));
 #endif
 
     Main_Frame* mainFrame = new Main_Frame(mrtApp::APP_TITLE, wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE);

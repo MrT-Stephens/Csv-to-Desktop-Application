@@ -19,14 +19,48 @@ void CSVtoXLSX_Panel::SetupSpecificOutputSectionItems()
 {
 	m_OutputSettingsSizer3 = new wxBoxSizer(wxHORIZONTAL);
 
-	m_IncludeHeaderCheckBox = new wxCheckBox(this, wxID_ANY, "Exclude Header", wxDefaultPosition, wxDefaultSize);
-	m_IncludeHeaderCheckBox->SetMinSize(FromDIP(wxSize(120, 22)));
-	m_IncludeHeaderCheckBox->SetOwnFont(MAIN_FONT_TEXT(11));
-	m_IncludeHeaderCheckBox->SetOwnBackgroundColour(m_Colours->BACKGROUND);
-	m_IncludeHeaderCheckBox->SetOwnForegroundColour(m_Colours->FOREGROUND);
-	m_IncludeHeaderCheckBox->SetToolTip("Exclude header in the generated text");
+	m_BoldHeaderCheckBox = new wxCheckBox(this, wxID_ANY, "Bold Header", wxDefaultPosition, wxDefaultSize);
+	m_BoldHeaderCheckBox->SetMinSize(FromDIP(wxSize(120, 22)));
+	m_BoldHeaderCheckBox->SetOwnFont(MAIN_FONT_TEXT(11));
+	m_BoldHeaderCheckBox->SetOwnBackgroundColour(m_Colours->BACKGROUND);
+	m_BoldHeaderCheckBox->SetOwnForegroundColour(m_Colours->FOREGROUND);
+	m_BoldHeaderCheckBox->SetToolTip("Bold header in the workbook");
 
-	m_IncludeHeaderCheckBox->Bind(wxEVT_CHECKBOX, [this](wxCommandEvent& event)
+	m_BoldHeaderCheckBox->Bind(wxEVT_CHECKBOX, [this](wxCommandEvent& event)
+		{
+			if (m_CSVData != nullptr)
+			{
+				PopulateData();
+			}
+		}
+	);
+
+	m_TextColours.Add("Black");
+	m_TextColours.Add("Blue");
+	m_TextColours.Add("Brown");
+	m_TextColours.Add("Cyan");
+	m_TextColours.Add("Gray");
+	m_TextColours.Add("Green");
+	m_TextColours.Add("Lime");
+	m_TextColours.Add("Magenta");
+	m_TextColours.Add("Navy");
+	m_TextColours.Add("Orange");
+	m_TextColours.Add("Pink");
+	m_TextColours.Add("Purple");
+	m_TextColours.Add("Red");
+	m_TextColours.Add("Silver");
+	m_TextColours.Add("White");
+	m_TextColours.Add("Yellow");
+
+	m_TextColourComboBox = new wxComboBox(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, m_TextColours, wxCB_READONLY);
+	m_TextColourComboBox->SetSelection(0);
+	m_TextColourComboBox->SetMinSize(FromDIP(wxSize(120, 22)));
+	m_TextColourComboBox->SetOwnFont(MAIN_FONT_TEXT(11));
+	m_TextColourComboBox->SetOwnBackgroundColour(m_Colours->PRIMARY);
+	m_TextColourComboBox->SetOwnForegroundColour(m_Colours->FOREGROUND);
+	m_TextColourComboBox->SetToolTip("Select a text colour for the text within the workbook");
+
+	m_TextColourComboBox->Bind(wxEVT_COMBOBOX, [this](wxCommandEvent& event)
 		{
 			if (m_CSVData != nullptr)
 			{
@@ -62,7 +96,8 @@ void CSVtoXLSX_Panel::SetupSpecificOutputSectionItems()
 		}
 	);
 
-	m_OutputSettingsSizer3->Add(m_IncludeHeaderCheckBox, 1, wxALL | wxEXPAND | wxCENTER, FromDIP(10));
+	m_OutputSettingsSizer3->Add(m_BoldHeaderCheckBox, 1, wxALL | wxEXPAND | wxCENTER, FromDIP(10));
+	m_OutputSettingsSizer3->Add(m_TextColourComboBox, 1, wxALL | wxEXPAND | wxCENTER, FromDIP(10));
 	m_OutputSettingsSizer3->Add(m_SheetNameTextCtrl, 1, wxALL | wxEXPAND | wxCENTER, FromDIP(10));
 
 	m_MainSizer->Add(m_OutputSettingsSizer3, 0, wxEXPAND | wxALL, FromDIP(0));
@@ -75,35 +110,91 @@ void CSVtoXLSX_Panel::PopulateOutputDataTextBox()
 #endif
 
 	{
-		m_XLSX_Generator = new mrt::XLSX_Generator<StrType>(L"C:\\Users\\MrTst\\Documents\\C++ Dev\\Csv-to-Application\\Csv_to_MrT-Stephens\\resources\\Workbook.xlsx");
+		// XLSXWriter must be created with a file path. So we must:
+		// 
+		// 1. Create a temporary file path.
+		// 2. Create the workbook with the temporary file path.
+		// 3. Insert all data into the workbook.
+		// 
+		// If the user wants to save the file we must:
+		// 
+		// 1. Close the workbook at the temporary file path.
+		// 2. Copy the temporary file to the user's chosen file path.
+		// 3. Delete the temporary file.
 
+		// Handle the cases where the workbook has already been created or not created.
+		if (m_WorkbookTempDir.empty() || m_Workbook == nullptr)
 		{
-			const std::vector<StrType>& header = m_CSVData->GetHeaderNames();
-
-			mrt::XLSX_DataRow<StrType> xlsxRow;
-			for (const StrType& cell : header)
-			{
-				xlsxRow.AddCell({ cell });
-			}
-			m_XLSX_Generator->AddRow(xlsxRow);
+			m_WorkbookTempDir = std::format("{}\\csvToXlsxTemp.xlsx", std::filesystem::current_path().string());
+		}
+		else
+		{
+			workbook_close(m_Workbook);
+			std::filesystem::remove(m_WorkbookTempDir);
 		}
 
-		for (size_t i0 = 0; i0 < m_CSVData->GetRowCount(); ++i0)
+		// Create the workbook and worksheet.
+		m_Workbook = workbook_new(m_WorkbookTempDir.c_str());
+
+		lxw_worksheet* worksheet = workbook_add_worksheet(m_Workbook, ((m_SheetNameTextCtrl->GetValue().ToStdString().empty()) ? NULL : m_SheetNameTextCtrl->GetValue().ToStdString().c_str()));
+
+		// Create the formats for the header and rows.
+		lxw_format* headerFormat = workbook_add_format(m_Workbook), * rowFormat = workbook_add_format(m_Workbook);
+
+		if (m_BoldHeaderCheckBox->GetValue())
 		{
-			mrt::XLSX_DataRow<StrType> xlsxRow;
-			const std::vector<StrType>& row = m_CSVData->GetRowData(i0);
-
-			for (size_t i1 = 0; i1 < row.size(); ++i1)
-			{
-				xlsxRow.AddCell({ row[i1] });
-			}
-
-			m_XLSX_Generator->AddRow(xlsxRow);
+			format_set_bold(headerFormat);
 		}
 
-		m_XLSX_Generator->Generate();
+		format_set_font_color(headerFormat, GetLXWcolour(m_TextColourComboBox->GetSelection()));
+		format_set_font_color(rowFormat, GetLXWcolour(m_TextColourComboBox->GetSelection()));
 
-		m_OutputDataTextBox->SetValue("Please download file to veiw the generated data :)");
+		// Create the validator for chosing whether to write a number or string.
+		mrt::Basic_Str_Validator<StrType> validator(mrt::Basic_Str_Filter_Digits | mrt::Basic_Str_Filter_Empty);
+
+		{	// Write the header names to the worksheet.
+			const std::vector<StrType>& headerData = m_CSVData->GetHeaderNames();
+
+			for (size_t col = 0; col < headerData.size(); ++col)
+			{
+				if (headerData[col].empty())
+				{
+					worksheet_write_blank(worksheet, 0, col, headerFormat);
+				}
+				else if (validator.IsValid(headerData[col]))
+				{
+					worksheet_write_number(worksheet, 0, col, std::stod(headerData[col]), headerFormat);
+				}
+				else
+				{
+					worksheet_write_string(worksheet, 0, col, UTF8_Encoder::From_wstring(headerData[col]).c_str(), headerFormat);
+				}
+			}
+		}
+
+		// Write the row data to the worksheet.
+		for (size_t row = 0; row < m_CSVData->GetRowCount(); ++row)
+		{
+			const std::vector<StrType>& rowData = m_CSVData->GetRowData(row);
+
+			for (size_t col = 0; col < rowData.size(); ++col)
+			{
+				if (rowData[col].empty())
+				{
+					worksheet_write_blank(worksheet, row + 1, col, rowFormat);
+				}
+				else if (validator.IsValid(rowData[col]))
+				{
+					worksheet_write_number(worksheet, row + 1, col, std::stod(rowData[col]), rowFormat);
+				}
+				else
+				{
+					worksheet_write_string(worksheet, row + 1, col, UTF8_Encoder::From_wstring(rowData[col]).c_str(), rowFormat);
+				}
+			}
+		}
+
+		m_OutputDataTextBox->SetValue(L"Please download the file to view the generated 'XLSX' workbook \U0001F642");
 	}
 
 #if defined(MRT_DEBUG)
@@ -126,22 +217,19 @@ void CSVtoXLSX_Panel::PopulateOutputDataTextBox()
 
 void CSVtoXLSX_Panel::OutputFile()
 {
-	StrType fileDir = GetOutputFileDirectory("XLSX (*.xlsx)|*.xlsx");
+	m_WorkbookDir = GetOutputFileDirectory("XLSX (*.xlsx)|*.xlsx");
 
-	if (fileDir != StrType())
+	if (m_WorkbookDir != StrType())
 	{
-		mrt::XLSX_Errors error = m_XLSX_Generator->Save(fileDir);
+		lxw_error error = workbook_close(m_Workbook);
+		m_Workbook = nullptr;
 
-		if (error == mrt::XLSX_Errors::FAILED_TO_SAVE_FILE)
+		std::filesystem::copy_file(m_WorkbookTempDir, m_WorkbookDir, std::filesystem::copy_options::overwrite_existing);
+		std::filesystem::remove(m_WorkbookTempDir);
+
+		if (error != lxw_error::LXW_NO_ERROR)
 		{
 			mrt::MrT_UniDialog errorDialog(this, "Error", "Failed to save file!\nPlease try to re-save the file.",
-				m_Colours, wxICON(wxICON_ERROR), mrt::MrT_UniDialogType_OK, FromDIP(wxSize(400, 200)));
-
-			errorDialog.ShowModal();
-		}
-		else if (error == mrt::XLSX_Errors::FAILED_TO_OPEN_EMPTY_FILE)
-		{
-			mrt::MrT_UniDialog errorDialog(this, "Error", "Failed to open 'Workbook.xlsx' file!\nPlease make sure the 'resourses' folder is with the '.exe'.",
 				m_Colours, wxICON(wxICON_ERROR), mrt::MrT_UniDialogType_OK, FromDIP(wxSize(400, 200)));
 
 			errorDialog.ShowModal();
@@ -162,11 +250,56 @@ void CSVtoXLSX_Panel::LockOrUnlockItems(bool lock)
 	m_ClearBtn->Enable(!lock);
 	m_TransposeBtn->Enable(!lock);
 	m_DeleteBlanksBtn->Enable(!lock);
-	m_IncludeHeaderCheckBox->Enable(!lock);
+	m_BoldHeaderCheckBox->Enable(!lock);
 	m_SheetNameTextCtrl->Enable(!lock);
+}
+
+lxw_color_t CSVtoXLSX_Panel::GetLXWcolour(int _colourIndex)
+{
+	switch (_colourIndex)
+	{
+	case 0:
+		return LXW_COLOR_BLACK;
+	case 1:
+		return LXW_COLOR_BLUE;
+	case 2:
+		return LXW_COLOR_BROWN;
+	case 3:
+		return LXW_COLOR_CYAN;
+	case 4:
+		return LXW_COLOR_GRAY;
+	case 5:
+		return LXW_COLOR_GREEN;
+	case 6:
+		return LXW_COLOR_LIME;
+	case 7:
+		return LXW_COLOR_MAGENTA;
+	case 8:
+		return LXW_COLOR_NAVY;
+	case 9:
+		return LXW_COLOR_ORANGE;
+	case 10:
+		return LXW_COLOR_PINK;
+	case 11:
+		return LXW_COLOR_PURPLE;
+	case 12:
+		return LXW_COLOR_RED;
+	case 13:
+		return LXW_COLOR_SILVER;
+	case 14:
+		return LXW_COLOR_WHITE;
+	case 15:
+		return LXW_COLOR_YELLOW;
+	default:
+		return LXW_COLOR_BLACK;
+	}
 }
 
 CSVtoXLSX_Panel::~CSVtoXLSX_Panel()
 {
-	delete (m_XLSX_Generator);
+	if (!m_WorkbookTempDir.empty() && m_Workbook != nullptr)
+	{
+		workbook_close(m_Workbook);
+		std::filesystem::remove(m_WorkbookTempDir);
+	}
 }

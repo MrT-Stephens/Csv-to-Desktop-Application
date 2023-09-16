@@ -146,8 +146,8 @@ void CSVtoXLSX_Panel::PopulateOutputDataTextBox()
 			format_set_bold(headerFormat);
 		}
 
-		format_set_font_color(headerFormat, GetLXWcolour(m_TextColourComboBox->GetSelection()));
-		format_set_font_color(rowFormat, GetLXWcolour(m_TextColourComboBox->GetSelection()));
+		format_set_font_color(headerFormat, Get_LXW_Colour(m_TextColourComboBox->GetSelection()));
+		format_set_font_color(rowFormat, Get_LXW_Colour(m_TextColourComboBox->GetSelection()));
 
 		// Create the validator for chosing whether to write a number or string.
 		mrt::Basic_Str_Validator<StrType> validator(mrt::Basic_Str_Filter_Digits | mrt::Basic_Str_Filter_Empty);
@@ -229,7 +229,7 @@ void CSVtoXLSX_Panel::OutputFile()
 
 		if (error != lxw_error::LXW_NO_ERROR)
 		{
-			mrt::MrT_UniDialog errorDialog(this, "Error", "Failed to save file!\nPlease try to re-save the file.",
+			mrt::MrT_UniDialog errorDialog(this, "Error", std::format("Failed to save file!\nPlease try to re-save the file.\nError: {}.", lxw_strerror(error)),
 				m_Colours, wxICON(wxICON_ERROR), mrt::MrT_UniDialogType_OK, FromDIP(wxSize(400, 200)));
 
 			errorDialog.ShowModal();
@@ -254,9 +254,9 @@ void CSVtoXLSX_Panel::LockOrUnlockItems(bool lock)
 	m_SheetNameTextCtrl->Enable(!lock);
 }
 
-lxw_color_t CSVtoXLSX_Panel::GetLXWcolour(int _colourIndex)
+lxw_color_t CSVtoXLSX_Panel::Get_LXW_Colour(int colourIndex)
 {
-	switch (_colourIndex)
+	switch (colourIndex)
 	{
 	case 0:
 		return LXW_COLOR_BLACK;

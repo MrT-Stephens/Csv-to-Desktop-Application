@@ -141,9 +141,6 @@
     <ClInclude Include="CSVtoXLSX_Panel.h">
       <Filter>Header Files\Panel Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UTF8_Encoder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">

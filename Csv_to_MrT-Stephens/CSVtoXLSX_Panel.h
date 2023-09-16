@@ -1,7 +1,6 @@
 #pragma once
 
 #include "xlsxwriter.h"
-#include "UTF8_Encoder.h"
 #include "CSVto_PanelBase.h"
 
   /*******************************/
@@ -30,7 +29,7 @@ public:
 	virtual void LockOrUnlockItems(bool lock) override;
 	virtual void OutputFile() override;
 
-	lxw_color_t GetLXWcolour(int _colourIndex);
+	lxw_color_t Get_LXW_Colour(int colourIndex);
 
 	~CSVtoXLSX_Panel();
 };

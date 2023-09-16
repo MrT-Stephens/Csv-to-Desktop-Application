@@ -11,9 +11,9 @@
 
 namespace mrt
 {
-	/*****************************/
-   /* XML_Attribute Declaration */
-  /*****************************/
+	  /*****************************/
+     /* XML_Attribute Declaration */
+    /*****************************/
 
 	template <class _StrType>
 	struct XML_Attribute
@@ -22,9 +22,9 @@ namespace mrt
 		_StrType m_Value;
 	};
 
-	/************************/
-   /* XML_Node Declaration */
-  /************************/
+	  /************************/
+     /* XML_Node Declaration */
+    /************************/
 
 	template <class _StrType>
 	class XML_Node
@@ -84,9 +84,9 @@ namespace mrt
 		FILE_EMPTY = 2
 	};
 
-	/****************************/
-   /* XML_Document Declaration */
-  /****************************/
+	  /****************************/
+     /* XML_Document Declaration */
+    /****************************/
 
 	template <class _StrType>
 	class XML_Document
@@ -136,9 +136,9 @@ namespace mrt
 		static void WriteDocumentToStream(OStream* fs, const XML_Document& document, bool addProlog = true, bool newLines = true);
 	};
 
-	/************************/
-   /* MrT Global Functions */
-  /************************/
+	  /************************/
+     /* MrT Global Functions */
+    /************************/
 
 	template <class _StrType>
 	static _StrType getXMLprolog(const _StrType& version);
@@ -169,9 +169,9 @@ namespace mrt
 			END_OF_STRING = 4
 		};
 
-		/*************************/
-	   /* XML_Token Declaration */
-	  /*************************/
+		  /*************************/
+	     /* XML_Token Declaration */
+	    /*************************/
 
 		template <class _StrType>
 		struct XML_Token
@@ -180,9 +180,9 @@ namespace mrt
 			_StrType m_Data;
 		};
 
-		/*****************************/
-	   /* XML_Tokenizer Declaration */
-	  /*****************************/
+		  /*****************************/
+	     /* XML_Tokenizer Declaration */
+	    /*****************************/
 
 		template <class _StrType>
 		class XML_Tokenizer
@@ -216,9 +216,9 @@ namespace mrt
 			bool HasNext() const;
 		};
 
-		/*********************************/
-	   /* XML_Tokens_Parser Declaration */
-	  /*********************************/
+		  /*********************************/
+	     /* XML_Tokens_Parser Declaration */
+	    /*********************************/
 
 		template <class _StrType>
 		class XML_Tokenizer_Parser
@@ -256,8 +256,8 @@ namespace mrt
 	}
 }
 
-/***************************/
-/* XML_Node Implementation */
+  /***************************/
+ /* XML_Node Implementation */
 /***************************/
 
 template <class _StrType>
@@ -401,8 +401,8 @@ std::vector<mrt::XML_Node<_StrType>>& mrt::XML_Node<_StrType>::GetAllChildren() 
 template <class _StrType>
 const std::vector<mrt::XML_Node<_StrType>>& mrt::XML_Node<_StrType>::GetAllChildren() const { return m_Children; }
 
-/*******************************/
-/* XML_Document Implementation */
+  /*******************************/
+ /* XML_Document Implementation */
 /*******************************/
 
 template <class _StrType>
@@ -567,8 +567,8 @@ void mrt::XML_Document<_StrType>::WriteDocumentToStream(OStream* fs, const XML_D
 	*fs << getEndNode(document.GetRoot()) << getNewLine<_StrType>(newLines);
 }
 
-/***************************************/
-/* MrT Global Functions Implementation */
+  /***************************************/
+ /* MrT Global Functions Implementation */
 /***************************************/
 
 template <>
@@ -656,8 +656,8 @@ _CastType mrt::string_cast(const _InType& str)
 	return ss.str();
 }
 
-/********************************/
-/* XML_Tokenizer Implementation */
+  /********************************/
+ /* XML_Tokenizer Implementation */
 /********************************/
 
 template <class _StrType>
@@ -742,8 +742,8 @@ mrt::mrtInternal::XML_Token<_StrType> mrt::mrtInternal::XML_Tokenizer<_StrType>:
 template <class _StrType>
 bool mrt::mrtInternal::XML_Tokenizer<_StrType>::HasNext() const { return (m_Index < m_InputData.size()) ? true : false; }
 
-/************************************/
-/* XML_Tokens_Parser Implementation */
+  /************************************/
+ /* XML_Tokens_Parser Implementation */
 /************************************/
 
 template <class _StrType>

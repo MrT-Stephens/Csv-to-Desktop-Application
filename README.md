@@ -64,9 +64,9 @@ item5,item6,item7,item8
 * To install the application, please download the [latest release](https://github.com/MrT-Stephens/Csv_to-Desktop_Application/releases).
 
 ## Future Improvements
-* Currently only supports Windows, but in future hopping to support Mac OS, Linux, and maybe mobile.
+* Currently only supports Windows, but in future hoping to support Mac OS, Linux, and maybe mobile.
 * Add the ability to generate random data within the application.
 
 ## Libraries Used
-* [wxWidgets](https://www.wxwidgets.org/).
-* [zip](https://github.com/kuba--/zip).
+* [wxWidgets](https://www.wxwidgets.org/) used for the UI components of the application.
+* [libxlsxwriter](https://github.com/jmcnamara/libxlsxwriter) used for creating an outputting xlsx files.

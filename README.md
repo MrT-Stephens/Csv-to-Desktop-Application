@@ -62,8 +62,8 @@ item5,item6,item7,item8
 * Ability to copy the generated data to the clipboard or if you prefer you can download the generated data.
 
 ## Installation
-* The application is only the .exe and requires no external items to be installed.
 * To install the application, please download the [latest release](https://github.com/MrT-Stephens/Csv_to-Desktop_Application/releases).
+  Then extract the archive and start the '.exe' and it should all just work :).
 
 ## Future Improvements
 * Currently only supports Windows, but in future hoping to support Mac OS, Linux, and maybe mobile.

@@ -29,11 +29,11 @@ item5,item6,item7,item8
 * The CSV files can include double-quoted strings as shown below:
 ```csv
 column1,"column2",column3,column4
-item1,"item2, item2",item3,"item4"
+item1,"item2, item2",item3,"it"e"m4"
 item5,item6,item7,item8
 ```
 > **Note**
-> Every double quote MUST have an ending double quote, currently doesn't support double quotes within double quotes.
+> Every double quote MUST have an ending double quote, does support double quotes within double quotes aswell.
 
 * Converts the CSV data to:
    - CSV with different delimiters.
@@ -48,6 +48,8 @@ item5,item6,item7,item8
    - Ruby arrays.
    - Multi-line data.
    - YAML.
+   - BBcode.
+   - XLSX.
    - Many more in the future!
 * Ability to change the format of the inserted data (click the advanced view button):
    - Uppercase all the data.
@@ -60,8 +62,8 @@ item5,item6,item7,item8
 * Ability to copy the generated data to the clipboard or if you prefer you can download the generated data.
 
 ## Installation
-* The application is only the .exe and requires no external items to be installed.
 * To install the application, please download the [latest release](https://github.com/MrT-Stephens/Csv_to-Desktop_Application/releases).
+  Then extract the archive and start the '.exe' and it should all just work :).
 
 ## Future Improvements
 * Currently only supports Windows, but in future hoping to support Mac OS, Linux, and maybe mobile.

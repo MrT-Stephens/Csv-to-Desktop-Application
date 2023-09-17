@@ -2,7 +2,7 @@
 <h1 align="center">
   <img src="https://github.com/MrT-Stephens/Csv-to-Application/blob/master/Images/CSV_to_Logo.png" alt="drawing" width="200"/>
   <br>
-  Csv to...
+  Csv to... v0.3.0
   <br>
 </h1>
 
@@ -66,7 +66,7 @@ item5,item6,item7,item8
   Then extract the archive and start the '.exe' and it should all just work :).
 
 ## Future Improvements
-* Currently only supports Windows, but in future hoping to support Mac OS, Linux, and maybe mobile.
+* Currently only supports Windows, but in future hoping to support Mac OS, and Linux.
 * Add the ability to generate random data within the application.
 
 ## Libraries Used

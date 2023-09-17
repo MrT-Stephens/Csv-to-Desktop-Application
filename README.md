@@ -68,7 +68,7 @@ item5,item6,item7,item8
   Then extract the archive and start the '.exe' and it should all just work :).
 
 ## How To Use
-* If you would like some information on how to use the application please view the '[HowToUse.md]()' file.
+* If you would like some information on how to use the application please view the '[HowToUse.md](https://github.com/MrT-Stephens/Csv_to-Desktop_Application/blob/master/HowToUse.md)' file.
 
 ## Future Improvements
 * Currently only supports Windows, but in future hoping to support Mac OS, and Linux.

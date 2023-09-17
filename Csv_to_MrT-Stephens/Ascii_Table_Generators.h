@@ -29,7 +29,9 @@ namespace mrt
 		Ascii_Table_Wavy = 6,
 		ExtendedAscii_Table_MySQL = 7,
 		UTF_Table_Single = 8,
-		UTF_Table_Double = 9
+		UTF_Table_Double = 9,
+		UTF_Table_DoubleInside_SingleOutside = 10,
+		UTF_Table_SingleInside_DoubleOutside = 11
 	};
 
 	  /***********************************/
@@ -180,6 +182,14 @@ void mrt::AsciiTableGenerator<_StrType>::GenerateAsciiTable(OStream* stream, int
 			*stream << _commentCharacters << GenerateUTFSpacerLine(9559, 9574, 9556, 9552) << "\n" << _commentCharacters
 				<< GenerateUTFDataLine(columnNames, 9553, 9553, 9553, _whiteSpaceStyle) << "\n" << _commentCharacters << GenerateUTFSpacerLine(9571, 9580, 9568, 9552) << "\n";
 			break;
+		case UTF_Table_DoubleInside_SingleOutside:
+			*stream << _commentCharacters << GenerateUTFSpacerLine(9488, 9573, 9484, 9472) << "\n" << _commentCharacters
+				<< GenerateUTFDataLine(columnNames, 9474, 9553, 9474, _whiteSpaceStyle) << "\n" << _commentCharacters << GenerateUTFSpacerLine(9569, 9580, 9566, 9552) << "\n";
+			break;
+		case UTF_Table_SingleInside_DoubleOutside:
+			*stream << _commentCharacters << GenerateUTFSpacerLine(9559, 9572, 9556, 9552) << "\n" << _commentCharacters
+				<< GenerateUTFDataLine(columnNames, 9553, 9474, 9553, _whiteSpaceStyle) << "\n" << _commentCharacters << GenerateUTFSpacerLine(9570, 9532, 9567, 9472) << "\n";
+			break;
 		}
 	}
 
@@ -274,6 +284,30 @@ void mrt::AsciiTableGenerator<_StrType>::GenerateAsciiTable(OStream* stream, int
 			else if (i == m_CSVData->GetRowCount() - 1)
 			{
 				*stream << _commentCharacters << GenerateUTFSpacerLine(9565, 9577, 9562, 9552) << "\n";
+			}
+			break;
+		case UTF_Table_DoubleInside_SingleOutside:
+			*stream << _commentCharacters << GenerateUTFDataLine(m_CSVData->GetRowData(i), 9474, 9553, 9474, _whiteSpaceStyle) << "\n";
+
+			if (_forceRowSeparation && (i < m_CSVData->GetRowCount() - 1))
+			{
+				*stream << _commentCharacters << GenerateUTFSpacerLine(9569, 9580, 9566, 9552) << "\n";
+			}
+			else if (i == m_CSVData->GetRowCount() - 1)
+			{
+				*stream << _commentCharacters << GenerateUTFSpacerLine(9496, 9576, 9492, 9472) << "\n";
+			}
+			break;
+		case UTF_Table_SingleInside_DoubleOutside:
+			*stream << _commentCharacters << GenerateUTFDataLine(m_CSVData->GetRowData(i), 9553, 9474, 9553, _whiteSpaceStyle) << "\n";
+
+			if (_forceRowSeparation && (i < m_CSVData->GetRowCount() - 1))
+			{
+				*stream << _commentCharacters << GenerateUTFSpacerLine(9570, 9532, 9567, 9472) << "\n";
+			}
+			else if (i == m_CSVData->GetRowCount() - 1)
+			{
+				*stream << _commentCharacters << GenerateUTFSpacerLine(9565, 9575, 9562, 9552) << "\n";
 			}
 			break;
 		}

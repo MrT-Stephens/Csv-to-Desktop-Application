@@ -10,6 +10,8 @@
 #include <locale>
 #include <array>
 
+#include "UtilityItems.h"
+
 namespace mrt
 {
 	enum class CSVData_Error
@@ -103,7 +105,7 @@ namespace mrt
 		static CSVData_Error SaveCsv(const CSVData_Base<_StrType>* const csvData, const _StrType& fileDir, ValueType delimiter, bool includeHeader, bool addQuotes);
 		static void SaveCsvToStream(const CSVData_Base<_StrType>* const csvData, OStream* stream, ValueType delimiter, bool includeHeader, bool addQuotes);
 
-		static void ParseCsvLine(char delimiterType, const _StrType& line, std::vector<_StrType>& row);
+		static void ParseCsvLine(char delimiterType, const _StrType& line, std::vector<_StrType>& row, const std::locale& locale);
 	};
 
 	  /***********************/
@@ -168,7 +170,11 @@ namespace mrt
 template <class _StrType>
 mrt::CSVData_Base<_StrType>::CSVData_Base(const _StrType& filePath)
 {
-	m_Locale = std::locale("");
+	m_Locale = std::locale();
+
+#if defined(MRT_DEBUG)
+	MRT_DEBUG_LOG_MSG(std::format("Locale set to ({}) in CSVData", m_Locale.name()));
+#endif
 
 	m_Error = LoadCsv(this, filePath);
 }
@@ -177,7 +183,11 @@ template <class _StrType>
 mrt::CSVData_Base<_StrType>::CSVData_Base(std::vector<std::vector<_StrType>>&& data, std::vector<_StrType>&& headerNames) :
 	m_Data(std::forward<std::vector<std::vector<_StrType>>>(data)), m_HeaderNames(std::forward<std::vector<_StrType>>(headerNames))
 {
-	m_Locale = std::locale("");
+	m_Locale = std::locale();
+
+#if defined(MRT_DEBUG)
+	MRT_DEBUG_LOG_MSG(std::format("Locale set to ({}) in CSVData", m_Locale.name()));
+#endif
 
 	CheckXYLengths(this);
 	CheckMaxColumnWidths(this);
@@ -306,15 +316,15 @@ mrt::CSVData_Error mrt::CSVData_Base<_StrType>::LoadCsv(CSVData_Base<_StrType>* 
 			if (firstLoop)
 			{
 				firstLoop = false;
-				CheckForBOM<_StrType>(&line);						// Check for BOM and remove it if it exists
-				ParseCsvLine(',', line, csvData->GetHeaderNames()); // Parse the header names
+				CheckForBOM<_StrType>(&line);												// Check for BOM and remove it if it exists
+				ParseCsvLine(',', line, csvData->GetHeaderNames(), csvData->GetLocale());	// Parse the header names
 			}
 			else
 			{
 				std::vector<_StrType> row;
 
-				ParseCsvLine(',', line, row);						// Parse the row data
-				csvData->GetTableData().push_back(row);				// Add the row data to the table data
+				ParseCsvLine(',', line, row, csvData->GetLocale());							// Parse the row data
+				csvData->GetTableData().push_back(row);										// Add the row data to the table data
 			}
 
 			if (file.fail()) 
@@ -395,14 +405,18 @@ void mrt::CSVData_Base<_StrType>::SaveCsvToStream(const CSVData_Base<_StrType>* 
 }
 
 template <class _StrType>
-void mrt::CSVData_Base<_StrType>::ParseCsvLine(char delimiterType, const _StrType& line, std::vector<_StrType>& row)
+void mrt::CSVData_Base<_StrType>::ParseCsvLine(char delimiterType, const _StrType& line, std::vector<_StrType>& row, const std::locale& locale)
 {
 	_StrType cell;
 	bool inQuotes = false;
 
 	for (size_t i = 0; i < line.size(); ++i)
 	{
-		if (line[i] == '\"' && !inQuotes)
+		if (!std::isprint(line[i], locale))
+		{
+			continue;
+		}
+		else if (line[i] == '\"' && !inQuotes)
 		{
 			inQuotes = true;
 		}

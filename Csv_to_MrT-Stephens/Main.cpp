@@ -16,7 +16,19 @@ const std::string mrtApp::GITHUB_URL = "https://github.com/MrT-Stephens";
 
 bool MrT_App::OnInit()
 {
-    std::locale::global(std::locale("en_GB.UTF-8"));
+
+#if defined(MRT_DEBUG)
+    try 
+    {
+        std::locale::global(std::locale("en_US.UTF-8"));
+    }
+    catch (const std::runtime_error& e) 
+    {
+        MRT_DEBUG_LOG_MSG(std::format("Failed to set the locale: ", e.what()));
+    }
+#else
+	std::locale::global(std::locale("en_US.UTF-8"));
+#endif
 
 #if defined(MRT_DEBUG)
     AllocConsole();

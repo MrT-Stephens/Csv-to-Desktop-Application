@@ -120,26 +120,27 @@ void CSVtoSQL_Panel::PopulateOutputDataTextBox()
 	auto start = std::chrono::high_resolution_clock::now();
 #endif
 
-	std::vector<StrType> headerNames{m_CSVData->GetHeaderNames()};		// Get the header names from the CSV data readey for the code generation.
+	const std::vector<StrType>& headerNames{m_CSVData->GetHeaderNames()};										// Get the header names from the CSV data readey for the code generation.
 
 	// Create table code generation.
-	if (m_GenerateTable->GetValue())										// If the generate table checkbox is checked.
-	{																		// Will generate the create table statement.
-
+	if (m_GenerateTable->GetValue())																			// If the generate table checkbox is checked.
+	{																											// Will generate the create table statement.
 		OStrStream createTableCodeSS;
 
 		createTableCodeSS << "CREATE TABLE " << GenerateQuoteString(m_TableNameInput->GetValue().ToStdWstring()) << " (\n";
 
-		for (size_t i = 0; i < m_CSVData->GetColumnCount(); ++i)			// Loop through the header names and generate the columns. E.g. column1 VARCHAR(256) NOT NULL,
+		for (size_t i = 0; i < m_CSVData->GetColumnCount(); ++i)												// Loop through the header names and generate the columns. E.g. column1 VARCHAR(256) NOT NULL,
 		{
-			createTableCodeSS << "\t" << GenerateQuoteString(headerNames[i]) << " VARCHAR(" << mrt::RoundToNearest10<size_t>(m_CSVData->GetMaxColumnWidth(i)) << ") NOT NULL" << ((i == m_CSVData->GetColumnCount() - 1) ? "\n);\n\n" : ",\n");
+			createTableCodeSS << "\t" << GenerateQuoteString(headerNames[i]) 
+				<< " VARCHAR(" << mrt::RoundToNearest10<size_t>(m_CSVData->GetMaxColumnWidth(i))	// Round the max column width to the nearest 10 and use that as the VARCHAR size.
+				<< ") NOT NULL" << ((i == m_CSVData->GetColumnCount() - 1) ? "\n);\n\n" : ",\n");
 		}
 
 		m_OutputDataTextBox->AppendText(std::forward<StrType>(createTableCodeSS.str()));
 	}
 
 	{
-		bool firstLoopCheck1 = true, firstLoopCheck2 = true;				// Used to check if we are on the first loop of the code generation.
+		bool firstLoopCheck1 = true, firstLoopCheck2 = true;													// Used to check if we are on the first loop of the code generation.
 		OStrStream insertIntoCodeSS;
 
 		// Insert into table code generation.
@@ -149,8 +150,8 @@ void CSVtoSQL_Panel::PopulateOutputDataTextBox()
 
 			rowDataConcatenation << '(';
 
-			if (firstLoopCheck1 || !m_InsertMultiRows->GetValue())			// Generate the first part of the code. E.g. INSERT INTO table_name (column1, column2, column3, ...)
-			{																// If the user wants to insert multiple rows at once, then we don't need to generate this part of the code every time.
+			if (firstLoopCheck1 || !m_InsertMultiRows->GetValue())												// Generate the first part of the code. E.g. INSERT INTO table_name (column1, column2, column3, ...)
+			{																									// If the user wants to insert multiple rows at once, then we don't need to generate this part of the code every time.
 				firstLoopCheck1 = false;
 				insertIntoCodeSS << "INSERT INTO " << GenerateQuoteString(m_TableNameInput->GetValue().ToStdWstring()) << " (";
 
@@ -160,14 +161,14 @@ void CSVtoSQL_Panel::PopulateOutputDataTextBox()
 				}
 			}
 
-			std::vector<StrType> rowData{m_CSVData->GetRowData(i0)};	// Get the row data ready for concatenation.
+			const std::vector<StrType>& rowData = m_CSVData->GetRowData(i0);								// Get the row data ready for concatenation.
 
-			for (size_t i = 0; i < m_CSVData->GetColumnCount(); ++i)		// Generate the second part of the code. E.g. VALUES ('value1', 'value2', 'value3', ...)
+			for (size_t i = 0; i < m_CSVData->GetColumnCount(); ++i)											// Generate the second part of the code. E.g. VALUES ('value1', 'value2', 'value3', ...)
 			{
 				rowDataConcatenation << '\'' << rowData[i] << '\'' << ((i == m_CSVData->GetColumnCount() - 1) ? ")" : ", ");
 			}
 
-			if (firstLoopCheck2 || !m_InsertMultiRows->GetValue())			// If the user wants to insert multiple rows at once, then we don't need to generate this part of the code every time.
+			if (firstLoopCheck2 || !m_InsertMultiRows->GetValue())												// If the user wants to insert multiple rows at once, then we don't need to generate this part of the code every time.
 			{
 				firstLoopCheck2 = false;
 				insertIntoCodeSS << " VALUES " << rowDataConcatenation.str() << ((m_InsertMultiRows->GetValue()) ? ",\n\t" : ";\n");

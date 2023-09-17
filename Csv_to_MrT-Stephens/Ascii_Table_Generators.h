@@ -27,7 +27,9 @@ namespace mrt
 		Ascii_Table_Seperated_Header = 4,
 		Ascii_Table_Simple = 5,
 		Ascii_Table_Wavy = 6,
-		ExtendedAscii_Table_MySQL = 7
+		ExtendedAscii_Table_MySQL = 7,
+		UTF_Table_Single = 8,
+		UTF_Table_Double = 9
 	};
 
 	  /***********************************/
@@ -59,6 +61,10 @@ namespace mrt
 		_StrType GenerateDataLine(const std::vector<_StrType>& _rowVector, ValueType _separationCharacter, int _whiteSpaceStyle) const;
 
 		_StrType GenerateSpacerLine(ValueType _dataSpaceCharacter, ValueType _edgesCharacter) const;
+
+		_StrType GenerateUTFDataLine(const std::vector<_StrType>& _rowVector, ValueType _rightEdgeCharacter, ValueType _innerSeparationCharacter, ValueType _leftEdgeCharacter, int _whiteSpaceStyle) const;
+
+		_StrType GenerateUTFSpacerLine(ValueType _rightEdgeCharacter, ValueType _innerEdgeCharacter, ValueType _leftEdgeCharacter, ValueType _innerDataSpaceCharacter) const;
 	};
 
 	enum MarkdownTableGenerator_Styles
@@ -166,6 +172,14 @@ void mrt::AsciiTableGenerator<_StrType>::GenerateAsciiTable(OStream* stream, int
 			*stream << _commentCharacters << GenerateSpacerLine(9552, '+') << "\n" << _commentCharacters
 				<< GenerateDataLine(columnNames, 9553, _whiteSpaceStyle) << "\n" << _commentCharacters << GenerateSpacerLine(9552, '+') << "\n";
 			break;
+		case UTF_Table_Single:
+			*stream << _commentCharacters << GenerateUTFSpacerLine(9488, 9516, 9484, 9472) << "\n" << _commentCharacters
+				<< GenerateUTFDataLine(columnNames, 9474, 9474, 9474, _whiteSpaceStyle) << "\n" << _commentCharacters << GenerateUTFSpacerLine(9508, 9532, 9500, 9472) << "\n";
+			break;
+		case UTF_Table_Double:
+			*stream << _commentCharacters << GenerateUTFSpacerLine(9559, 9574, 9556, 9552) << "\n" << _commentCharacters
+				<< GenerateUTFDataLine(columnNames, 9553, 9553, 9553, _whiteSpaceStyle) << "\n" << _commentCharacters << GenerateUTFSpacerLine(9571, 9580, 9568, 9552) << "\n";
+			break;
 		}
 	}
 
@@ -238,6 +252,30 @@ void mrt::AsciiTableGenerator<_StrType>::GenerateAsciiTable(OStream* stream, int
 				*stream << _commentCharacters << GenerateSpacerLine(9552, '+') << "\n";
 			}
 			break;
+		case UTF_Table_Single:
+			*stream << _commentCharacters << GenerateUTFDataLine(m_CSVData->GetRowData(i), 9474, 9474, 9474, _whiteSpaceStyle) << "\n";
+
+			if (_forceRowSeparation && (i < m_CSVData->GetRowCount() - 1))
+			{
+				*stream << _commentCharacters << GenerateUTFSpacerLine(9508, 9532, 9500, 9472) << "\n";
+			}
+			else if (i == m_CSVData->GetRowCount() - 1)
+			{
+				*stream << _commentCharacters << GenerateUTFSpacerLine(9496, 9524, 9492, 9472) << "\n";
+			}
+			break;
+		case UTF_Table_Double:
+			*stream << _commentCharacters << GenerateUTFDataLine(m_CSVData->GetRowData(i), 9553, 9553, 9553, _whiteSpaceStyle) << "\n";
+
+			if (_forceRowSeparation && (i < m_CSVData->GetRowCount() - 1))
+			{
+				*stream << _commentCharacters << GenerateUTFSpacerLine(9571, 9580, 9568, 9552) << "\n";
+			}
+			else if (i == m_CSVData->GetRowCount() - 1)
+			{
+				*stream << _commentCharacters << GenerateUTFSpacerLine(9565, 9577, 9562, 9552) << "\n";
+			}
+			break;
 		}
 	}
 }
@@ -266,6 +304,48 @@ _StrType mrt::AsciiTableGenerator<_StrType>::GenerateSpacerLine(ValueType _dataS
 		oss << _edgesCharacter << AddWhiteSpaceToString<_StrType>(_StrType(), m_CSVData->GetMaxColumnWidth(i) + 2, WhiteSpaceStyle::LEFT, _dataSpaceCharacter);
 	}
 	oss << _edgesCharacter;
+
+	return std::forward<_StrType>(oss.str());
+}
+
+template <class _StrType>
+_StrType mrt::AsciiTableGenerator<_StrType>::GenerateUTFDataLine(const std::vector<_StrType>& _rowVector, ValueType _rightEdgeCharacter, ValueType _innerSeparationCharacter, ValueType _leftEdgeCharacter, int _whiteSpaceStyle) const
+{
+	OStrStream oss;
+
+	oss << _leftEdgeCharacter;
+
+	for (size_t i = 0; i < _rowVector.size(); ++i)
+	{
+		if (i != 0)
+		{
+			oss << _innerSeparationCharacter;
+		}
+
+		oss << " " << AddWhiteSpaceToString<_StrType>(_rowVector[i], (m_CSVData->GetMaxColumnWidth(i) - _rowVector[i].size()), _whiteSpaceStyle) << " ";
+	}
+	oss << _rightEdgeCharacter;
+
+	return std::forward<_StrType>(oss.str());
+}
+
+template <class _StrType>
+_StrType mrt::AsciiTableGenerator<_StrType>::GenerateUTFSpacerLine(ValueType _rightEdgeCharacter, ValueType _innerEdgeCharacter, ValueType _leftEdgeCharacter, ValueType _innerDataSpaceCharacter) const
+{
+	OStrStream oss;
+
+	oss << _leftEdgeCharacter;
+
+	for (size_t i = 0; i < m_CSVData->GetColumnCount(); ++i)
+	{
+		if (i != 0)
+		{
+			oss << _innerEdgeCharacter;
+		}
+
+		oss << AddWhiteSpaceToString<_StrType>(_StrType(), m_CSVData->GetMaxColumnWidth(i) + 2, WhiteSpaceStyle::LEFT, _innerDataSpaceCharacter);
+	}
+	oss << _rightEdgeCharacter;
 
 	return std::forward<_StrType>(oss.str());
 }

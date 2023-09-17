@@ -43,6 +43,8 @@ void CSVtoASCII_Panel::SetupSpecificOutputSectionItems()
 	m_AsciiTableStyleChoices.Add("Ascii table (Simple)");
 	m_AsciiTableStyleChoices.Add("Ascii table (Wavy)");
 	m_AsciiTableStyleChoices.Add("Ascii table (MySql extended)");
+	m_AsciiTableStyleChoices.Add("UTF-8 table (Single Line)");
+	m_AsciiTableStyleChoices.Add("UTF-8 table (Double Line)");
 
 	m_AsciiTableStyle = new wxComboBox(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, m_AsciiTableStyleChoices, wxCB_READONLY);
 	m_AsciiTableStyle->SetSelection(0);

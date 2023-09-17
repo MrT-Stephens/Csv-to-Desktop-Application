@@ -73,7 +73,7 @@ void CSVto_PanelBase::SetupDataInputSection()
 
 				if (m_CSVData->GetError() == mrt::CSVData_Error::NONE)
 				{
-					if (m_CSVData->GetColumnCount() > 1000 || m_CSVData->GetRowCount() > 1000)
+					if (m_CSVData->GetColumnCount() > 2500 || m_CSVData->GetRowCount() > 2500)
 					{
 						mrt::MrT_UniDialog yesNoDialog(this, "Warning", std::format("The file that has been inputted has {} columns and {} rows. This may take a while to process in certain cases. Would you like to continue?",
 							m_CSVData->GetColumnCount(), m_CSVData->GetRowCount()), m_Colours, wxICON(wxICON_WARNING), mrt::MrT_UniDialogType_YES_NO, FromDIP(wxSize(400, 215)));

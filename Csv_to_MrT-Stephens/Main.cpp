@@ -16,29 +16,26 @@ const std::string mrtApp::GITHUB_URL = "https://github.com/MrT-Stephens";
 
 bool MrT_App::OnInit()
 {
-
 #if defined(MRT_DEBUG)
-    try 
-    {
-        std::locale::global(std::locale("en_US.UTF-8"));
-    }
-    catch (const std::runtime_error& e) 
-    {
-        MRT_DEBUG_LOG_MSG(std::format("Failed to set the locale: ", e.what()));
-    }
-#else
-	std::locale::global(std::locale("en_US.UTF-8"));
-#endif
-
-#if defined(MRT_DEBUG)
-    AllocConsole();
+    AllocConsole();													    // Allocating a console for debugging purposes.
 
     freopen("CONOUT$", "w", stdout);
     freopen("CONOUT$", "w", stderr);
 
+    try
+    {
+        std::locale::global(std::locale("en_GB.UTF-8"));
+    }
+    catch (const std::runtime_error& e)
+    {
+        MRT_DEBUG_LOG_MSG(std::format("Failed to set the locale: ", e.what()));
+    }
+
     MRT_DEBUG_LOG_MSG(std::format("Debugging enabled on application ({})", mrtApp::APP_TITLE));
     MRT_DEBUG_LOG_MSG(std::format("Locale set to: {}", std::locale().name()));
     MRT_DEBUG_LOG_MSG(std::format("XLSXWriter version: {}", lxw_version()));
+#else 
+    std::locale::global(std::locale("en_GB.UTF-8"));
 #endif
 
     Main_Frame* mainFrame = new Main_Frame(mrtApp::APP_TITLE, wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE);

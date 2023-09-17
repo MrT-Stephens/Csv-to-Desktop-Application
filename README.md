@@ -9,10 +9,11 @@
 <h4 align="center">A desktop application which converts CSV (Comma Separated Values) to many other types!</h4>
 
 <p align="center">
-  <a href="#key-features">Key Features</a> •
-  <a href="#installation">Installation</a> •
-  <a href="#future-improvements">Future Improvements</a> • 
-  <a href="#libraries-used">Libraries Used
+  <a href="#key-features">Key Features</a> ●
+  <a href="#installation">Installation</a> ●
+  <a href="#how-to-use">How To Use</a> ●
+  <a href="#future-improvements">Future Improvements</a> ● 
+  <a href="#libraries-used">Libraries Used</a>
 </p>
 
 <p align="center">
@@ -65,6 +66,9 @@ item5,item6,item7,item8
 ## Installation
 * To install the application, please download the [latest release](https://github.com/MrT-Stephens/Csv_to-Desktop_Application/releases).
   Then extract the archive and start the '.exe' and it should all just work :).
+
+## How To Use
+* 
 
 ## Future Improvements
 * Currently only supports Windows, but in future hoping to support Mac OS, and Linux.

@@ -60,20 +60,20 @@ Main_Frame::Main_Frame(const wxString& title, const wxPoint& pos, const wxSize& 
     m_Notebook->SetOwnForegroundColour(m_Colours.FOREGROUND);
 
     m_Panels = {                                                        // Initialising the panels and their names.
-        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoCSV_Panel(m_Notebook, "CSV to CSV", &m_Colours), "CSV"),
-        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoSQL_Panel(m_Notebook, "CSV to SQL", &m_Colours), "SQL"),
-        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoASCII_Panel(m_Notebook, "CSV to Ascii", &m_Colours), "Ascii"),
-        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoMarkdown_Panel(m_Notebook, "CSV to Markdown", &m_Colours), "Markdown"),
-        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoXML_Panel(m_Notebook, "CSV to XML", &m_Colours), "XML"),
-        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoHTML_Panel(m_Notebook, "CSV to HTML", &m_Colours), "HTML"),
-        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoLaTex_Panel(m_Notebook, "CSV to LaTex", &m_Colours), "LaTex"),
-        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoJSON_Panel(m_Notebook, "CSV to JSON", &m_Colours), "JSON"),
-        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoPHP_Panel(m_Notebook, "CSV to PHP", &m_Colours), "PHP"),
-        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoRuby_Panel(m_Notebook, "CSV to Ruby", &m_Colours), "Ruby"),
-        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoMultiline_Panel(m_Notebook, "CSV to Multi-line", &m_Colours), "Multi-line"),
-        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoYAML_Panel(m_Notebook, "CSV to YAML", &m_Colours), "YAML"),
-        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoBBCode_Panel(m_Notebook, "CSV to BBCode", &m_Colours), "BBCode"),
-        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoXLSX_Panel(m_Notebook, "CSV to XLSX", &m_Colours), "XLSX")
+        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoCSV_Panel(m_Notebook, "Csv to CSV", &m_Colours), "CSV"),
+        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoSQL_Panel(m_Notebook, "Csv to SQL", &m_Colours), "SQL"),
+        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoASCII_Panel(m_Notebook, "Csv to Ascii", &m_Colours), "Ascii"),
+        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoMarkdown_Panel(m_Notebook, "Csv to Markdown", &m_Colours), "Markdown"),
+        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoXML_Panel(m_Notebook, "Csv to XML", &m_Colours), "XML"),
+        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoHTML_Panel(m_Notebook, "Csv to HTML", &m_Colours), "HTML"),
+        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoLaTex_Panel(m_Notebook, "Csv to LaTex", &m_Colours), "LaTex"),
+        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoJSON_Panel(m_Notebook, "Csv to JSON", &m_Colours), "JSON"),
+        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoPHP_Panel(m_Notebook, "Csv to PHP", &m_Colours), "PHP"),
+        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoRuby_Panel(m_Notebook, "Csv to Ruby", &m_Colours), "Ruby"),
+        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoMultiline_Panel(m_Notebook, "Csv to Multi-line", &m_Colours), "Multi-line"),
+        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoYAML_Panel(m_Notebook, "Csv to YAML", &m_Colours), "YAML"),
+        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoBBCode_Panel(m_Notebook, "Csv to BBCode", &m_Colours), "BBCode"),
+        std::make_pair<CSVto_PanelBase*, std::string>(new CSVtoXLSX_Panel(m_Notebook, "Csv to XLSX", &m_Colours), "XLSX")
     };
 
 #if defined(MRT_DEBUG)

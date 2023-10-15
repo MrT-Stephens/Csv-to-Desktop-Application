@@ -33,11 +33,14 @@ namespace mrtApp
 
 	struct AppColours
 	{
-		const wxColour BACKGROUND{ 32, 32, 32 };
-		const wxColour FOREGROUND{ 225, 225, 225 };
-		const wxColour PRIMARY{ 42, 42, 42 };
-		const wxColour SECONDARY{ 0, 230, 230 };
+        const wxColour BACKGROUND;
+        const wxColour FOREGROUND;
+        const wxColour PRIMARY;
+        const wxColour SECONDARY;
 	};
+
+    inline const AppColours DARKMODE_DEFAULT_COLOUR{ {32, 32, 32}, {225, 225, 225}, {42, 42, 42}, {0, 230, 230} };
+    inline const AppColours LIGHTMODE_DEFAULT_COLOUR{ {160, 160, 160}, {0, 0, 0}, {224, 224, 224}, {0, 230, 230} };
 }
 
   /***************************/

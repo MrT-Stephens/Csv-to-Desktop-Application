@@ -37,8 +37,9 @@ class Main_Frame : public wxFrame
 {
 private:
     wxNotebook* m_Notebook;
-    const mrtApp::AppColours m_Colours;
     std::vector<std::pair<CSVto_PanelBase*, std::string>> m_Panels;
+
+    mrtApp::AppColours m_Colours = wxSystemSettings::GetAppearance().IsDark() ? mrtApp::DARKMODE_DEFAULT_COLOUR : mrtApp::LIGHTMODE_DEFAULT_COLOUR;
 public:
     // Constructor & Destructor
     Main_Frame(const wxString& title, const wxPoint& pos, const wxSize& size, long style);
